@@ -76,7 +76,6 @@ SDL_Surface* Buttons[CountOfButtons];
 SDL_Surface* PressedButtons[CountOfPressedButtons];
 SDL_Surface* Texture[CountOfTexture];
 
-
 void backgroundMenu(SDL_Surface* CurrentSurface)
 {
 	CurrentSurface = Logos[2];
@@ -244,8 +243,6 @@ void characterMovement(int**& level, int* height, int* width, fstream& file, SDL
 			}
 		}
 	}
-
-
 }
 void field(int** level, int height, int width, fstream& file, SDL_Rect posTexture, SDL_Surface* CurrentSurface) {//тут будет отображаться массив в-виде картинки
 	int sizeTexture = 50;
@@ -280,7 +277,6 @@ void field(int** level, int height, int width, fstream& file, SDL_Rect posTextur
 	}
 
 }
-
 void showTexture(int i, SDL_Rect posTexture, SDL_Surface* CurrentSurface)
 {
 	CurrentSurface = Texture[i];
@@ -288,8 +284,6 @@ void showTexture(int i, SDL_Rect posTexture, SDL_Surface* CurrentSurface)
 	SDL_UpdateWindowSurface(Window);
 }
 void createMap(int**& arr, int* height, int* width, fstream& file) {// чтение файла и создание массива
-	//FILE* file;
-
 
 	if (!file.is_open())
 	{
@@ -320,9 +314,7 @@ void createMap(int**& arr, int* height, int* width, fstream& file) {// чтен�
 			}
 			cout << endl;
 		}
-
 	}
-
 }
 void createArr(int**& arr, int height, int width)
 {
@@ -332,7 +324,7 @@ void createArr(int**& arr, int height, int width)
 		arr[i] = new int[width];
 
 	}
-};
+}
 void clearMemory(int**& arr, int height) 
 {
 	for (int i = 0; i < height; i++) 
