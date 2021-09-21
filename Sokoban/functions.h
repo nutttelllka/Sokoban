@@ -1,88 +1,107 @@
 ﻿#pragma once
+#include "Structures.h"
+#include "Enums.h"
 using namespace std;
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
-
-enum KeyPressSurfaces
-{
-	KEY_PRESS_SURFACE_DEFAULT,
-	KEY_PRESS_SURFACE_UP,
-	KEY_PRESS_SURFACE_DOWN,
-	KEY_PRESS_SURFACE_LEFT,
-	KEY_PRESS_SURFACE_RIGHT,
-	KEY_PRESS_SURFACE_TOTAL,
-};
-enum Object
-{
-	EMPTY,
-	WALL, 
-	FLOOR, 
-	CAT, 
-	BACKGROUND,
-};
-enum Buttons
-{
-	GAME,
-	HOW_TO_PLAY,
-	EXIT,
-	YES,
-	NO,
-};
-enum Wallps
-{
-	LOGO_OF_GROUP,
-	LOGO_OF_GAME,
-	MAIN_MENU,
-	MENU_EXIT,
-
-};
-enum CountOdArrs
-{
-	CountOfLogos = 4,
-	CountOfButtons = 5,
-	CountOfPressedButtons = 5,
-	CountOfTexture = 5,
-};
-
-bool init();
-bool loadMedia();
-void close();
-void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button, SDL_Surface* CurrentSurface);
-void playGame(SDL_Surface* CurrentSurface);
-void showButton(SDL_Surface* CurrentSurface, int i, SDL_Rect stretchRectб, int y_of_button1 = 250, int y_of_button2 = 250 + 70, int y_of_button3 = 250 + 140);
-void backgroundMenu(SDL_Surface* CurrentSurface);
-void exit(bool& quit, SDL_Surface* CurrentSurface);
+//#define KMOD_CTRL_z (SDLK_LCTRL|SDLK_z)
+void intro(Surface& game);
+bool init(Surface& game);
+bool loadMedia(Surface& game);
+void close(Surface& game);
+void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button,Surface& game);
+void playGame(Surface& game);
+void showButton(Surface& game, int i, SDL_Rect stretchRectб, int y_of_button1 = 250, int y_of_button2 = 250 + 70, int y_of_button3 = 250 + 140);
+void backgroundMenu(Surface& game);
+void exit(bool& quit, Surface& game);
 void createMap(int**& arr, int* height, int* width, fstream& file);
-void field(int** level, int height, int width, fstream& file, SDL_Rect posTexture, SDL_Surface* CurrentSurface);
-void characterMovement(int**& level, int* height, int* width, fstream& file, SDL_Surface* CurrentSurface);
+void field(int** level, int height, int width, fstream& file, SDL_Rect posTexture, Surface& game);
+void characterMovement(int**& level, int* height, int* width, fstream& file, Surface& game);
 void createArr(int**& arr, int height, int width);
 void clearMemory(int**& arr, int height);
-void showTexture(int i, SDL_Rect posTexture, SDL_Surface* CurrentSurface);
+void showTexture(int i, SDL_Rect posTexture, Surface& game);
+bool isPressed(int keyCode);
+bool isReleased(int keyCode);
+
+bool pressed_keys[3] = {};
 
 //const int CountOfLogos = 4;
 //const int CountOfButtons = 5;
 //const int CountOfPressedButtons = 5;
 //const int CountOfTexture = 5;
-//SDL_Surface* CurrentSurface = NULL;
 
+//тут был Степа
 SDL_Surface* loadSurface(string path);
-Mix_Music* music = NULL;
-SDL_Window* Window = NULL;
-SDL_Surface* ScreenSurface = NULL;
+
+
+//SDL_Surface* CurrentSurface
+//Mix_Music* music = NULL;
+//SDL_Window* Window = NULL;
+//SDL_Surface* ScreenSurface = NULL;
 
 SDL_Surface* Logos[CountOfLogos];
 SDL_Surface* Buttons[CountOfButtons];
 SDL_Surface* PressedButtons[CountOfPressedButtons];
 SDL_Surface* Texture[CountOfTexture];
 
-void backgroundMenu(SDL_Surface* CurrentSurface)
+void intro(Surface& game)
 {
-	CurrentSurface = Logos[2];
-	SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, NULL);
-	SDL_UpdateWindowSurface(Window);
+	if (!init(game))
+	{
+		printf("Failed to initialize!\n");
+	}
+	else {
+		if (!loadMedia(game))
+		{
+			printf("Failed to load media!\n");
+		}
+		else
+		{
+			bool quit = false;
+			SDL_Event e;
+
+			int i = 0;
+			int i_for_buttons = 0;
+			int current_pressed_button = 0;
+
+			while (!quit)
+			{
+				while (SDL_PollEvent(&e) != 0)
+				{
+					if (e.type == SDL_QUIT)
+					{
+						quit = true;
+						break;
+					}
+					else if (i < 2)
+					{
+						game.CurrentSurface = Logos[i];
+						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
+						SDL_UpdateWindowSurface(game.Window);
+
+						//Sleep(3000);
+						SDL_Delay(2000);
+						i++;
+					}
+					if (i == 2)
+					{
+						Mix_FreeMusic(game.music);
+						game.music = NULL;
+						menu(quit, i, i_for_buttons, current_pressed_button, game);
+					}
+				}
+			}
+		}
+	}
 }
-void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button, SDL_Surface* CurrentSurface)
+void backgroundMenu(Surface& game)
+{
+	game.CurrentSurface = Logos[2];
+	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
+	SDL_UpdateWindowSurface(game.Window);
+}
+void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button,Surface& game)
 {
 	SDL_Event e;
 	SDL_Rect stretchRect;
@@ -94,7 +113,7 @@ void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button, SD
 	int y_of_button3 = y_of_button2 + 70;
 	int interval_Y = 70;
 
-	backgroundMenu(CurrentSurface);
+	backgroundMenu(game);
 	while (!quit)
 	{
 		while (SDL_PollEvent(&e) != 0)
@@ -106,17 +125,17 @@ void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button, SD
 			}
 			else if (i_for_buttons == 0)
 			{
-				CurrentSurface = PressedButtons[i_for_buttons];
-				SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &stretchRect);
-				SDL_UpdateWindowSurface(Window);
+				game.CurrentSurface = PressedButtons[i_for_buttons];
+				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
+				SDL_UpdateWindowSurface(game.Window);
 				stretchRect.y += interval_Y;
 				i_for_buttons++;
 			}
 			else if (i_for_buttons < 3)
 			{
-				CurrentSurface = Buttons[i_for_buttons];
-				SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &stretchRect);
-				SDL_UpdateWindowSurface(Window);
+				game.CurrentSurface = Buttons[i_for_buttons];
+				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
+				SDL_UpdateWindowSurface(game.Window);
 				stretchRect.y += interval_Y;
 				i_for_buttons++;
 			}
@@ -131,16 +150,16 @@ void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button, SD
 						current_pressed_button--;
 
 						if (current_pressed_button == GAME)
-							showButton( CurrentSurface,HOW_TO_PLAY, stretchRect);
+							showButton(game,HOW_TO_PLAY, stretchRect);
 					
 						else if (current_pressed_button == HOW_TO_PLAY)
-							showButton(CurrentSurface,EXIT, stretchRect);
+							showButton(game,EXIT, stretchRect);
 				
 						current_y -= interval_Y;
 						stretchRect.y = current_y;
-						CurrentSurface = PressedButtons[current_pressed_button];
-						SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &stretchRect);
-						SDL_UpdateWindowSurface(Window);
+						game.CurrentSurface = PressedButtons[current_pressed_button];
+						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
+						SDL_UpdateWindowSurface(game.Window);
 					}
 					break;
 
@@ -151,57 +170,78 @@ void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button, SD
 						current_pressed_button++;
 
 						if (current_pressed_button == EXIT)
-							showButton(CurrentSurface,HOW_TO_PLAY, stretchRect);
+							showButton(game,HOW_TO_PLAY, stretchRect);
 
 						else if (current_pressed_button == HOW_TO_PLAY)
-							showButton( CurrentSurface, GAME, stretchRect);
+							showButton(game, GAME, stretchRect);
 
 						current_y += interval_Y;
 						stretchRect.y = current_y;
-						CurrentSurface = PressedButtons[current_pressed_button];
-						SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &stretchRect);
-						SDL_UpdateWindowSurface(Window);
+						game.CurrentSurface = PressedButtons[current_pressed_button];
+						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
+						SDL_UpdateWindowSurface(game.Window);
 					}
+					break;
+				case SDLK_ESCAPE:
+					//current_pressed_button = EXIT;
+					exit(quit, game);
+					backgroundMenu(game);
+					if (current_pressed_button == GAME)
+					{
+						showButton(game, HOW_TO_PLAY, stretchRect);
+						showButton(game, EXIT, stretchRect);
+						stretchRect.y = y_of_button1;
+					}
+					else if (current_pressed_button == HOW_TO_PLAY)
+					{
+						showButton(game,GAME, stretchRect);
+						showButton(game, EXIT, stretchRect);
+						stretchRect.y = y_of_button2;
+					}
+					else
+					{
+						showButton(game, GAME, stretchRect);
+						showButton(game, HOW_TO_PLAY, stretchRect);
+						stretchRect.y = y_of_button3;
+					}
+					game.CurrentSurface = PressedButtons[current_pressed_button];
+					SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
+					SDL_UpdateWindowSurface(game.Window);
 					break;
 				case SDLK_RETURN:
 				case SDLK_KP_ENTER:
 					switch (current_pressed_button)
 					{
 					case GAME:
-						playGame(CurrentSurface);
-						backgroundMenu(CurrentSurface);
-						showButton( CurrentSurface, HOW_TO_PLAY, stretchRect);
-						showButton(CurrentSurface,EXIT, stretchRect);
+						playGame(game);
+						backgroundMenu(game);
+						showButton(game, HOW_TO_PLAY, stretchRect);
+						showButton(game,EXIT, stretchRect);
 						stretchRect.y = y_of_button1;
 						break;
 					case HOW_TO_PLAY:
 
 						break;
 					case EXIT:
-
-						exit(quit, CurrentSurface);
-						backgroundMenu( CurrentSurface);
-						showButton( CurrentSurface,GAME, stretchRect);
-						showButton(CurrentSurface,HOW_TO_PLAY, stretchRect);
+						exit(quit, game);
+						backgroundMenu(game);
+						showButton(game,GAME, stretchRect);
+						showButton(game,HOW_TO_PLAY, stretchRect);
 						stretchRect.y = y_of_button3;
 						break;
 					}
-					break;
-				case SDLK_ESCAPE:
-					quit = true;
+					game.CurrentSurface = PressedButtons[current_pressed_button];
+					SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
+					SDL_UpdateWindowSurface(game.Window);
 					break;
 				default:
 					break;
 				}
-				CurrentSurface = PressedButtons[current_pressed_button];
-				SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &stretchRect);
-				SDL_UpdateWindowSurface(Window);
 			}
 		}
 	}
-
 }
-void playGame(SDL_Surface* CurrentSurface)
+void playGame(Surface& game)
 {
 	fstream file("fields.TXT");
 
@@ -210,19 +250,19 @@ void playGame(SDL_Surface* CurrentSurface)
 	int width = 0;
 
 	createMap(level, &height, &width, file);
-	characterMovement(level, &height, &width, file, CurrentSurface);
+	characterMovement(level, &height, &width, file, game);
 	clearMemory(level, height);
 
 }
-void characterMovement(int**& level, int* height, int* width, fstream& file, SDL_Surface* CurrentSurface)
+void characterMovement(int**& level, int* height, int* width, fstream& file, Surface& game)
 {//передвижение персонажей
 	SDL_Rect posTexture;
 	posTexture.x = 0;
 	posTexture.y = 0;
 
 
-	showTexture(BACKGROUND, posTexture, CurrentSurface);
-	field(level, *height, *width, file, posTexture, CurrentSurface);
+	showTexture(BACKGROUND, posTexture, game);
+	field(level, *height, *width, file, posTexture, game);
 
 	bool quit = false;
 	SDL_Event e;
@@ -244,7 +284,7 @@ void characterMovement(int**& level, int* height, int* width, fstream& file, SDL
 		}
 	}
 }
-void field(int** level, int height, int width, fstream& file, SDL_Rect posTexture, SDL_Surface* CurrentSurface) {//тут будет отображаться массив в-виде картинки
+void field(int** level, int height, int width, fstream& file, SDL_Rect posTexture, Surface& game) {//тут будет отображаться массив в-виде картинки
 	int sizeTexture = 50;
 
 	//SDL_Rect posTexture;
@@ -258,16 +298,16 @@ void field(int** level, int height, int width, fstream& file, SDL_Rect posTextur
 
 			case WALL:
 
-				showTexture(WALL, posTexture, CurrentSurface);
+				showTexture(WALL, posTexture, game);
 				break;
 			case FLOOR:
 
-				showTexture(FLOOR, posTexture,CurrentSurface);
+				showTexture(FLOOR, posTexture, game);
 
 				break;
 			case CAT:
 
-				showTexture(CAT, posTexture, CurrentSurface);
+				showTexture(CAT, posTexture, game);
 				break;
 			}
 			posTexture.x += sizeTexture;
@@ -277,11 +317,11 @@ void field(int** level, int height, int width, fstream& file, SDL_Rect posTextur
 	}
 
 }
-void showTexture(int i, SDL_Rect posTexture, SDL_Surface* CurrentSurface)
+void showTexture(int i, SDL_Rect posTexture, Surface& game)
 {
-	CurrentSurface = Texture[i];
-	SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &posTexture);
-	SDL_UpdateWindowSurface(Window);
+	game.CurrentSurface = Texture[i];
+	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &posTexture);
+	SDL_UpdateWindowSurface(game.Window);
 }
 void createMap(int**& arr, int* height, int* width, fstream& file) {// чтение файла и создание массива
 
@@ -334,7 +374,7 @@ void clearMemory(int**& arr, int height)
 	delete[] arr;
 	arr = nullptr;
 }
-void exit(bool& quit, SDL_Surface* CurrentSurface)
+void exit(bool& quit, Surface& game)
 {
 	//bool quit = false;
 	bool quit2 = false;
@@ -346,9 +386,9 @@ void exit(bool& quit, SDL_Surface* CurrentSurface)
 	int a = 0;
 	int current_pressed_button = i;
 	//backgroundMenu();
-	CurrentSurface = Logos[MENU_EXIT];
-	SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, NULL);
-	SDL_UpdateWindowSurface(Window);
+	game.CurrentSurface = Logos[MENU_EXIT];
+	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
+	SDL_UpdateWindowSurface(game.Window);
 	while (quit2 == false)
 	{
 		while (SDL_PollEvent(&e) != 0)
@@ -361,14 +401,14 @@ void exit(bool& quit, SDL_Surface* CurrentSurface)
 			}
 			else if (a == 0)
 			{
-				CurrentSurface = PressedButtons[current_pressed_button];
-				SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &stretchRect);
-				SDL_UpdateWindowSurface(Window);
+				game.CurrentSurface = PressedButtons[current_pressed_button];
+				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
+				SDL_UpdateWindowSurface(game.Window);
 				stretchRect.x += 300;
 				i++;
-				CurrentSurface = Buttons[i];
-				SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &stretchRect);
-				SDL_UpdateWindowSurface(Window);
+				game.CurrentSurface = Buttons[i];
+				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
+				SDL_UpdateWindowSurface(game.Window);
 				a++;
 			}
 			else
@@ -378,13 +418,13 @@ void exit(bool& quit, SDL_Surface* CurrentSurface)
 				case SDLK_RIGHT:
 					if (current_pressed_button == YES)
 					{
-						CurrentSurface = PressedButtons[NO];
-						SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &stretchRect);
-						SDL_UpdateWindowSurface(Window);
+						game.CurrentSurface = PressedButtons[NO];
+						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
+						SDL_UpdateWindowSurface(game.Window);
 						stretchRect.x -= 300;
-						CurrentSurface = Buttons[YES];
-						SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &stretchRect);
-						SDL_UpdateWindowSurface(Window);
+						game.CurrentSurface = Buttons[YES];
+						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
+						SDL_UpdateWindowSurface(game.Window);
 						current_pressed_button++;
 					}
 					break;
@@ -392,14 +432,14 @@ void exit(bool& quit, SDL_Surface* CurrentSurface)
 					if (current_pressed_button == NO)
 					{
 						//stretchRect.x -= 400;
-						CurrentSurface = PressedButtons[YES];
-						SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &stretchRect);
-						SDL_UpdateWindowSurface(Window);
+						game.CurrentSurface = PressedButtons[YES];
+						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
+						SDL_UpdateWindowSurface(game.Window);
 
 						stretchRect.x += 300;
-						CurrentSurface = Buttons[NO];
-						SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &stretchRect);
-						SDL_UpdateWindowSurface(Window);
+						game.CurrentSurface = Buttons[NO];
+						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
+						SDL_UpdateWindowSurface(game.Window);
 						current_pressed_button--;
 					}
 					break;
@@ -413,26 +453,44 @@ void exit(bool& quit, SDL_Surface* CurrentSurface)
 						break;
 					case NO:
 						quit2 = true;
-						//_exit;
 						break;
 					}
-
+					break;
+				//case SDLK_z:
+				//	pressed_keys[KEY_PRESS_Z] = 1;
+				//	//if ( e.key.keysym.mod == KMOD_LCTRL)
+				//	//{
+				//	//SDLK_LCTRL == PRESSED;
+				//	//}
+				//	break;
+				//case SDLK_LCTRL:
+				//	pressed_keys[KEY_PRESS_LEFT_CTRL] = 1;
+				//	//if ( e.key.keysym.mod == KMOD_LCTRL)
+				//	//{
+				//	//SDLK_LCTRL == PRESSED;
+				//	//}
+				//	break;
 				}
 			}
+			/*if (pressed_keys[KEY_PRESS_LEFT_CTRL] && pressed_keys[KEY_PRESS_Z])
+			{
+				quit = true;
+				quit2 = true;
+			}*/
 			if (quit2 == true)break;
 		}
 	}
 }
-void showButton(SDL_Surface* CurrentSurface,int i, SDL_Rect stretchRect, int y_of_button1, int y_of_button2, int y_of_button3)
+void showButton(Surface& game,int i, SDL_Rect stretchRect, int y_of_button1, int y_of_button2, int y_of_button3)
 {
 	if (i == 0)stretchRect.y = y_of_button1;
 	if (i == 1)stretchRect.y = y_of_button2;
 	if (i == 2)stretchRect.y = y_of_button3;
-	CurrentSurface = Buttons[i];
-	SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &stretchRect);
-	SDL_UpdateWindowSurface(Window);
+	game.CurrentSurface = Buttons[i];
+	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
+	SDL_UpdateWindowSurface(game.Window);
 }
-bool init()
+bool init(Surface& game)
 {
 	bool success = true;
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) 
@@ -442,24 +500,24 @@ bool init()
 	}
 	else 
 	{
-		Window = SDL_CreateWindow(" Sokoban",
+		game.Window = SDL_CreateWindow(" Sokoban",
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
 			SCREEN_WIDTH, SCREEN_HEIGHT,
 			SDL_WINDOW_SHOWN);
-		if (Window == NULL) 
+		if (game.Window == NULL)
 		{
 			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
 			success = false;
 		}
 		else 
 		{
-			ScreenSurface = SDL_GetWindowSurface(Window);
+			game.ScreenSurface = SDL_GetWindowSurface(game.Window);
 		}
 	}
 	return success;
 }
-bool loadMedia()
+bool loadMedia(Surface& game)
 {
 	//Ôëàã óñïåøíîé çàãðóçêè
 	bool success = true;
@@ -474,8 +532,8 @@ bool loadMedia()
 		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		success = false;
 	}
-	music = Mix_LoadMUS("sound\\intro.wav");
-	if (music == NULL)
+	game.music = Mix_LoadMUS("sound\\intro.wav");
+	if (game.music == NULL)
 	{
 		printf("Failed to load music! SDL_mixer Error: %s\n", Mix_GetError());
 		success = false;
@@ -483,7 +541,7 @@ bool loadMedia()
 	if (Mix_PlayingMusic() == 0)
 	{
 		//Play the music
-		Mix_PlayMusic(music, -1);
+		Mix_PlayMusic(game.music, -1);
 	}
 	Logos[0] = loadSurface("teamLogo.bmp");
 	if (Logos[0] == NULL)
@@ -602,20 +660,20 @@ bool loadMedia()
 
 	return success;
 }
-void close()
+void close(Surface& game)
 {
 	//После уничтожения окна не забудь указатели указать на NULL
 	//Освободить поверхность
-	Mix_FreeMusic(music);
-	music = NULL;
+	Mix_FreeMusic(game.music);
+	game.music = NULL;
 	for (int i = 0; i < CountOfLogos; ++i)
 	{
 		SDL_FreeSurface(Logos[i]);
 		Logos[i] = NULL;
 	}
 	//Уничтожить окно
-	SDL_DestroyWindow(Window);
-	Window = NULL;
+	SDL_DestroyWindow(game.Window);
+	game.Window = NULL;
 	//Выйим из подсистемы SDL
 	//SDL_Quit();
 	for (int i = 0; i < CountOfLogos; ++i)
@@ -623,8 +681,8 @@ void close()
 		SDL_FreeSurface(Logos[i]);
 		Logos[i] = NULL;
 	}
-	SDL_DestroyWindow(Window);
-	Window = NULL;
+	SDL_DestroyWindow(game.Window);
+	game.Window = NULL;
 	SDL_Quit();
 	Mix_Quit();
 }
@@ -640,6 +698,13 @@ SDL_Surface* loadSurface(std::string path)
 	return loadedSurface;
 }
 
-
+bool isPressed(int keyCode)
+{
+	return 1;
+}
+bool isReleased(int keyCode)
+{
+	return 0;
+}
 
 

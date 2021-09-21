@@ -150,13 +150,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Sokoban.cpp" />
-    <ClCompile Include="проверка.cpp">
+    <ClCompile Include="Not Game.cpp" />
+    <ClCompile Include="Sokoban.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Libs\SDL2-devel-2.0.16-VC\SDL2-2.0.16\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Enums.h" />
     <ClInclude Include="functions.h" />
+    <ClInclude Include="Structures.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
