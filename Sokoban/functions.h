@@ -40,10 +40,10 @@ SDL_Surface* loadSurface(string path);
 //SDL_Window* Window = NULL;
 //SDL_Surface* ScreenSurface = NULL;
 
-SDL_Surface* Logos[CountOfLogos];
-SDL_Surface* Buttons[CountOfButtons];
-SDL_Surface* PressedButtons[CountOfPressedButtons];
-SDL_Surface* Texture[CountOfTexture];
+//SDL_Surface* Logos[CountOfLogos];
+//SDL_Surface* Buttons[CountOfButtons];
+//SDL_Surface* PressedButtons[CountOfPressedButtons];
+//SDL_Surface* Texture[CountOfTexture];
 
 void intro(Surface& game)
 {
@@ -76,7 +76,7 @@ void intro(Surface& game)
 					}
 					else if (i < 2)
 					{
-						game.CurrentSurface = Logos[i];
+						game.CurrentSurface = game.Logos[i];
 						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
 						SDL_UpdateWindowSurface(game.Window);
 
@@ -97,7 +97,7 @@ void intro(Surface& game)
 }
 void backgroundMenu(Surface& game)
 {
-	game.CurrentSurface = Logos[2];
+	game.CurrentSurface = game.Logos[2];
 	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
 	SDL_UpdateWindowSurface(game.Window);
 }
@@ -125,7 +125,7 @@ void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button,Sur
 			}
 			else if (i_for_buttons == 0)
 			{
-				game.CurrentSurface = PressedButtons[i_for_buttons];
+				game.CurrentSurface = game.PressedButtons[i_for_buttons];
 				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 				SDL_UpdateWindowSurface(game.Window);
 				stretchRect.y += interval_Y;
@@ -133,7 +133,7 @@ void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button,Sur
 			}
 			else if (i_for_buttons < 3)
 			{
-				game.CurrentSurface = Buttons[i_for_buttons];
+				game.CurrentSurface = game.Buttons[i_for_buttons];
 				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 				SDL_UpdateWindowSurface(game.Window);
 				stretchRect.y += interval_Y;
@@ -157,7 +157,7 @@ void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button,Sur
 				
 						current_y -= interval_Y;
 						stretchRect.y = current_y;
-						game.CurrentSurface = PressedButtons[current_pressed_button];
+						game.CurrentSurface = game.PressedButtons[current_pressed_button];
 						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 						SDL_UpdateWindowSurface(game.Window);
 					}
@@ -177,7 +177,7 @@ void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button,Sur
 
 						current_y += interval_Y;
 						stretchRect.y = current_y;
-						game.CurrentSurface = PressedButtons[current_pressed_button];
+						game.CurrentSurface = game.PressedButtons[current_pressed_button];
 						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 						SDL_UpdateWindowSurface(game.Window);
 					}
@@ -204,7 +204,7 @@ void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button,Sur
 						showButton(game, HOW_TO_PLAY, stretchRect);
 						stretchRect.y = y_of_button3;
 					}
-					game.CurrentSurface = PressedButtons[current_pressed_button];
+					game.CurrentSurface = game.PressedButtons[current_pressed_button];
 					SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 					SDL_UpdateWindowSurface(game.Window);
 					break;
@@ -230,7 +230,7 @@ void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button,Sur
 						stretchRect.y = y_of_button3;
 						break;
 					}
-					game.CurrentSurface = PressedButtons[current_pressed_button];
+					game.CurrentSurface = game.PressedButtons[current_pressed_button];
 					SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 					SDL_UpdateWindowSurface(game.Window);
 					break;
@@ -319,7 +319,7 @@ void field(int** level, int height, int width, fstream& file, SDL_Rect posTextur
 }
 void showTexture(int i, SDL_Rect posTexture, Surface& game)
 {
-	game.CurrentSurface = Texture[i];
+	game.CurrentSurface = game.Texture[i];
 	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &posTexture);
 	SDL_UpdateWindowSurface(game.Window);
 }
@@ -386,7 +386,7 @@ void exit(bool& quit, Surface& game)
 	int a = 0;
 	int current_pressed_button = i;
 	//backgroundMenu();
-	game.CurrentSurface = Logos[MENU_EXIT];
+	game.CurrentSurface = game.Logos[MENU_EXIT];
 	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
 	SDL_UpdateWindowSurface(game.Window);
 	while (quit2 == false)
@@ -401,12 +401,12 @@ void exit(bool& quit, Surface& game)
 			}
 			else if (a == 0)
 			{
-				game.CurrentSurface = PressedButtons[current_pressed_button];
+				game.CurrentSurface = game.PressedButtons[current_pressed_button];
 				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 				SDL_UpdateWindowSurface(game.Window);
 				stretchRect.x += 300;
 				i++;
-				game.CurrentSurface = Buttons[i];
+				game.CurrentSurface = game.Buttons[i];
 				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 				SDL_UpdateWindowSurface(game.Window);
 				a++;
@@ -418,11 +418,11 @@ void exit(bool& quit, Surface& game)
 				case SDLK_RIGHT:
 					if (current_pressed_button == YES)
 					{
-						game.CurrentSurface = PressedButtons[NO];
+						game.CurrentSurface = game.PressedButtons[NO];
 						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 						SDL_UpdateWindowSurface(game.Window);
 						stretchRect.x -= 300;
-						game.CurrentSurface = Buttons[YES];
+						game.CurrentSurface = game.Buttons[YES];
 						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 						SDL_UpdateWindowSurface(game.Window);
 						current_pressed_button++;
@@ -432,12 +432,12 @@ void exit(bool& quit, Surface& game)
 					if (current_pressed_button == NO)
 					{
 						//stretchRect.x -= 400;
-						game.CurrentSurface = PressedButtons[YES];
+						game.CurrentSurface = game.PressedButtons[YES];
 						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 						SDL_UpdateWindowSurface(game.Window);
 
 						stretchRect.x += 300;
-						game.CurrentSurface = Buttons[NO];
+						game.CurrentSurface = game.Buttons[NO];
 						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 						SDL_UpdateWindowSurface(game.Window);
 						current_pressed_button--;
@@ -486,7 +486,7 @@ void showButton(Surface& game,int i, SDL_Rect stretchRect, int y_of_button1, int
 	if (i == 0)stretchRect.y = y_of_button1;
 	if (i == 1)stretchRect.y = y_of_button2;
 	if (i == 2)stretchRect.y = y_of_button3;
-	game.CurrentSurface = Buttons[i];
+	game.CurrentSurface = game.Buttons[i];
 	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 	SDL_UpdateWindowSurface(game.Window);
 }
@@ -543,116 +543,116 @@ bool loadMedia(Surface& game)
 		//Play the music
 		Mix_PlayMusic(game.music, -1);
 	}
-	Logos[0] = loadSurface("teamLogo.bmp");
-	if (Logos[0] == NULL)
+	game.Logos[0] = loadSurface("teamLogo.bmp");
+	if (game.Logos[0] == NULL)
 	{
 		printf("Failed to load default image!\n");
 		success = false;
 	}
-	Logos[1] = loadSurface("gameLogo.bmp");
-	if (Logos[1] == NULL)
+	game.Logos[1] = loadSurface("gameLogo.bmp");
+	if (game.Logos[1] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	Logos[2] = loadSurface("MainMenu.bmp");
-	if (Logos[2] == NULL)
+	game.Logos[2] = loadSurface("MainMenu.bmp");
+	if (game.Logos[2] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	Logos[MENU_EXIT] = loadSurface("MenuExit.bmp");
-	if (Logos[MENU_EXIT] == NULL)
+	game.Logos[MENU_EXIT] = loadSurface("MenuExit.bmp");
+	if (game.Logos[MENU_EXIT] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	Buttons[0] = loadSurface("PlayGame1.bmp");
-	if (Buttons[0] == NULL)
+	game.Buttons[0] = loadSurface("PlayGame1.bmp");
+	if (game.Buttons[0] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	Buttons[1] = loadSurface("HowToPlay1.bmp");
-	if (Buttons[1] == NULL)
+	game.Buttons[1] = loadSurface("HowToPlay1.bmp");
+	if (game.Buttons[1] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	Buttons[2] = loadSurface("Exit1.bmp");
-	if (Buttons[2] == NULL)
+	game.Buttons[2] = loadSurface("Exit1.bmp");
+	if (game.Buttons[2] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	Buttons[YES] = loadSurface("Yes1.bmp");
-	if (Buttons[YES] == NULL)
+	game.Buttons[YES] = loadSurface("Yes1.bmp");
+	if (game.Buttons[YES] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	Buttons[NO] = loadSurface("No1.bmp");
-	if (Buttons[NO] == NULL)
+	game.Buttons[NO] = loadSurface("No1.bmp");
+	if (game.Buttons[NO] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	PressedButtons[0] = loadSurface("PlayGame2.bmp");
-	if (PressedButtons[0] == NULL)
+	game.PressedButtons[0] = loadSurface("PlayGame2.bmp");
+	if (game.PressedButtons[0] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	PressedButtons[1] = loadSurface("HowToPlay2.bmp");
-	if (PressedButtons[1] == NULL)
+	game.PressedButtons[1] = loadSurface("HowToPlay2.bmp");
+	if (game.PressedButtons[1] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	PressedButtons[2] = loadSurface("Exit2.bmp");
-	if (PressedButtons[2] == NULL)
+	game.PressedButtons[2] = loadSurface("Exit2.bmp");
+	if (game.PressedButtons[2] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	PressedButtons[YES] = loadSurface("Yes2.bmp");
-	if (PressedButtons[YES] == NULL)
+	game.PressedButtons[YES] = loadSurface("Yes2.bmp");
+	if (game.PressedButtons[YES] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	PressedButtons[NO] = loadSurface("No2.bmp");
-	if (PressedButtons[NO] == NULL)
+	game.PressedButtons[NO] = loadSurface("No2.bmp");
+	if (game.PressedButtons[NO] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	Texture[EMPTY] = loadSurface("empty.bmp");
-	if (Texture[EMPTY] == NULL)
+	game.Texture[EMPTY] = loadSurface("empty.bmp");
+	if (game.Texture[EMPTY] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	Texture[WALL] = loadSurface("wall.bmp");
-	if (Texture[WALL] == NULL)
+	game.Texture[WALL] = loadSurface("wall.bmp");
+	if (game.Texture[WALL] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	Texture[FLOOR] = loadSurface("floor.bmp");
-	if (Texture[FLOOR] == NULL)
+	game.Texture[FLOOR] = loadSurface("floor.bmp");
+	if (game.Texture[FLOOR] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	Texture[CAT] = loadSurface("mainCat.bmp");
-	if (Texture[CAT] == NULL)
+	game.Texture[CAT] = loadSurface("mainCat.bmp");
+	if (game.Texture[CAT] == NULL)
 	{
 		printf("Failed to load up images!\n");
 		success = false;
 	}
-	Texture[BACKGROUND] = loadSurface("Background.bmp");
-	if (Texture[BACKGROUND] == NULL)
+	game.Texture[BACKGROUND] = loadSurface("Background.bmp");
+	if (game.Texture[BACKGROUND] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
@@ -668,8 +668,8 @@ void close(Surface& game)
 	game.music = NULL;
 	for (int i = 0; i < CountOfLogos; ++i)
 	{
-		SDL_FreeSurface(Logos[i]);
-		Logos[i] = NULL;
+		SDL_FreeSurface(game.Logos[i]);
+		game.Logos[i] = NULL;
 	}
 	//Уничтожить окно
 	SDL_DestroyWindow(game.Window);
@@ -678,8 +678,8 @@ void close(Surface& game)
 	//SDL_Quit();
 	for (int i = 0; i < CountOfLogos; ++i)
 	{
-		SDL_FreeSurface(Logos[i]);
-		Logos[i] = NULL;
+		SDL_FreeSurface(game.Logos[i]);
+		game.Logos[i] = NULL;
 	}
 	SDL_DestroyWindow(game.Window);
 	game.Window = NULL;

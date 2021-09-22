@@ -7,6 +7,7 @@
 #include <string>
 #include <fstream>
 #include "functions.h"
+#include "enums.h"
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
@@ -25,6 +26,10 @@ struct Surface
 	Mix_Music* music ;
 	SDL_Window* Window ;
 	SDL_Surface* ScreenSurface ;
+	SDL_Surface* Logos[CountOfLogos];
+	SDL_Surface* Buttons[CountOfButtons];
+	SDL_Surface* PressedButtons[CountOfPressedButtons];
+	SDL_Surface* Texture[CountOfTexture];
 
 	/*SDL_Surface* Logos[CountOfLogos];
 	SDL_Surface* Buttons[CountOfButtons];
