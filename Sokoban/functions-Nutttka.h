@@ -23,23 +23,23 @@ void clearMemory(int**& arr, int height);
 void showTexture(int i, SDL_Rect posTexture, Surface& game);
 bool isPressed(int keyCode);
 bool isReleased(int keyCode);
-void howToPlay(Surface& game, bool quit, int count = 0);
 
 bool pressed_keys[3] = {};
-
-
-
-//тут был Степа
-SDL_Surface* loadSurface(string path);
 
 //const int CountOfLogos = 4;
 //const int CountOfButtons = 5;
 //const int CountOfPressedButtons = 5;
 //const int CountOfTexture = 5;
+
+//тут был Степа
+SDL_Surface* loadSurface(string path);
+
+
 //SDL_Surface* CurrentSurface
 //Mix_Music* music = NULL;
 //SDL_Window* Window = NULL;
-//SDL_Surface* ScreenSurface = NULL;=
+//SDL_Surface* ScreenSurface = NULL;
+
 //SDL_Surface* Logos[CountOfLogos];
 //SDL_Surface* Buttons[CountOfButtons];
 //SDL_Surface* PressedButtons[CountOfPressedButtons];
@@ -232,11 +232,7 @@ void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button,Sur
 						stretchRect.y = y_of_button1;
 						break;
 					case HOW_TO_PLAY:
-						howToPlay(game, quit);
-						backgroundMenu(game);
-						showButton(game, GAME, stretchRect);
-						showButton(game, EXIT, stretchRect);
-						stretchRect.y = y_of_button2;
+
 						break;
 					case EXIT:
 						exit(quit, game);
@@ -254,161 +250,6 @@ void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button,Sur
 					break;
 				}
 			}
-		}
-	}
-}
-void howToPlay(Surface& game, bool quit, int count)
-{
-	//if (count == 0)return true;
-	//bool quit = false;
-	SDL_Event e;
-	SDL_Rect stretchRect;
-	stretchRect.x = 170;
-	stretchRect.y = 450;
-	//int count = 0;
-	//switch (count)
-	//{
-	//case FIRST:
-	//	game.CurrentSurface = game.WindowsHowToPlay[FIRST];
-	//	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-	//	SDL_UpdateWindowSurface(game.Window);
-	//	break;
-	//case SECOND:
-	//	game.CurrentSurface = game.WindowsHowToPlay[SECOND];
-	//	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-	//	SDL_UpdateWindowSurface(game.Window);
-	//	break;
-	//case THIRD:
-	//	game.CurrentSurface = game.WindowsHowToPlay[THIRD];
-	//	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-	//	SDL_UpdateWindowSurface(game.Window);
-	//	break;
-	//case FOURTH:
-	//	game.CurrentSurface = game.WindowsHowToPlay[FOURTH];
-	//	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-	//	SDL_UpdateWindowSurface(game.Window);
-	//	break;
-	//default:
-	//	return;
-	//}
-
-	//game.CurrentSurface = game.WindowsHowToPlay[FIRST];
-	//SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-	//SDL_UpdateWindowSurface(game.Window);
-	game.CurrentSurface = game.WindowsHowToPlay[FIRST];
-	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-	SDL_UpdateWindowSurface(game.Window);
-	game.CurrentSurface = game.Buttons[BACK];
-	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
-	SDL_UpdateWindowSurface(game.Window);
-	stretchRect.x += 420;
-	game.CurrentSurface = game.Buttons[NEXT];
-	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
-	SDL_UpdateWindowSurface(game.Window);
-
-	while (quit == false)
-	{
-		while (SDL_PollEvent(&e) != 0)
-		{
-			if (e.type == SDL_QUIT)
-			{
-				quit = true;
-				break;
-			}
-			else if (e.type == SDL_KEYDOWN)
-			{
-				switch (e.key.keysym.sym)
-				{
-				case SDLK_RIGHT:
-					count++;
-					game.CurrentSurface = game.PressedButtons[NEXT];
-					SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
-					SDL_UpdateWindowSurface(game.Window);
-					SDL_Delay(500);
-					//howToPlay(game, quit,count);
-					switch (count)
-					{
-					case SECOND:
-						game.CurrentSurface = game.WindowsHowToPlay[SECOND];
-						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-						SDL_UpdateWindowSurface(game.Window);
-						break;
-					case THIRD:
-						game.CurrentSurface = game.WindowsHowToPlay[THIRD];
-						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-						SDL_UpdateWindowSurface(game.Window);
-						break;
-					case FOURTH:
-						game.CurrentSurface = game.WindowsHowToPlay[FOURTH];
-						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-						SDL_UpdateWindowSurface(game.Window);
-						break;
-					default:
-						return;
-					}
-					//quit = true;
-
-					//count++;
-					//switch (count)
-					//{
-					//case FIRST:
-					//  count++;
-					//  howToPlay(game, count);
-					//  quit = true;
-					//  break;
-					//case SECOND:
-					//  break;
-					//case THIRD:
-					//  break;
-					//case FOURTH:
-					//  break;
-					//}
-					break;
-
-				case SDLK_LEFT:
-					count--;
-					stretchRect.x = 170;
-					game.CurrentSurface = game.PressedButtons[BACK];
-					SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
-					SDL_UpdateWindowSurface(game.Window);
-					SDL_Delay(300);
-					switch (count)
-					{
-					case FIRST:
-						game.CurrentSurface = game.WindowsHowToPlay[FIRST];
-						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-						SDL_UpdateWindowSurface(game.Window);
-						break;
-					case SECOND:
-						game.CurrentSurface = game.WindowsHowToPlay[SECOND];
-						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-						SDL_UpdateWindowSurface(game.Window);
-						break;
-					case THIRD:
-						game.CurrentSurface = game.WindowsHowToPlay[THIRD];
-						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-						SDL_UpdateWindowSurface(game.Window);
-						break;
-					case FOURTH:
-						game.CurrentSurface = game.WindowsHowToPlay[FOURTH];
-						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-						SDL_UpdateWindowSurface(game.Window);
-						break;
-					default:
-						return;
-					}
-					break;
-				}
-				stretchRect.x = 170;
-				game.CurrentSurface = game.Buttons[BACK];
-				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
-				SDL_UpdateWindowSurface(game.Window);
-				stretchRect.x += 420;
-				game.CurrentSurface = game.Buttons[NEXT];
-				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
-				SDL_UpdateWindowSurface(game.Window);
-			}
-			if (quit == true)break;
 		}
 	}
 }
@@ -775,18 +616,6 @@ bool loadMedia(Surface& game)
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	game.Buttons[NEXT] = loadSurface("Next1.bmp");
-	if (game.Buttons[NEXT] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
-	game.Buttons[BACK] = loadSurface("Back1.bmp");
-	if (game.Buttons[BACK] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
 	game.PressedButtons[0] = loadSurface("PlayGame2.bmp");
 	if (game.PressedButtons[0] == NULL)
 	{
@@ -813,18 +642,6 @@ bool loadMedia(Surface& game)
 	}
 	game.PressedButtons[NO] = loadSurface("No2.bmp");
 	if (game.PressedButtons[NO] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
-	game.PressedButtons[NEXT] = loadSurface("Next2.bmp");
-	if (game.PressedButtons[NEXT] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
-	game.PressedButtons[BACK] = loadSurface("Back2.bmp");
-	if (game.PressedButtons[BACK] == NULL)
 	{
 		printf("Failed to load up image!\n");
 		success = false;
@@ -859,30 +676,7 @@ bool loadMedia(Surface& game)
 		printf("Failed to load up image!\n");
 		success = false;
 	}
-	game.WindowsHowToPlay[FIRST] = loadSurface("1Window.bmp");
-	if (game.WindowsHowToPlay[FIRST] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
-	game.WindowsHowToPlay[SECOND] = loadSurface("2Window.bmp");
-	if (game.WindowsHowToPlay[SECOND] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
-	game.WindowsHowToPlay[THIRD] = loadSurface("3Window.bmp");
-	if (game.WindowsHowToPlay[THIRD] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
-	game.WindowsHowToPlay[FOURTH] = loadSurface("4Window.bmp");
-	if (game.WindowsHowToPlay[FOURTH] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
+
 	return success;
 }
 void close(Surface& game)

@@ -36,12 +36,10 @@ int main(int argc, char* argv[])
 	//		
 	//		bool quit = false;
 	//		SDL_Event e;
-
 	//		int i = 0;
 	//		int i_for_buttons = 0;
 	//		int current_pressed_button = 0;
 	//		SDL_Surface* CurrentSurface = NULL;
-
 	//		while (!quit)
 	//		{
 	//			//Обработка событий в очереди, пока она не стала пустой
@@ -57,7 +55,6 @@ int main(int argc, char* argv[])
 	//					surf.CurrentSurface = Logos[i];
 	//					SDL_BlitSurface(CurrentSurface, NULL, surf.ScreenSurface, NULL);
 	//					SDL_UpdateWindowSurface(surf.Window);
-
 	//					//Sleep(3000);
 	//					SDL_Delay(2000);
 	//					i++;

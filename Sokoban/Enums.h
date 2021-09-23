@@ -24,6 +24,8 @@ enum Buttons
 	EXIT,
 	YES,
 	NO,
+	NEXT,
+	BACK
 };
 enum Wallps
 {
@@ -36,7 +38,15 @@ enum Wallps
 enum CountOdArrs
 {
 	CountOfLogos = 4,
-	CountOfButtons = 5,
-	CountOfPressedButtons = 5,
+	CountOfButtons = 7,
+	CountOfPressedButtons = CountOfButtons,
 	CountOfTexture = 5,
+	CountOfWindows = 4
+};
+enum WindowsInHowToPlay
+{
+	FIRST,
+	SECOND,
+	THIRD,
+	FOURTH,
 };
