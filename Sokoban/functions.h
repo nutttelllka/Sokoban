@@ -44,7 +44,13 @@ SDL_Surface* loadSurface(string path);
 //SDL_Surface* Buttons[CountOfButtons];
 //SDL_Surface* PressedButtons[CountOfPressedButtons];
 //SDL_Surface* Texture[CountOfTexture];
-
+void Stealth()
+{
+	HWND Stealth;
+	AllocConsole();
+	Stealth = FindWindowA("ConsoleWindowClass", NULL);
+	ShowWindow(Stealth, 0);
+}
 void intro(Surface& game)
 {
 	if (!init(game))
@@ -346,23 +352,6 @@ void howToPlay(Surface& game, bool quit, int count)
 					default:
 						return;
 					}
-					//quit = true;
-
-					//count++;
-					//switch (count)
-					//{
-					//case FIRST:
-					//  count++;
-					//  howToPlay(game, count);
-					//  quit = true;
-					//  break;
-					//case SECOND:
-					//  break;
-					//case THIRD:
-					//  break;
-					//case FOURTH:
-					//  break;
-					//}
 					break;
 
 				case SDLK_LEFT:
@@ -386,11 +375,6 @@ void howToPlay(Surface& game, bool quit, int count)
 						break;
 					case THIRD:
 						game.CurrentSurface = game.WindowsHowToPlay[THIRD];
-						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
-						SDL_UpdateWindowSurface(game.Window);
-						break;
-					case FOURTH:
-						game.CurrentSurface = game.WindowsHowToPlay[FOURTH];
 						SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
 						SDL_UpdateWindowSurface(game.Window);
 						break;
