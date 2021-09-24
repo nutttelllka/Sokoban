@@ -331,7 +331,7 @@ void howToPlay(Surface& game, bool quit, int count)
 					game.CurrentSurface = game.PressedButtons[NEXT];
 					SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 					SDL_UpdateWindowSurface(game.Window);
-					SDL_Delay(500);
+					SDL_Delay(200);
 					//howToPlay(game, quit,count);
 					switch (count)
 					{
@@ -361,7 +361,7 @@ void howToPlay(Surface& game, bool quit, int count)
 					game.CurrentSurface = game.PressedButtons[BACK];
 					SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &stretchRect);
 					SDL_UpdateWindowSurface(game.Window);
-					SDL_Delay(300);
+					SDL_Delay(200);
 					switch (count)
 					{
 					case FIRST:
@@ -448,157 +448,160 @@ void characterMovement(int**& level, int* height, int* width, fstream& file, Sur
 				quit = true;
 				break;
 			}
-			else {
+			else if (e.type == SDL_KEYDOWN)
+			{
 
-				game.CurrentSurface = game.Texture[FLOOR];
+				/*game.CurrentSurface = game.Texture[FLOOR];
 				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &posTexture);
-				SDL_UpdateWindowSurface(game.Window);
+				SDL_UpdateWindowSurface(game.Window);*/
 				// хождение персонажей 
 				switch (e.key.keysym.sym)
 				{
 				case SDLK_LEFT:
-					if (count < 1) {
+					//if (count < 1) 
+					//{
 
-						if (level[Y_Cat][X_Cat - 1] != WALL)
+					if (level[Y_Cat][X_Cat - 1] != WALL)
+					{
+						if (catAndGift[Y_Cat][X_Cat - 1] != PRESENT)
 						{
-							if (catAndGift[Y_Cat][X_Cat - 1] != PRESENT)
-							{
-								showTexture(FLOOR, posTexture, game);
-								catAndGift[Y_Cat][X_Cat] = 0;
-								X_Cat--;
-								posTexture.x -= sizeTexture;
-								//showTexture(FLOOR, posTexture); 
-								showTexture(CAT, posTexture, game);
-								catAndGift[Y_Cat][X_Cat] = 3;
-							}
+							showTexture(FLOOR, posTexture, game);
+							catAndGift[Y_Cat][X_Cat] = 0;
+							X_Cat--;
+							posTexture.x -= sizeTexture;
+							//showTexture(FLOOR, posTexture); 
+							showTexture(CAT, posTexture, game);
+							catAndGift[Y_Cat][X_Cat] = 3;
+						}
 
-							else if (catAndGift[Y_Cat][X_Cat - 1] == PRESENT && level[Y_Cat][X_Cat - 2] == FLOOR && catAndGift[Y_Cat][X_Cat - 2] != PRESENT) {
-								showTexture(FLOOR, posTexture, game);
-								catAndGift[Y_Cat][X_Cat] = 0;
-								X_Cat--;
-								posTexture.x -= sizeTexture;
-								showTexture(FLOOR, posTexture, game);
-								showTexture(CAT, posTexture, game);
-								posTexture.x -= sizeTexture;
-								showTexture(PRESENT, posTexture, game);
-								posTexture.x += sizeTexture;
-								catAndGift[Y_Cat][X_Cat] = 3;
-								catAndGift[Y_Cat][X_Cat - 1] = 4;
-							}
+						else if (catAndGift[Y_Cat][X_Cat - 1] == PRESENT && level[Y_Cat][X_Cat - 2] == FLOOR && catAndGift[Y_Cat][X_Cat - 2] != PRESENT) {
+							showTexture(FLOOR, posTexture, game);
+							catAndGift[Y_Cat][X_Cat] = 0;
+							X_Cat--;
+							posTexture.x -= sizeTexture;
+							showTexture(FLOOR, posTexture, game);
+							showTexture(CAT, posTexture, game);
+							posTexture.x -= sizeTexture;
+							showTexture(PRESENT, posTexture, game);
+							posTexture.x += sizeTexture;
+							catAndGift[Y_Cat][X_Cat] = 3;
+							catAndGift[Y_Cat][X_Cat - 1] = 4;
 						}
 					}
-					count++;
-					if (count == 2) count = 0;
+					//}
+					//count++;
+					//if (count == 2) count = 0;
 					break;
 				case SDLK_RIGHT:
-					if (count < 1) {
-						if (level[Y_Cat][X_Cat + 1] != WALL)
+					//if (count < 1) {
+					if (level[Y_Cat][X_Cat + 1] != WALL)
+					{
+						if (catAndGift[Y_Cat][X_Cat + 1] != PRESENT)
 						{
-							if (catAndGift[Y_Cat][X_Cat + 1] != PRESENT)
-							{
-								showTexture(FLOOR, posTexture, game);
-								catAndGift[Y_Cat][X_Cat] = 0;
-								X_Cat++;
-								posTexture.x += sizeTexture;
-								//showTexture(FLOOR, posTexture); 
-								showTexture(CAT, posTexture, game);
-								catAndGift[Y_Cat][X_Cat] = 3;
-							}
+							showTexture(FLOOR, posTexture, game);
+							catAndGift[Y_Cat][X_Cat] = 0;
+							X_Cat++;
+							posTexture.x += sizeTexture;
+							//showTexture(FLOOR, posTexture); 
+							showTexture(CAT, posTexture, game);
+							catAndGift[Y_Cat][X_Cat] = 3;
+						}
 
-							else if (catAndGift[Y_Cat][X_Cat + 1] == PRESENT && level[Y_Cat][X_Cat + 2] == FLOOR && catAndGift[Y_Cat][X_Cat + 2] != PRESENT) {
-								showTexture(FLOOR, posTexture, game);
-								catAndGift[Y_Cat][X_Cat] = 0;
-								X_Cat++;
-								posTexture.x += sizeTexture;
-								showTexture(FLOOR, posTexture, game);
-								showTexture(CAT, posTexture, game);
-								posTexture.x += sizeTexture;
-								showTexture(PRESENT, posTexture, game);
-								posTexture.x -= sizeTexture;
-								catAndGift[Y_Cat][X_Cat] = 3;
-								catAndGift[Y_Cat][X_Cat + 1] = 4;
-							}
+						else if (catAndGift[Y_Cat][X_Cat + 1] == PRESENT && level[Y_Cat][X_Cat + 2] == FLOOR && catAndGift[Y_Cat][X_Cat + 2] != PRESENT) {
+							showTexture(FLOOR, posTexture, game);
+							catAndGift[Y_Cat][X_Cat] = 0;
+							X_Cat++;
+							posTexture.x += sizeTexture;
+							showTexture(FLOOR, posTexture, game);
+							showTexture(CAT, posTexture, game);
+							posTexture.x += sizeTexture;
+							showTexture(PRESENT, posTexture, game);
+							posTexture.x -= sizeTexture;
+							catAndGift[Y_Cat][X_Cat] = 3;
+							catAndGift[Y_Cat][X_Cat + 1] = 4;
 						}
 					}
-					count++;
-					if (count == 2) count = 0;
+					//}
+					//count++;
+					//if (count == 2) count = 0;
 					break;
 				case SDLK_UP:
-					if (count < 1) {
+					//if (count < 1) {
 
-						if (level[Y_Cat - 1][X_Cat] != WALL /*&& level[Y_Cat - 2][X_Cat] != PRESENT*/)
+					if (level[Y_Cat - 1][X_Cat] != WALL /*&& level[Y_Cat - 2][X_Cat] != PRESENT*/)
+					{
+						if (catAndGift[Y_Cat - 1][X_Cat] != PRESENT)
 						{
-							if (catAndGift[Y_Cat - 1][X_Cat] != PRESENT)
-							{
-								showTexture(FLOOR, posTexture, game);
-								catAndGift[Y_Cat][X_Cat] = 0;
-								Y_Cat--;
-								posTexture.y -= sizeTexture;
-								//showTexture(FLOOR, posTexture); 
-								showTexture(CAT, posTexture, game);
-								catAndGift[Y_Cat][X_Cat] = 3;
-							}
+							showTexture(FLOOR, posTexture, game);
+							catAndGift[Y_Cat][X_Cat] = 0;
+							Y_Cat--;
+							posTexture.y -= sizeTexture;
+							//showTexture(FLOOR, posTexture); 
+							showTexture(CAT, posTexture, game);
+							catAndGift[Y_Cat][X_Cat] = 3;
+						}
 
-							else if (catAndGift[Y_Cat - 1][X_Cat] == PRESENT && level[Y_Cat - 2][X_Cat] == FLOOR && catAndGift[Y_Cat - 2][X_Cat] != PRESENT) {
-								showTexture(FLOOR, posTexture, game);
-								catAndGift[Y_Cat][X_Cat] = 0;
-								Y_Cat--;
-								posTexture.y -= sizeTexture;
-								showTexture(FLOOR, posTexture, game);
-								showTexture(CAT, posTexture, game);
-								posTexture.y -= sizeTexture;
-								showTexture(PRESENT, posTexture, game);
-								posTexture.y += sizeTexture;
-								catAndGift[Y_Cat][X_Cat] = 3;
-								catAndGift[Y_Cat - 1][X_Cat] = 4;
-							}
+						else if (catAndGift[Y_Cat - 1][X_Cat] == PRESENT && level[Y_Cat - 2][X_Cat] == FLOOR && catAndGift[Y_Cat - 2][X_Cat] != PRESENT) {
+							showTexture(FLOOR, posTexture, game);
+							catAndGift[Y_Cat][X_Cat] = 0;
+							Y_Cat--;
+							posTexture.y -= sizeTexture;
+							showTexture(FLOOR, posTexture, game);
+							showTexture(CAT, posTexture, game);
+							posTexture.y -= sizeTexture;
+							showTexture(PRESENT, posTexture, game);
+							posTexture.y += sizeTexture;
+							catAndGift[Y_Cat][X_Cat] = 3;
+							catAndGift[Y_Cat - 1][X_Cat] = 4;
 						}
 					}
-					count++;
-					if (count == 2) count = 0;
+					//}
+					//count++;
+					//if (count == 2) count = 0;
 
 
 					break;
 				case SDLK_DOWN:
-					if (count < 1) {
-						if (level[Y_Cat + 1][X_Cat] != WALL)
+					//if (count < 1) {
+					if (level[Y_Cat + 1][X_Cat] != WALL)
+					{
+						if (catAndGift[Y_Cat + 1][X_Cat] != PRESENT)
 						{
-							if (catAndGift[Y_Cat + 1][X_Cat] != PRESENT)
-							{
-								showTexture(FLOOR, posTexture, game);
-								catAndGift[Y_Cat][X_Cat] = 0;
-								Y_Cat++;
-								posTexture.y += sizeTexture;
-								//showTexture(FLOOR, posTexture); 
-								showTexture(CAT, posTexture, game);
-								catAndGift[Y_Cat][X_Cat] = 3;
-							}
+							showTexture(FLOOR, posTexture, game);
+							catAndGift[Y_Cat][X_Cat] = 0;
+							Y_Cat++;
+							posTexture.y += sizeTexture;
+							//showTexture(FLOOR, posTexture); 
+							showTexture(CAT, posTexture, game);
+							catAndGift[Y_Cat][X_Cat] = 3;
+						}
 
-							else if (catAndGift[Y_Cat + 1][X_Cat] == PRESENT && level[Y_Cat + 2][X_Cat] == FLOOR && catAndGift[Y_Cat + 2][X_Cat] != PRESENT) {
-								showTexture(FLOOR, posTexture, game);
-								catAndGift[Y_Cat][X_Cat] = 0;
-								Y_Cat++;
-								posTexture.y += sizeTexture;
-								showTexture(FLOOR, posTexture, game);
-								showTexture(CAT, posTexture, game);
-								posTexture.y += sizeTexture;
-								showTexture(PRESENT, posTexture, game);
-								posTexture.y -= sizeTexture;
-								catAndGift[Y_Cat][X_Cat] = 3;
-								catAndGift[Y_Cat + 1][X_Cat] = 4;
-							}
+						else if (catAndGift[Y_Cat + 1][X_Cat] == PRESENT && level[Y_Cat + 2][X_Cat] == FLOOR && catAndGift[Y_Cat + 2][X_Cat] != PRESENT) {
+							showTexture(FLOOR, posTexture, game);
+							catAndGift[Y_Cat][X_Cat] = 0;
+							Y_Cat++;
+							posTexture.y += sizeTexture;
+							showTexture(FLOOR, posTexture, game);
+							showTexture(CAT, posTexture, game);
+							posTexture.y += sizeTexture;
+							showTexture(PRESENT, posTexture, game);
+							posTexture.y -= sizeTexture;
+							catAndGift[Y_Cat][X_Cat] = 3;
+							catAndGift[Y_Cat + 1][X_Cat] = 4;
 						}
 					}
-					count++;
-					if (count == 2) count = 0;
+					//}
+					//count++;
+					//if (count == 2) count = 0;
 					break;
-
+				/*	catAndGift[Y_Cat][X_Cat] = 3;
+					game.CurrentSurface = game.Texture[CAT];
+					SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &posTexture);
+					SDL_UpdateWindowSurface(game.Window);*/
+				case SDLK_ESCAPE:
+					return;
+					break;
 				}
-				catAndGift[Y_Cat][X_Cat] = 3;
-				game.CurrentSurface = game.Texture[CAT];
-				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &posTexture);
-				SDL_UpdateWindowSurface(game.Window);
-
 
 			}
 
