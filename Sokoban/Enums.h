@@ -15,6 +15,7 @@ enum Object
 	WALL,
 	FLOOR,
 	CAT,
+	PRESENT,
 	BACKGROUND,
 };
 enum Buttons
@@ -40,7 +41,7 @@ enum CountOdArrs
 	CountOfLogos = 4,
 	CountOfButtons = 7,
 	CountOfPressedButtons = CountOfButtons,
-	CountOfTexture = 5,
+	CountOfTexture = 6,
 	CountOfWindows = 4
 };
 enum WindowsInHowToPlay

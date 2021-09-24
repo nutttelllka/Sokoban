@@ -11,20 +11,21 @@ bool init(Surface& game);
 bool loadMedia(Surface& game);
 void close(Surface& game);
 void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button,Surface& game);
-void playGame(Surface& game);
+void playGame(Surface& game, bool& quit);
 void showButton(Surface& game, int i, SDL_Rect stretchRectб, int y_of_button1 = 250, int y_of_button2 = 250 + 70, int y_of_button3 = 250 + 140);
 void backgroundMenu(Surface& game);
 void exit(bool& quit, Surface& game);
 void createMap(int**& arr, int* height, int* width, fstream& file);
 void field(int** level, int height, int width, fstream& file, SDL_Rect posTexture, Surface& game);
-void characterMovement(int**& level, int* height, int* width, fstream& file, Surface& game);
+void characterMovement(int**& level, int* height, int* width, fstream& file, Surface& game, bool& quit);
 void createArr(int**& arr, int height, int width);
 void clearMemory(int**& arr, int height);
 void showTexture(int i, SDL_Rect posTexture, Surface& game);
 bool isPressed(int keyCode);
 bool isReleased(int keyCode);
 void howToPlay(Surface& game, bool quit, int count = 0);
-
+bool win();
+bool playingLevel();
 bool pressed_keys[3] = {};
 
 
@@ -231,7 +232,7 @@ void menu(bool& quit, int i, int& i_for_buttons, int& current_pressed_button,Sur
 					switch (current_pressed_button)
 					{
 					case GAME:
-						playGame(game);
+						playGame(game, quit);
 						backgroundMenu(game);
 						showButton(game, HOW_TO_PLAY, stretchRect);
 						showButton(game,EXIT, stretchRect);
@@ -396,7 +397,7 @@ void howToPlay(Surface& game, bool quit, int count)
 		}
 	}
 }
-void playGame(Surface& game)
+void playGame(Surface& game, bool& quit)
 {
 	fstream file("fields.TXT");
 
@@ -405,37 +406,203 @@ void playGame(Surface& game)
 	int width = 0;
 
 	createMap(level, &height, &width, file);
-	characterMovement(level, &height, &width, file, game);
+	characterMovement(level, &height, &width, file, game, quit);
 	clearMemory(level, height);
 
 }
-void characterMovement(int**& level, int* height, int* width, fstream& file, Surface& game)
+void characterMovement(int**& level, int* height, int* width, fstream& file, Surface& game, bool &quit)
 {//передвижение персонажей
+	int sizeTexture = 50;
 	SDL_Rect posTexture;
 	posTexture.x = 0;
 	posTexture.y = 0;
 
-
+	fstream fileCat("position.TXT");
 	showTexture(BACKGROUND, posTexture, game);
 	field(level, *height, *width, file, posTexture, game);
 
-	bool quit = false;
+	int** catAndGift;
+	createMap(catAndGift, height, width, fileCat);
+	field(catAndGift, *height, *width, fileCat, posTexture, game);
 	SDL_Event e;
-	while (!quit)
-	{
-		while (SDL_PollEvent(&e) != 0)
-		{
+
+
+	int X_Cat = 0, Y_Cat = 0;
+	for (int y = 0; y < (*height); y++) {
+		for (int x = 0; x < (*width); x++) {
+			if (catAndGift[y][x] == 3) {
+				X_Cat = x;
+				Y_Cat = y;
+			}
+		}
+	}
+
+	posTexture.x = ((SCREEN_WIDTH / 2) - ((*width) / 2.0 * sizeTexture)) + X_Cat * sizeTexture ;
+	posTexture.y = ((SCREEN_HEIGHT / 2) - ((*height) / 2.0 * sizeTexture)) + Y_Cat * sizeTexture ;
+	int count = 0;
+	while (!quit) {
+		while (SDL_PollEvent(&e) != 0) {
+
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
 				break;
 			}
-			switch (e.key.keysym.sym)
-			{
-			case SDLK_ESCAPE:
-				quit = true;
-				break;
+			else {
+
+				game.CurrentSurface = game.Texture[FLOOR];
+				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &posTexture);
+				SDL_UpdateWindowSurface(game.Window);
+				// хождение персонажей 
+				switch (e.key.keysym.sym)
+				{
+				case SDLK_LEFT:
+					if (count < 1) {
+
+						if (level[Y_Cat][X_Cat - 1] != WALL)
+						{
+							if (catAndGift[Y_Cat][X_Cat - 1] != PRESENT)
+							{
+								showTexture(FLOOR, posTexture, game);
+								catAndGift[Y_Cat][X_Cat] = 0;
+								X_Cat--;
+								posTexture.x -= sizeTexture;
+								//showTexture(FLOOR, posTexture); 
+								showTexture(CAT, posTexture, game);
+								catAndGift[Y_Cat][X_Cat] = 3;
+							}
+
+							else if (catAndGift[Y_Cat][X_Cat - 1] == PRESENT && level[Y_Cat][X_Cat - 2] == FLOOR && catAndGift[Y_Cat][X_Cat - 2] != PRESENT) {
+								showTexture(FLOOR, posTexture, game);
+								catAndGift[Y_Cat][X_Cat] = 0;
+								X_Cat--;
+								posTexture.x -= sizeTexture;
+								showTexture(FLOOR, posTexture, game);
+								showTexture(CAT, posTexture, game);
+								posTexture.x -= sizeTexture;
+								showTexture(PRESENT, posTexture, game);
+								posTexture.x += sizeTexture;
+								catAndGift[Y_Cat][X_Cat] = 3;
+								catAndGift[Y_Cat][X_Cat - 1] = 4;
+							}
+						}
+					}
+					count++;
+					if (count == 2) count = 0;
+					break;
+				case SDLK_RIGHT:
+					if (count < 1) {
+						if (level[Y_Cat][X_Cat + 1] != WALL)
+						{
+							if (catAndGift[Y_Cat][X_Cat + 1] != PRESENT)
+							{
+								showTexture(FLOOR, posTexture, game);
+								catAndGift[Y_Cat][X_Cat] = 0;
+								X_Cat++;
+								posTexture.x += sizeTexture;
+								//showTexture(FLOOR, posTexture); 
+								showTexture(CAT, posTexture, game);
+								catAndGift[Y_Cat][X_Cat] = 3;
+							}
+
+							else if (catAndGift[Y_Cat][X_Cat + 1] == PRESENT && level[Y_Cat][X_Cat + 2] == FLOOR && catAndGift[Y_Cat][X_Cat + 2] != PRESENT) {
+								showTexture(FLOOR, posTexture, game);
+								catAndGift[Y_Cat][X_Cat] = 0;
+								X_Cat++;
+								posTexture.x += sizeTexture;
+								showTexture(FLOOR, posTexture, game);
+								showTexture(CAT, posTexture, game);
+								posTexture.x += sizeTexture;
+								showTexture(PRESENT, posTexture, game);
+								posTexture.x -= sizeTexture;
+								catAndGift[Y_Cat][X_Cat] = 3;
+								catAndGift[Y_Cat][X_Cat + 1] = 4;
+							}
+						}
+					}
+					count++;
+					if (count == 2) count = 0;
+					break;
+				case SDLK_UP:
+					if (count < 1) {
+
+						if (level[Y_Cat - 1][X_Cat] != WALL /*&& level[Y_Cat - 2][X_Cat] != PRESENT*/)
+						{
+							if (catAndGift[Y_Cat - 1][X_Cat] != PRESENT)
+							{
+								showTexture(FLOOR, posTexture, game);
+								catAndGift[Y_Cat][X_Cat] = 0;
+								Y_Cat--;
+								posTexture.y -= sizeTexture;
+								//showTexture(FLOOR, posTexture); 
+								showTexture(CAT, posTexture, game);
+								catAndGift[Y_Cat][X_Cat] = 3;
+							}
+
+							else if (catAndGift[Y_Cat - 1][X_Cat] == PRESENT && level[Y_Cat - 2][X_Cat] == FLOOR && catAndGift[Y_Cat - 2][X_Cat] != PRESENT) {
+								showTexture(FLOOR, posTexture, game);
+								catAndGift[Y_Cat][X_Cat] = 0;
+								Y_Cat--;
+								posTexture.y -= sizeTexture;
+								showTexture(FLOOR, posTexture, game);
+								showTexture(CAT, posTexture, game);
+								posTexture.y -= sizeTexture;
+								showTexture(PRESENT, posTexture, game);
+								posTexture.y += sizeTexture;
+								catAndGift[Y_Cat][X_Cat] = 3;
+								catAndGift[Y_Cat - 1][X_Cat] = 4;
+							}
+						}
+					}
+					count++;
+					if (count == 2) count = 0;
+
+
+					break;
+				case SDLK_DOWN:
+					if (count < 1) {
+						if (level[Y_Cat + 1][X_Cat] != WALL)
+						{
+							if (catAndGift[Y_Cat + 1][X_Cat] != PRESENT)
+							{
+								showTexture(FLOOR, posTexture, game);
+								catAndGift[Y_Cat][X_Cat] = 0;
+								Y_Cat++;
+								posTexture.y += sizeTexture;
+								//showTexture(FLOOR, posTexture); 
+								showTexture(CAT, posTexture, game);
+								catAndGift[Y_Cat][X_Cat] = 3;
+							}
+
+							else if (catAndGift[Y_Cat + 1][X_Cat] == PRESENT && level[Y_Cat + 2][X_Cat] == FLOOR && catAndGift[Y_Cat + 2][X_Cat] != PRESENT) {
+								showTexture(FLOOR, posTexture, game);
+								catAndGift[Y_Cat][X_Cat] = 0;
+								Y_Cat++;
+								posTexture.y += sizeTexture;
+								showTexture(FLOOR, posTexture, game);
+								showTexture(CAT, posTexture, game);
+								posTexture.y += sizeTexture;
+								showTexture(PRESENT, posTexture, game);
+								posTexture.y -= sizeTexture;
+								catAndGift[Y_Cat][X_Cat] = 3;
+								catAndGift[Y_Cat + 1][X_Cat] = 4;
+							}
+						}
+					}
+					count++;
+					if (count == 2) count = 0;
+					break;
+
+				}
+				catAndGift[Y_Cat][X_Cat] = 3;
+				game.CurrentSurface = game.Texture[CAT];
+				SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &posTexture);
+				SDL_UpdateWindowSurface(game.Window);
+
+
 			}
+
+
 		}
 	}
 }
@@ -460,6 +627,8 @@ void field(int** level, int height, int width, fstream& file, SDL_Rect posTextur
 			case CAT:
 				showTexture(CAT, posTexture, game);
 				break;
+			case PRESENT:
+				showTexture(PRESENT, posTexture, game);
 			}
 			posTexture.x += sizeTexture;
 		}
@@ -468,6 +637,31 @@ void field(int** level, int height, int width, fstream& file, SDL_Rect posTextur
 	}
 
 }
+/*bool playingLevel(Surface* game, SDL_Rect posTexture, fstream& file)
+{
+	SDL_Event e;
+	bool quit = false;
+	//SDL_Rect stretchRect;
+	if (win())return true;
+	while (!quit)
+	{
+		while (SDL_PollEvent(&e) != 0)
+		{
+			if (e.type == SDL_QUIT)
+			{
+				quit = true;
+				break;
+			}
+
+			else if (e.type == SDL_KEYDOWN)
+			{
+					switch (e.key.keysym.sym)
+					{
+					}
+			}
+		}
+	}
+}*/
 void showTexture(int i, SDL_Rect posTexture, Surface& game)
 {
 	game.CurrentSurface = game.Texture[i];
@@ -497,14 +691,14 @@ void createMap(int**& arr, int* height, int* width, fstream& file) {// чтен�
 				arr[i][j] = stoi(str);
 			}
 		}
-		for (int i = 0; i < (*height); i++)
+		/*for (int i = 0; i < (*height); i++)
 		{
 			for (int j = 0; j < (*width); j++) 
 			{
 				cout << arr[i][j] << " ";
 			}
 			cout << endl;
-		}
+		}*/
 	}
 }
 void createArr(int**& arr, int height, int width)
@@ -833,6 +1027,12 @@ bool loadMedia(Surface& game)
 	}
 	game.Texture[CAT] = loadSurface("mainCat.bmp");
 	if (game.Texture[CAT] == NULL)
+	{
+		printf("Failed to load up images!\n");
+		success = false;
+	}
+	game.Texture[PRESENT] = loadSurface("PresentBox.bmp");
+	if (game.Texture[PRESENT] == NULL)
 	{
 		printf("Failed to load up images!\n");
 		success = false;
