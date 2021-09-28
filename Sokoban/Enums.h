@@ -17,6 +17,7 @@ enum Object
 	CAT,
 	PRESENT,
 	BACKGROUND,
+    PLACEHERE
 };
 enum Buttons
 {
@@ -41,7 +42,7 @@ enum CountOdArrs
 	CountOfLogos = 4,
 	CountOfButtons = 7,
 	CountOfPressedButtons = CountOfButtons,
-	CountOfTexture = 6,
+	CountOfTexture = 7,
 	CountOfWindows = 4
 };
 enum WindowsInHowToPlay
