@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <Windows.h>
 #include <string>
+#include <vector>
 #include <fstream>
 #include "functions.h"
 #include "Structures.h"
@@ -21,7 +22,7 @@ int main(int argc, char* argv[])
 	game.music = NULL;
 	game.Window = NULL;
 	game.ScreenSurface = NULL;
-	Stealth();
+	//Stealth();
 	intro(game);
 	//if (!init(surf)) 
 	//{

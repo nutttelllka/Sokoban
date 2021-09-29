@@ -1,11 +1,11 @@
 #pragma once
 enum KeyPress
 {
-	//KEY_PRESS_DEFAULT,
-	//KEY_PRESS_UP,
-	//KEY_PRESS_DOWN,
-	//KEY_PRESS_LEFT,
-	//KEY_PRESS_RIGHT,
+	KEY_PRESS_DEFAULT,
+	KEY_PRESS_UP,
+	KEY_PRESS_DOWN,
+	KEY_PRESS_LEFT,
+	KEY_PRESS_RIGHT,
 	KEY_PRESS_LEFT_CTRL,
 	KEY_PRESS_Z
 };
@@ -17,6 +17,15 @@ enum Object
 	CAT,
 	PRESENT,
 	BACKGROUND,
+	PLACEHERE
+	/*PRESENT_SECOND,
+	PRESENT_THIRD,
+	PRESENT_FOURTH*/
+};
+enum MainTexturesInLevel
+{
+	CAT_1,
+	PRESENT_1
 };
 enum Buttons
 {
@@ -41,7 +50,7 @@ enum CountOdArrs
 	CountOfLogos = 4,
 	CountOfButtons = 7,
 	CountOfPressedButtons = CountOfButtons,
-	CountOfTexture = 6,
+	CountOfTexture = 7,
 	CountOfWindows = 4
 };
 enum WindowsInHowToPlay
@@ -51,3 +60,10 @@ enum WindowsInHowToPlay
 	THIRD,
 	FOURTH,
 };
+//enum Boxes
+//{
+//	FIRST_BOX,
+//	SECOND_BOX,
+//	THIRD_BOX,
+//	FOURTH_BOX,
+//};
