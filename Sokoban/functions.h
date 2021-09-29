@@ -1032,7 +1032,12 @@ void characterMovement(vector<vector<int>>& level, int* height, int* width, fstr
 					{
 						if (catAndGift[Y_Cat][X_Cat - 1] != PRESENT)
 						{
-							showTexture(FLOOR, posTexture, game);
+							if (level[Y_Cat][X_Cat] == PLACEHERE) {
+								showTexture(PLACEHERE, posTexture, game);
+							}
+							else {
+								showTexture(FLOOR, posTexture, game);
+							}
 							catAndGift[Y_Cat][X_Cat] = 0;
 							X_Cat--;
 							posTexture.x -= sizeTexture;
@@ -1041,12 +1046,22 @@ void characterMovement(vector<vector<int>>& level, int* height, int* width, fstr
 							catAndGift[Y_Cat][X_Cat] = 3;
 						}
 
-						else if (catAndGift[Y_Cat][X_Cat - 1] == PRESENT && level[Y_Cat][X_Cat - 2] == FLOOR && catAndGift[Y_Cat][X_Cat - 2] != PRESENT) {
-							showTexture(FLOOR, posTexture, game);
+						else if (catAndGift[Y_Cat][X_Cat - 1] == PRESENT && level[Y_Cat][X_Cat - 2] != WALL && catAndGift[Y_Cat][X_Cat - 2] != PRESENT) {
+							if (level[Y_Cat][X_Cat] == PLACEHERE) {
+								showTexture(PLACEHERE, posTexture, game);
+							}
+							else {
+								showTexture(FLOOR, posTexture, game);
+							}
 							catAndGift[Y_Cat][X_Cat] = 0;
 							X_Cat--;
 							posTexture.x -= sizeTexture;
-							showTexture(FLOOR, posTexture, game);
+							if (level[Y_Cat][X_Cat] == PLACEHERE) {
+								showTexture(PLACEHERE, posTexture, game);
+							}
+							else {
+								showTexture(FLOOR, posTexture, game);
+							}
 							showTexture(CAT, posTexture, game);
 							posTexture.x -= sizeTexture;
 							showTexture(PRESENT, posTexture, game);
@@ -1065,7 +1080,12 @@ void characterMovement(vector<vector<int>>& level, int* height, int* width, fstr
 					{
 						if (catAndGift[Y_Cat][X_Cat + 1] != PRESENT)
 						{
-							showTexture(FLOOR, posTexture, game);
+							if (level[Y_Cat][X_Cat] == PLACEHERE) {
+								showTexture(PLACEHERE, posTexture, game);
+							}
+							else {
+								showTexture(FLOOR, posTexture, game);
+							}
 							catAndGift[Y_Cat][X_Cat] = 0;
 							X_Cat++;
 							posTexture.x += sizeTexture;
@@ -1074,12 +1094,22 @@ void characterMovement(vector<vector<int>>& level, int* height, int* width, fstr
 							catAndGift[Y_Cat][X_Cat] = 3;
 						}
 
-						else if (catAndGift[Y_Cat][X_Cat + 1] == PRESENT && level[Y_Cat][X_Cat + 2] == FLOOR && catAndGift[Y_Cat][X_Cat + 2] != PRESENT) {
-							showTexture(FLOOR, posTexture, game);
+						else if (catAndGift[Y_Cat][X_Cat + 1] == PRESENT && level[Y_Cat][X_Cat + 2] != WALL && catAndGift[Y_Cat][X_Cat + 2] != PRESENT) {
+							if (level[Y_Cat][X_Cat] == PLACEHERE) {
+								showTexture(PLACEHERE, posTexture, game);
+							}
+							else {
+								showTexture(FLOOR, posTexture, game);
+							}
 							catAndGift[Y_Cat][X_Cat] = 0;
 							X_Cat++;
 							posTexture.x += sizeTexture;
-							showTexture(FLOOR, posTexture, game);
+							if (level[Y_Cat][X_Cat] == PLACEHERE) {
+								showTexture(PLACEHERE, posTexture, game);
+							}
+							else {
+								showTexture(FLOOR, posTexture, game);
+							}
 							showTexture(CAT, posTexture, game);
 							posTexture.x += sizeTexture;
 							showTexture(PRESENT, posTexture, game);
@@ -1097,7 +1127,12 @@ void characterMovement(vector<vector<int>>& level, int* height, int* width, fstr
 					{
 						if (catAndGift[Y_Cat - 1][X_Cat] != PRESENT)
 						{
-							showTexture(FLOOR, posTexture, game);
+							if (level[Y_Cat][X_Cat] == PLACEHERE) {
+								showTexture(PLACEHERE, posTexture, game);
+							}
+							else {
+								showTexture(FLOOR, posTexture, game);
+							}
 							catAndGift[Y_Cat][X_Cat] = 0;
 							Y_Cat--;
 							posTexture.y -= sizeTexture;
@@ -1106,12 +1141,22 @@ void characterMovement(vector<vector<int>>& level, int* height, int* width, fstr
 							catAndGift[Y_Cat][X_Cat] = 3;
 						}
 
-						else if (catAndGift[Y_Cat - 1][X_Cat] == PRESENT && level[Y_Cat - 2][X_Cat] == FLOOR && catAndGift[Y_Cat - 2][X_Cat] != PRESENT) {
-							showTexture(FLOOR, posTexture, game);
+						else if (catAndGift[Y_Cat - 1][X_Cat] == PRESENT && level[Y_Cat - 2][X_Cat] != WALL && catAndGift[Y_Cat - 2][X_Cat] != PRESENT) {
+							if (level[Y_Cat][X_Cat] == PLACEHERE) {
+								showTexture(PLACEHERE, posTexture, game);
+							}
+							else {
+								showTexture(FLOOR, posTexture, game);
+							}
 							catAndGift[Y_Cat][X_Cat] = 0;
 							Y_Cat--;
 							posTexture.y -= sizeTexture;
-							showTexture(FLOOR, posTexture, game);
+							if (level[Y_Cat][X_Cat] == PLACEHERE) {
+								showTexture(PLACEHERE, posTexture, game);
+							}
+							else {
+								showTexture(FLOOR, posTexture, game);
+							}
 							showTexture(CAT, posTexture, game);
 							posTexture.y -= sizeTexture;
 							showTexture(PRESENT, posTexture, game);
@@ -1127,9 +1172,15 @@ void characterMovement(vector<vector<int>>& level, int* height, int* width, fstr
 
 					if (level[Y_Cat + 1][X_Cat] != WALL)
 					{
+						
 						if (catAndGift[Y_Cat + 1][X_Cat] != PRESENT)
 						{
-							showTexture(FLOOR, posTexture, game);
+							if (level[Y_Cat][X_Cat] == PLACEHERE) {
+								showTexture(PLACEHERE, posTexture, game);
+							}
+							else {
+								showTexture(FLOOR, posTexture, game);
+							}
 							catAndGift[Y_Cat][X_Cat] = 0;
 							Y_Cat++;
 							posTexture.y += sizeTexture;
@@ -1138,12 +1189,23 @@ void characterMovement(vector<vector<int>>& level, int* height, int* width, fstr
 							catAndGift[Y_Cat][X_Cat] = 3;
 						}
 
-						else if (catAndGift[Y_Cat + 1][X_Cat] == PRESENT && level[Y_Cat + 2][X_Cat] == FLOOR && catAndGift[Y_Cat + 2][X_Cat] != PRESENT) {
-							showTexture(FLOOR, posTexture, game);
+						else if (catAndGift[Y_Cat + 1][X_Cat] == PRESENT && level[Y_Cat + 2][X_Cat] != WALL && catAndGift[Y_Cat + 2][X_Cat] != PRESENT) {
+							if (level[Y_Cat][X_Cat] == PLACEHERE) {
+								showTexture(PLACEHERE, posTexture, game);
+							}
+							else {
+								showTexture(FLOOR, posTexture, game);
+							}
+							
 							catAndGift[Y_Cat][X_Cat] = 0;
 							Y_Cat++;
 							posTexture.y += sizeTexture;
-							showTexture(FLOOR, posTexture, game);
+							if (level[Y_Cat][X_Cat] == PLACEHERE) {
+								showTexture(PLACEHERE, posTexture, game);
+							}
+							else {
+								showTexture(FLOOR, posTexture, game);
+							}
 							showTexture(CAT, posTexture, game);
 							posTexture.y += sizeTexture;
 							showTexture(PRESENT, posTexture, game);
@@ -1203,15 +1265,31 @@ void field(vector<vector<int>> level, int height, int width, fstream& file, SDL_
 	}
 
 }
-bool win()
+/*bool playingLevel(Surface* game, SDL_Rect posTexture, fstream& file)
 {
-	//static int count = 0;
-	//count++;
-	//if (count == 3)
-	//	return 1;
-	//else
-	return 0;
-}
+	SDL_Event e;
+	bool quit = false;
+	//SDL_Rect stretchRect;
+	if (win())return true;
+	while (!quit)
+	{
+		while (SDL_PollEvent(&e) != 0)
+		{
+			if (e.type == SDL_QUIT)
+			{
+				quit = true;
+				break;
+			}
+
+			else if (e.type == SDL_KEYDOWN)
+			{
+					switch (e.key.keysym.sym)
+					{
+					}
+			}
+		}
+	}
+}*/
 void showTexture(int i, SDL_Rect posTexture, Surface& game)
 {
 	game.CurrentSurface = game.Texture[i];
@@ -1595,6 +1673,12 @@ bool loadMedia(Surface& game)
 	if (game.Texture[PRESENT] == NULL)
 	{
 		printf("Failed to load up images!\n");
+		success = false;
+	}
+	game.Texture[PLACEHERE] = loadSurface("PlaceHere.bmp");
+	if (game.Texture[PLACEHERE] == NULL)
+	{
+		printf("Failed to load up image!\n");
 		success = false;
 	}
 	game.Texture[BACKGROUND] = loadSurface("Background.bmp");
