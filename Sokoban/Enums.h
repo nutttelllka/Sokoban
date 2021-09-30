@@ -60,6 +60,12 @@ enum WindowsInHowToPlay
 	THIRD,
 	FOURTH,
 };
+enum ReturningValues
+{
+	EXIT_TO_MENU,
+	WIN,
+	RECURSION
+};
 //enum Boxes
 //{
 //	FIRST_BOX,
