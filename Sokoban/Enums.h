@@ -18,14 +18,6 @@ enum Object
 	PRESENT,
 	BACKGROUND,
 	PLACEHERE
-	/*PRESENT_SECOND,
-	PRESENT_THIRD,
-	PRESENT_FOURTH*/
-};
-enum MainTexturesInLevel
-{
-	CAT_1,
-	PRESENT_1
 };
 enum Buttons
 {
@@ -66,10 +58,3 @@ enum ReturningValues
 	WIN,
 	RECURSION
 };
-//enum Boxes
-//{
-//	FIRST_BOX,
-//	SECOND_BOX,
-//	THIRD_BOX,
-//	FOURTH_BOX,
-//};

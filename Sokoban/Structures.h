@@ -27,21 +27,36 @@ struct Texture
 //	//const int count_of_textures = 5;
 //	Texture* texture_of_level[5];
 //};
+struct PlayField
+{
+	int height = 0;
+	int width = 0;
+	int count_place = 0;
+
+};
 struct Surface
 {
 	//SDL_Surface* loadSurface(string path);
 
 
-	SDL_Surface* CurrentSurface ;
-	Mix_Music* music ;
-	SDL_Window* Window ;
-	SDL_Surface* ScreenSurface ;
+	Mix_Music* music;
+	Mix_Music* music2;
+	Mix_Chunk* box = NULL;
+	Mix_Chunk* button = NULL;
+	Mix_Chunk* win = NULL;
+
+
+	SDL_Surface* CurrentSurface;
+	SDL_Window* Window;
+	SDL_Surface* ScreenSurface;
 	SDL_Surface* Logos[CountOfLogos];
 	SDL_Surface* Buttons[CountOfButtons];
 	SDL_Surface* PressedButtons[CountOfPressedButtons];
 	SDL_Surface* Texture[CountOfTexture];
 	SDL_Surface* WindowsHowToPlay[CountOfWindows];
 	SDL_Event e;
+	PlayField infOfFild;
+
 	/*SDL_Surface* Logos[CountOfLogos];
 	SDL_Surface* Buttons[CountOfButtons];
 	SDL_Surface* PressedButtons[CountOfPressedButtons];
