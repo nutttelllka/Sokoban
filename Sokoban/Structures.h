@@ -29,6 +29,8 @@ struct Texture
 //};
 struct PlayField
 {
+	vector<vector<int>> level;
+	vector<vector<int>> catAndGift;
 	int height = 0;
 	int width = 0;
 	int count_place = 0;
