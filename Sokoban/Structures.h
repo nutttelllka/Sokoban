@@ -58,6 +58,7 @@ struct Surface
 	SDL_Surface* WindowsHowToPlay[CountOfWindows];
 	SDL_Event e;
 	PlayField infOfFild;
+	int count_step = 0;
 
 	/*SDL_Surface* Logos[CountOfLogos];
 	SDL_Surface* Buttons[CountOfButtons];

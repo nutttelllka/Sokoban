@@ -23,8 +23,9 @@ void showTexture(int i, SDL_Rect posTexture, Surface& game);
 bool isPressed(int keyCode);
 bool isReleased(int keyCode);
 void howToPlay(Surface& game, bool quit, int count = 0);
-bool win(Surface& game, /*vector<vector<int>> level,*/ vector<vector<int>> copy_catAndGift);
-int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, /*vector<vector<int>> level,*/ vector < Texture> texture_of_elements, bool& quit);
+bool win(Surface& game, vector<vector<int>> copy_catAndGift);
+int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit);
+void countOfStep(Surface& game, bool what);
 bool pressed_keys[7] = {};
 
 
@@ -395,8 +396,9 @@ void playGame(Surface& game, bool& quit)
 
 
 	//vector<vector<int>> level;
-	int height = 0;
-	int width = 0;
+	/*int height = 0;
+	int width = 0;*/
+	game.count_step = 0;
 
 	createMap(game, game.infOfFild.level, file);
 	characterMovement(game, /* game.infOfFild.level,*/ file, quit);
@@ -475,7 +477,7 @@ void showFloorOfPlaceHere(Surface& game, vector<vector<int>> level, vector<Textu
 	else
 		showTexture(FLOOR, struct_of_textures[texture].posTexture, game);
 }
-int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, /*vector<vector<int>> level,*/ vector < Texture> texture_of_elements, bool& quit)
+int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit)
 {
 	vector<Texture> copy_texture = texture_of_elements;
 	vector<vector<int>> copy_catAndGift = catAndGift;
@@ -517,14 +519,17 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, /
 			}
 			else if (game.e.type == SDL_KEYDOWN )
 			{
+				
 				switch (game.e.key.keysym.sym)
 				{
 				case SDLK_ESCAPE:
 					flag = true;
 					break;
 				case SDLK_LEFT:
+					
 					if (game.infOfFild.level[copy_texture[CAT].Y][copy_texture[CAT].X - 1] != WALL)
 					{
+						countOfStep(game, true);
 						if (copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X - 1] != PRESENT)
 						{
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
@@ -545,9 +550,17 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, /
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							copy_texture[PRESENT].posTexture.y = copy_texture[CAT].posTexture.y;
 							copy_texture[PRESENT].posTexture.x = copy_texture[CAT].posTexture.x - copy_texture[CAT].sizeTexture;
+							
+							copy_texture[PRESENT].Y = copy_texture[CAT].Y;
+							copy_texture[PRESENT].X = copy_texture[CAT].X - 1;
+							
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, PRESENT);
 							copy_texture[FLOOR].posTexture = copy_texture[PRESENT].posTexture;
 							copy_texture[FLOOR].posTexture.x = copy_texture[PRESENT].posTexture.x - copy_texture[PRESENT].sizeTexture;
+							
+							copy_texture[FLOOR].Y = copy_texture[PRESENT].Y;
+							copy_texture[FLOOR].X = copy_texture[PRESENT].X - 1;
+							
 							keydown_for_cat = SDLK_LEFT;
 							keydown_for_box = SDLK_LEFT;
 							int result = playingLevel(game, file, copy_catAndGift,/* level,*/ copy_texture, quit);
@@ -565,8 +578,10 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, /
 					}
 					break;
 				case SDLK_RIGHT:
+					
 					if (game.infOfFild.level[copy_texture[CAT].Y][copy_texture[CAT].X + 1] != WALL)
 					{
+						countOfStep(game, true);
 						if (copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X + 1] != PRESENT)
 						{
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
@@ -586,9 +601,17 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, /
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							copy_texture[PRESENT].posTexture.y = copy_texture[CAT].posTexture.y ;
 							copy_texture[PRESENT].posTexture.x = copy_texture[CAT].posTexture.x + copy_texture[CAT].sizeTexture;
+							
+							copy_texture[PRESENT].Y = copy_texture[CAT].Y;
+							copy_texture[PRESENT].X = copy_texture[CAT].X + 1;
+
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, PRESENT);
 							copy_texture[FLOOR].posTexture = copy_texture[PRESENT].posTexture;
 							copy_texture[FLOOR].posTexture.x = copy_texture[PRESENT].posTexture.x + copy_texture[PRESENT].sizeTexture;
+
+							copy_texture[FLOOR].Y = copy_texture[PRESENT].Y;
+							copy_texture[FLOOR].X = copy_texture[PRESENT].X + 1;
+
 							keydown_for_cat = SDLK_RIGHT;
 							keydown_for_box = SDLK_RIGHT;
 							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
@@ -609,6 +632,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, /
 				case SDLK_UP:
 					if (game.infOfFild.level[copy_texture[CAT].Y - 1][copy_texture[CAT].X] != WALL)
 					{
+						countOfStep(game, true);
 						if (copy_catAndGift[copy_texture[CAT].Y - 1][copy_texture[CAT].X] != PRESENT)
 						{
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
@@ -628,9 +652,17 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, /
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							copy_texture[PRESENT].posTexture.y = copy_texture[CAT].posTexture.y - copy_texture[CAT].sizeTexture;
 					     	copy_texture[PRESENT].posTexture.x = copy_texture[CAT].posTexture.x;
+
+							copy_texture[PRESENT].Y = copy_texture[CAT].Y - 1;
+							copy_texture[PRESENT].X = copy_texture[CAT].X;
+
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, PRESENT);
 							copy_texture[FLOOR].posTexture = copy_texture[PRESENT].posTexture;
 							copy_texture[FLOOR].posTexture.y = copy_texture[PRESENT].posTexture.y - copy_texture[PRESENT].sizeTexture;
+
+							copy_texture[FLOOR].Y = copy_texture[PRESENT].Y - 1;
+							copy_texture[FLOOR].X = copy_texture[PRESENT].X;
+
 							keydown_for_cat = SDLK_UP;
 							keydown_for_box = SDLK_UP;
 							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
@@ -650,6 +682,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, /
 				case SDLK_DOWN:
 					if (game.infOfFild.level[copy_texture[CAT].Y + 1][copy_texture[CAT].X] != WALL)
 					{
+						countOfStep(game, true);
 						if (copy_catAndGift[copy_texture[CAT].Y + 1][copy_texture[CAT].X] != PRESENT)
 						{
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
@@ -674,11 +707,17 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, /
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							copy_texture[PRESENT].posTexture.y = copy_texture[CAT].posTexture.y + copy_texture[CAT].sizeTexture;
 							copy_texture[PRESENT].posTexture.x = copy_texture[CAT].posTexture.x;
+
+							copy_texture[PRESENT].Y = copy_texture[CAT].Y + 1;
+							copy_texture[PRESENT].X = copy_texture[CAT].X;
+
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, PRESENT);
 							copy_texture[FLOOR].posTexture = copy_texture[PRESENT].posTexture;
 							copy_texture[FLOOR].posTexture.y = copy_texture[PRESENT].posTexture.y + copy_texture[PRESENT].sizeTexture;
+							
 							copy_texture[FLOOR].Y = copy_texture[PRESENT].Y + 1;
 							copy_texture[FLOOR].X = copy_texture[PRESENT].X;
+							
 							keydown_for_cat = SDLK_DOWN;
 							keydown_for_box = SDLK_DOWN;
 							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
@@ -704,8 +743,10 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, /
 
 				}
 				showArrInConsole(copy_catAndGift, 9, 9);
+
 				if (pressed_keys[KEY_PRESS_LEFT_CTRL] && pressed_keys[KEY_PRESS_Z])
 				{
+					countOfStep(game, false);
 					showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 					copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X] = 0;
 					pressed_keys[KEY_PRESS_Z] = 0;
@@ -1303,7 +1344,7 @@ void field(Surface& game, vector<vector<int>> array, fstream& file, SDL_Rect pos
 }
 
 
-bool win(Surface& game,/* vector<vector<int>> level, */vector<vector<int>> copy_catAndGift) {
+bool win(Surface& game, vector<vector<int>> copy_catAndGift) {
 	int count = 0;
 	for (int i = 0; i < game.infOfFild.height; i++)
 	{
@@ -1323,7 +1364,11 @@ void showTexture(int i, SDL_Rect posTexture, Surface& game)
 	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &posTexture);
 	SDL_UpdateWindowSurface(game.Window);
 }
-
+void countOfStep(Surface& game, bool what) {
+	if (what) game.count_step++;
+	else game.count_step--;
+	cout << endl << game.count_step << endl;
+}
 
 void exit(bool& quit, Surface& game)
 {
