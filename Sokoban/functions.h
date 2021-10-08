@@ -24,7 +24,7 @@ bool isPressed(int keyCode);
 bool isReleased(int keyCode);
 void howToPlay(Surface& game, bool quit, int count = 0);
 bool win(Surface& game, vector<vector<int>> copy_catAndGift);
-int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit);
+int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, bool z = false);
 void countOfStep(Surface& game, bool what);
 bool pressed_keys[7] = {};
 
@@ -477,7 +477,7 @@ void showFloorOfPlaceHere(Surface& game, vector<vector<int>> level, vector<Textu
 	else
 		showTexture(FLOOR, struct_of_textures[texture].posTexture, game);
 }
-int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit)
+int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, bool z)
 {
 	vector<Texture> copy_texture = texture_of_elements;
 	vector<vector<int>> copy_catAndGift = catAndGift;
@@ -535,7 +535,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							keydown_for_cat = SDLK_LEFT;
 							
-							int result = playingLevel(game, file, copy_catAndGift,/* level, */copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift,/* level, */copy_texture, quit,true);
 							if (result == WIN)
 								return WIN;
 							else if(result == RECURSION)
@@ -563,7 +563,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 							
 							keydown_for_cat = SDLK_LEFT;
 							keydown_for_box = SDLK_LEFT;
-							int result = playingLevel(game, file, copy_catAndGift,/* level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift,/* level,*/ copy_texture, quit, true);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -586,7 +586,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 						{
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							keydown_for_cat = SDLK_RIGHT;
-							int result = playingLevel(game, file, copy_catAndGift,/* level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift,/* level,*/ copy_texture, quit, true);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -614,7 +614,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 
 							keydown_for_cat = SDLK_RIGHT;
 							keydown_for_box = SDLK_RIGHT;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, true);
 
 							if (result == WIN)
 								return WIN;
@@ -637,7 +637,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 						{
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							keydown_for_cat = SDLK_UP;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, true);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -665,7 +665,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 
 							keydown_for_cat = SDLK_UP;
 							keydown_for_box = SDLK_UP;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, true);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -687,7 +687,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 						{
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							keydown_for_cat = SDLK_DOWN;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, true);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -720,7 +720,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 							
 							keydown_for_cat = SDLK_DOWN;
 							keydown_for_box = SDLK_DOWN;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, true);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -744,7 +744,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 				}
 				showArrInConsole(copy_catAndGift, 9, 9);
 
-				if (pressed_keys[KEY_PRESS_LEFT_CTRL] && pressed_keys[KEY_PRESS_Z])
+				if (pressed_keys[KEY_PRESS_LEFT_CTRL] && pressed_keys[KEY_PRESS_Z] && z)
 				{
 					countOfStep(game, false);
 					showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
