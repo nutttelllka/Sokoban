@@ -17,15 +17,8 @@ enum Object
 	CAT,
 	PRESENT,
 	BACKGROUND,
-	PLACEHERE
-	/*PRESENT_SECOND,
-	PRESENT_THIRD,
-	PRESENT_FOURTH*/
-};
-enum MainTexturesInLevel
-{
-	CAT_1,
-	PRESENT_1
+	PLACEHERE,
+	BOX_IN_PLACEHERE
 };
 enum Buttons
 {
@@ -50,8 +43,8 @@ enum CountOdArrs
 	CountOfLogos = 4,
 	CountOfButtons = 7,
 	CountOfPressedButtons = CountOfButtons,
-	CountOfTexture = 7,
-	CountOfWindows = 4
+	CountOfTexture = 8,
+	CountOfWindows = 5
 };
 enum WindowsInHowToPlay
 {
@@ -59,6 +52,7 @@ enum WindowsInHowToPlay
 	SECOND,
 	THIRD,
 	FOURTH,
+	FIFTH
 };
 enum ReturningValues
 {
@@ -66,10 +60,11 @@ enum ReturningValues
 	WIN,
 	RECURSION
 };
-//enum Boxes
-//{
-//	FIRST_BOX,
-//	SECOND_BOX,
-//	THIRD_BOX,
-//	FOURTH_BOX,
-//};
+enum Surfaces
+{
+    LOGOS,
+	BUTTONS,
+	PRESSED_BUTTONS,
+	TEXTURES,
+	WINDOWS
+};
