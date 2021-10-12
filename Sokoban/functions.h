@@ -337,6 +337,15 @@ void howToPlay(Surface& game, bool quit, int count)
 void playGame(Surface& game, bool& quit)
 {
 	fstream file("fields.TXT");
+
+	//int** level;
+	vector<vector<int>> level;
+	int height = 0;
+	int width = 0;
+
+	//vector<vector<int>> level;
+	/*int height = 0;
+	int width = 0;*/
 	game.count_step = 0;
 
 	createMap(game, game.infOfFild.level, file);
@@ -1438,11 +1447,11 @@ bool loadMedia(Surface& game)
 		printf("Failed to load music! SDL_mixer Error: %s\n", Mix_GetError());
 		success = false;
 	}
-	if (Mix_PlayingMusic() == 0)
-	{
-		//Play the music
-		Mix_PlayMusic(game.music, -1);
-	}
+	//if (Mix_PlayingMusic() == 0)
+	//{
+	//	//Play the music
+	//	Mix_PlayMusic(game.music, -1);
+	//}
 	game.button = Mix_LoadWAV("sound\\button.wav");
 	game.box = Mix_LoadWAV("sound\\box.wav");
 	//Если что-то пошло не так
