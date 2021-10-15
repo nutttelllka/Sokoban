@@ -18,7 +18,8 @@ void backgroundMenu(Surface& game);
 void exit(bool& quit, Surface& game);
 void createMap(Surface& game, vector<vector<int>>& array, fstream& file);//
 void field(Surface& game, vector<vector<int>> array, fstream& file, SDL_Rect posTexture);//
-void characterMovement(Surface& game, fstream& file, bool& quit);
+//void characterMovement(Surface& game, fstream& file, fstream& fileCat, bool& quit);
+bool characterMovement(Surface& game, fstream& file, fstream& fileCat, bool& quit);
 void showTexture(int i, SDL_Rect posTexture, Surface& game);
 bool isPressed(int keyCode);
 bool isReleased(int keyCode);
@@ -337,6 +338,7 @@ void howToPlay(Surface& game, bool quit, int count)
 void playGame(Surface& game, bool& quit)
 {
 	fstream file("fields.TXT");
+	fstream fileCat("position.TXT");
 
 	//int** level;
 	vector<vector<int>> level;
@@ -346,10 +348,39 @@ void playGame(Surface& game, bool& quit)
 	//vector<vector<int>> level;
 	/*int height = 0;
 	int width = 0;*/
-	game.count_step = 0;
+	//game.count_step = 0;
+	int number_of_level = 0;
+	SDL_Rect coord_for_wallp;
+	while (number_of_level < game.count_levels) {
 
-	createMap(game, game.infOfFild.level, file);
-	characterMovement(game, /* game.infOfFild.level,*/ file, quit);
+		inisialitCoordOfWallp(coord_for_wallp);
+		showPic(game, coord_for_wallp, LOGOS, LOGO_OF_GAME);
+		SDL_Delay(1000);
+		game.count_step = 0;
+
+		createMap(game, game.infOfFild.level, file);
+		if (characterMovement(game, file, fileCat, quit) == EXIT_TO_MENU)
+		{
+			//quit = true;
+			break;
+		}
+		else
+		{
+			//createMap(game, game.infOfFild.level, file);
+			game.infOfFild.level.clear();
+			game.infOfFild.catAndGift.clear();
+			//game.infOfFild.level.swap(vector<vector<int>>());
+			vector<vector<int>>().swap(game.infOfFild.level);
+			vector<vector<int>>().swap(game.infOfFild.catAndGift);
+
+			number_of_level++;
+		}
+		
+
+	}
+
+
+	
 
 }
 void showArrInConsole(vector<vector<int>> arr, int width, int hight)
@@ -451,7 +482,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 	showTexture(CAT, copy_texture[CAT].posTexture, game);
 	copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X] = CAT;
 	if (win(game,/* level,*/ copy_catAndGift))
-		quit = true;
+		return WIN;
 	showArrInConsole(copy_catAndGift, 9, 9);
 	bool flag = false;
 	while (!quit)
@@ -972,7 +1003,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 //		}
 //	}
 //}
-void characterMovement(Surface& game, fstream& file, bool& quit)
+bool characterMovement(Surface& game, fstream& file, fstream& fileCat, bool& quit)
 {//передвижение персонажей
 	vector<Texture> texture_of_level;
 	for (int i = 0; i < CountOfTexture; i++)
@@ -983,13 +1014,13 @@ void characterMovement(Surface& game, fstream& file, bool& quit)
 
 	texture_of_level[CAT].posTexture.y = 0;
 	texture_of_level[CAT].posTexture.x = 0;
-	texture_of_level[FLOOR].posTexture;
+	//texture_of_level[FLOOR].posTexture;
 
-	fstream fileCat("position.TXT");
+	//fstream fileCat("position.TXT");
 	showTexture(BACKGROUND, texture_of_level[CAT].posTexture, game);
 	field(game,  game.infOfFild.level, file, texture_of_level[CAT].posTexture);
 
-	vector<vector<int>> catAndGift;
+	//vector<vector<int>> catAndGift;
 	createMap(game, game.infOfFild.catAndGift, fileCat);
 	field(game, game.infOfFild.catAndGift, fileCat, texture_of_level[CAT].posTexture);
 
@@ -1012,7 +1043,14 @@ void characterMovement(Surface& game, fstream& file, bool& quit)
 	texture_of_level[CAT].posTexture.x = ((SCREEN_WIDTH / 2) - ((game.infOfFild.width) / 2.0 * texture_of_level[CAT].sizeTexture)) + texture_of_level[CAT].X * texture_of_level[CAT].sizeTexture;
 	texture_of_level[CAT].posTexture.y = ((SCREEN_HEIGHT / 2) - ((game.infOfFild.height) / 2.0 * texture_of_level[CAT].sizeTexture)) + texture_of_level[CAT].Y * texture_of_level[CAT].sizeTexture;
 
-	playingLevel(game, file, game.infOfFild.catAndGift, /* game.infOfFild.level,*/ texture_of_level, quit);
+	if (playingLevel(game, file, game.infOfFild.catAndGift, /* game.infOfFild.level,*/ texture_of_level, quit) == EXIT_TO_MENU)
+	{
+		return EXIT_TO_MENU;
+	}
+	else
+	{
+		return WIN;
+	}
 
 
 	/*while (!quit) {
