@@ -451,8 +451,8 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 	showTexture(CAT, copy_texture[CAT].posTexture, game);
 	copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X] = CAT;
 	if (win(game,/* level,*/ copy_catAndGift))
-		quit = true;
-	showArrInConsole(copy_catAndGift, 9, 9);
+		quit = WIN;
+	//showArrInConsole(copy_catAndGift, 9, 9);
 	bool flag = false;
 	while (!quit)
 	{
@@ -700,7 +700,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 					break;
 
 				}
-				showArrInConsole(copy_catAndGift, 9, 9);
+				//showArrInConsole(copy_catAndGift, 9, 9);
 
 				if (pressed_keys[KEY_PRESS_LEFT_CTRL] && pressed_keys[KEY_PRESS_Z] && z)
 				{
@@ -980,40 +980,39 @@ void characterMovement(Surface& game, fstream& file, bool& quit)
 		Texture texture;
 		texture_of_level.push_back(texture);
 	}
+		texture_of_level[CAT].posTexture.y = 0;
+		texture_of_level[CAT].posTexture.x = 0;
+		//texture_of_level[FLOOR].posTexture;
 
-	texture_of_level[CAT].posTexture.y = 0;
-	texture_of_level[CAT].posTexture.x = 0;
-	texture_of_level[FLOOR].posTexture;
+		fstream fileCat("position.TXT");
+		showTexture(BACKGROUND, texture_of_level[CAT].posTexture, game);
+		field(game, game.infOfFild.level, file, texture_of_level[CAT].posTexture);
 
-	fstream fileCat("position.TXT");
-	showTexture(BACKGROUND, texture_of_level[CAT].posTexture, game);
-	field(game,  game.infOfFild.level, file, texture_of_level[CAT].posTexture);
-
-	vector<vector<int>> catAndGift;
-	createMap(game, game.infOfFild.catAndGift, fileCat);
-	field(game, game.infOfFild.catAndGift, fileCat, texture_of_level[CAT].posTexture);
+		vector<vector<int>> catAndGift;
+		createMap(game, game.infOfFild.catAndGift, fileCat);
+		field(game, game.infOfFild.catAndGift, fileCat, texture_of_level[CAT].posTexture);
 
 
-	for (int y = 0; y < (game.infOfFild.height); y++)
-	{
-		for (int x = 0; x < (game.infOfFild.width); x++)
+		for (int y = 0; y < (game.infOfFild.height); y++)
 		{
-			if (game.infOfFild.catAndGift[y][x] == CAT)
+			for (int x = 0; x < (game.infOfFild.width); x++)
 			{
-				texture_of_level[CAT].X = x;
-				texture_of_level[CAT].Y = y;
-			}
-			if (game.infOfFild.level[y][x] == PLACEHERE) {
-				game.infOfFild.count_place++;
+				if (game.infOfFild.catAndGift[y][x] == CAT)
+				{
+					texture_of_level[CAT].X = x;
+					texture_of_level[CAT].Y = y;
+				}
+				if (game.infOfFild.level[y][x] == PLACEHERE) {
+					game.infOfFild.count_place++;
+				}
 			}
 		}
-	}
 
-	texture_of_level[CAT].posTexture.x = ((SCREEN_WIDTH / 2) - ((game.infOfFild.width) / 2.0 * texture_of_level[CAT].sizeTexture)) + texture_of_level[CAT].X * texture_of_level[CAT].sizeTexture;
-	texture_of_level[CAT].posTexture.y = ((SCREEN_HEIGHT / 2) - ((game.infOfFild.height) / 2.0 * texture_of_level[CAT].sizeTexture)) + texture_of_level[CAT].Y * texture_of_level[CAT].sizeTexture;
+		texture_of_level[CAT].posTexture.x = ((SCREEN_WIDTH / 2) - ((game.infOfFild.width) / 2.0 * texture_of_level[CAT].sizeTexture)) + texture_of_level[CAT].X * texture_of_level[CAT].sizeTexture;
+		texture_of_level[CAT].posTexture.y = ((SCREEN_HEIGHT / 2) - ((game.infOfFild.height) / 2.0 * texture_of_level[CAT].sizeTexture)) + texture_of_level[CAT].Y * texture_of_level[CAT].sizeTexture;
 
-	playingLevel(game, file, game.infOfFild.catAndGift, /* game.infOfFild.level,*/ texture_of_level, quit);
-
+		playingLevel(game, file, game.infOfFild.catAndGift, /* game.infOfFild.level,*/ texture_of_level, quit);
+	
 
 	/*while (!quit) {
 		while (SDL_PollEvent(&e) != 0) {
