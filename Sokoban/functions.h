@@ -777,7 +777,8 @@ bool characterMovement(Surface& game, fstream& file, fstream& fileCat, bool& qui
 	texture_of_level[CAT].posTexture.x = 0;
 
 	//fstream fileCat("position.TXT");
-	showTexture(BACKGROUND, texture_of_level[CAT].posTexture, game);
+	
+	showTexture(BACKGROUND_TIME, texture_of_level[CAT].posTexture, game);
 	field(game,  game.infOfFild.level, file, texture_of_level[CAT].posTexture);
 
 	//vector<vector<int>> catAndGift;
@@ -903,19 +904,36 @@ void showTexture(int i, SDL_Rect posTexture, Surface& game)
 }
 void countOfStep(Surface& game, bool what, bool zero)
 {
-	int size = 30;
+	int size = 20;
+	
 	int last_number = 0;
 	SDL_Rect texture_of_number;
-	texture_of_number.y = SCREEN_HEIGHT / 2;
-	texture_of_number.x = size + size*2 ;
+	texture_of_number.y = 35;
+
 	if (what && !zero) {
 
 		game.count_step++;
 
 	}
 	else if(!what && !zero) game.count_step--;
+	else {
+		
+		texture_of_number.x = size * 7;
+		int c = 500;
+		for (int i = 0; i < 3; i++) {
+			//int c = last_number;
+			last_number = c % 10;
+			c /= 10;
+			showPic(game, texture_of_number, NUMBERS, last_number);
+			texture_of_number.x -= size;
+		}
+		texture_of_number.x = size * 4;
+		showPic(game, texture_of_number, NUMBERS, 11);
+	}
 	cout << endl << game.count_step << endl;
 
+	
+	texture_of_number.x = size * 3;
 	int c = game.count_step;
 	for (int i = 0; i < 3; i++) {
 		last_number = c % 10;
@@ -1259,13 +1277,21 @@ bool loadMedia(Surface& game)
 	game.Numbers[7] = loadSurface("numbers\\7 number.bmp");
 	game.Numbers[8] = loadSurface("numbers\\8 number.bmp");
 	game.Numbers[9] = loadSurface("numbers\\9 number.bmp");
-	for (int i = 0; i < 10; i++) {
+	game.Numbers[10] = loadSurface("numbers\\colon.bmp");
+	game.Numbers[11] = loadSurface("numbers\\slash.bmp");
+	for (int i = 0; i < 12; i++) {
 		if (game.Numbers[i] == NULL) {
 			printf("Failed to load up image!\n");
 			success = false;
 		}
 	}
 
+	game.Texture[BACKGROUND_TIME] = loadSurface("BackgroundTime.bmp");
+	if (game.Texture[BACKGROUND_TIME] == NULL)
+	{
+		printf("Failed to load up image!\n");
+		success = false;
+	}
 	return success;
 }
 void close(Surface& game)
