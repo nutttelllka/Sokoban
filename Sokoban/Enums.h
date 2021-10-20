@@ -44,7 +44,9 @@ enum CountOdArrs
 	CountOfButtons = 7,
 	CountOfPressedButtons = CountOfButtons,
 	CountOfTexture = 8,
-	CountOfWindows = 5
+	CountOfWindows = 5,
+	CountOfNumbers = 10
+
 };
 enum WindowsInHowToPlay
 {
@@ -66,5 +68,6 @@ enum Surfaces
 	BUTTONS,
 	PRESSED_BUTTONS,
 	TEXTURES,
-	WINDOWS
+	WINDOWS, 
+	NUMBERS
 };

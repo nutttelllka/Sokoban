@@ -26,7 +26,7 @@ bool isReleased(int keyCode);
 void howToPlay(Surface& game, bool quit, int count = 0);
 bool win(Surface& game, vector<vector<int>> copy_catAndGift);
 int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, bool first = false);
-void countOfStep(Surface& game, bool what);
+void countOfStep(Surface& game, bool what, bool zero = false);
 bool pressed_keys[7] = {};
 
 
@@ -60,6 +60,9 @@ void showPic(Surface& game, SDL_Rect coord, int what_kind_of_arr,  int what_kind
 		break;
 	case WINDOWS:
 		game.CurrentSurface = game.WindowsHowToPlay[what_kind_of_pic];
+		break;
+	case NUMBERS:
+		game.CurrentSurface = game.Numbers[what_kind_of_pic];
 		break;
 	}
 	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &coord);
@@ -520,9 +523,10 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 					
 					if (game.infOfFild.level[copy_texture[CAT].Y][copy_texture[CAT].X - 1] != WALL)
 					{
-						countOfStep(game, true);
+						
 						if (copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X - 1] != PRESENT)
 						{
+							countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							keydown_for_cat = SDLK_LEFT;
 							
@@ -538,6 +542,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 							&& game.infOfFild.level[copy_texture[CAT].Y][copy_texture[CAT].X - 2] != WALL
 							&& copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X - 2] != PRESENT)
 						{
+							countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							copy_texture[PRESENT].posTexture.y = copy_texture[CAT].posTexture.y;
 							copy_texture[PRESENT].posTexture.x = copy_texture[CAT].posTexture.x - copy_texture[CAT].sizeTexture;
@@ -573,9 +578,10 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 					
 					if (game.infOfFild.level[copy_texture[CAT].Y][copy_texture[CAT].X + 1] != WALL)
 					{
-						countOfStep(game, true);
+						
 						if (copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X + 1] != PRESENT)
 						{
+							countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							keydown_for_cat = SDLK_RIGHT;
 							int result = playingLevel(game, file, copy_catAndGift,/* level,*/ copy_texture, quit);
@@ -590,6 +596,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 							&& game.infOfFild.level[copy_texture[CAT].Y][copy_texture[CAT].X + 2] != WALL
 							&& copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X + 2] != PRESENT) 
 						{
+							countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							copy_texture[PRESENT].posTexture.y = copy_texture[CAT].posTexture.y ;
 							copy_texture[PRESENT].posTexture.x = copy_texture[CAT].posTexture.x + copy_texture[CAT].sizeTexture;
@@ -624,9 +631,10 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 				case SDLK_UP:
 					if (game.infOfFild.level[copy_texture[CAT].Y - 1][copy_texture[CAT].X] != WALL)
 					{
-						countOfStep(game, true);
+						
 						if (copy_catAndGift[copy_texture[CAT].Y - 1][copy_texture[CAT].X] != PRESENT)
 						{
+							countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							keydown_for_cat = SDLK_UP;
 							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
@@ -641,6 +649,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 							&& game.infOfFild.level[copy_texture[CAT].Y - 2][copy_texture[CAT].X] != WALL
 							&& copy_catAndGift[copy_texture[CAT].Y - 2][copy_texture[CAT].X] != PRESENT)
 						{
+							countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							copy_texture[PRESENT].posTexture.y = copy_texture[CAT].posTexture.y - copy_texture[CAT].sizeTexture;
 					     	copy_texture[PRESENT].posTexture.x = copy_texture[CAT].posTexture.x;
@@ -675,9 +684,10 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 				case SDLK_DOWN:
 					if (game.infOfFild.level[copy_texture[CAT].Y + 1][copy_texture[CAT].X] != WALL)
 					{
-						countOfStep(game, true);
+						
 						if (copy_catAndGift[copy_texture[CAT].Y + 1][copy_texture[CAT].X] != PRESENT)
 						{
+							countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							keydown_for_cat = SDLK_DOWN;
 							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
@@ -697,6 +707,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 							&& game.infOfFild.level[copy_texture[CAT].Y + 2][copy_texture[CAT].X] != WALL
 							&& copy_catAndGift[copy_texture[CAT].Y + 2][copy_texture[CAT].X] != PRESENT)
 						{
+							countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							copy_texture[PRESENT].posTexture.y = copy_texture[CAT].posTexture.y + copy_texture[CAT].sizeTexture;
 							copy_texture[PRESENT].posTexture.x = copy_texture[CAT].posTexture.x;
@@ -790,7 +801,8 @@ bool characterMovement(Surface& game, fstream& file, fstream& fileCat, bool& qui
 
 		texture_of_level[CAT].posTexture.x = ((SCREEN_WIDTH / 2) - ((game.infOfFild.width) / 2.0 * texture_of_level[CAT].sizeTexture)) + texture_of_level[CAT].X * texture_of_level[CAT].sizeTexture;
 		texture_of_level[CAT].posTexture.y = ((SCREEN_HEIGHT / 2) - ((game.infOfFild.height) / 2.0 * texture_of_level[CAT].sizeTexture)) + texture_of_level[CAT].Y * texture_of_level[CAT].sizeTexture;
-
+		countOfStep(game, true, true);
+		
 	if (playingLevel(game, file, game.infOfFild.catAndGift, /* game.infOfFild.level,*/ texture_of_level, quit,true) == EXIT_TO_MENU)
 	{
 		return EXIT_TO_MENU;
@@ -889,10 +901,29 @@ void showTexture(int i, SDL_Rect posTexture, Surface& game)
 	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &posTexture);
 	SDL_UpdateWindowSurface(game.Window);
 }
-void countOfStep(Surface& game, bool what) {
-	if (what) game.count_step++;
-	else game.count_step--;
+void countOfStep(Surface& game, bool what, bool zero)
+{
+	int size = 30;
+	int last_number = 0;
+	SDL_Rect texture_of_number;
+	texture_of_number.y = SCREEN_HEIGHT / 2;
+	texture_of_number.x = size + size*2 ;
+	if (what && !zero) {
+
+		game.count_step++;
+
+	}
+	else if(!what && !zero) game.count_step--;
 	cout << endl << game.count_step << endl;
+
+	int c = game.count_step;
+	for (int i = 0; i < 3; i++) {
+		last_number = c % 10;
+		c /= 10;
+		showPic(game, texture_of_number, NUMBERS, last_number);
+		texture_of_number.x -= size;
+	}
+
 }
 void exit(bool& quit, Surface& game)
 {
@@ -1218,6 +1249,23 @@ bool loadMedia(Surface& game)
 		printf("Failed to load up image!\n");
 		success = false;
 	}
+	game.Numbers[0] = loadSurface("numbers\\0 number.bmp");
+	game.Numbers[1] = loadSurface("numbers\\1 number.bmp");
+	game.Numbers[2] = loadSurface("numbers\\2 number.bmp");
+	game.Numbers[3] = loadSurface("numbers\\3 number.bmp");
+	game.Numbers[4] = loadSurface("numbers\\4 number.bmp");
+	game.Numbers[5] = loadSurface("numbers\\5 number.bmp");
+	game.Numbers[6] = loadSurface("numbers\\6 number.bmp");
+	game.Numbers[7] = loadSurface("numbers\\7 number.bmp");
+	game.Numbers[8] = loadSurface("numbers\\8 number.bmp");
+	game.Numbers[9] = loadSurface("numbers\\9 number.bmp");
+	for (int i = 0; i < 10; i++) {
+		if (game.Numbers[i] == NULL) {
+			printf("Failed to load up image!\n");
+			success = false;
+		}
+	}
+
 	return success;
 }
 void close(Surface& game)
