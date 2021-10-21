@@ -18,7 +18,8 @@ enum Object
 	PRESENT,
 	BACKGROUND,
 	PLACEHERE,
-	BOX_IN_PLACEHERE
+	BOX_IN_PLACEHERE, 
+	BACKGROUND_TIME
 };
 enum Buttons
 {
@@ -43,8 +44,10 @@ enum CountOdArrs
 	CountOfLogos = 4,
 	CountOfButtons = 7,
 	CountOfPressedButtons = CountOfButtons,
-	CountOfTexture = 8,
-	CountOfWindows = 5
+	CountOfTexture = 9,
+	CountOfWindows = 5,
+	CountOfNumbers = 12
+
 };
 enum WindowsInHowToPlay
 {
@@ -66,5 +69,6 @@ enum Surfaces
 	BUTTONS,
 	PRESSED_BUTTONS,
 	TEXTURES,
-	WINDOWS
+	WINDOWS, 
+	NUMBERS
 };

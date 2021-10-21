@@ -45,6 +45,7 @@ struct Surface
 	SDL_Surface* PressedButtons[CountOfPressedButtons];
 	SDL_Surface* Texture[CountOfTexture];
 	SDL_Surface* WindowsHowToPlay[CountOfWindows];
+	SDL_Surface* Numbers[CountOfNumbers];
 	SDL_Event e;
 	PlayField infOfFild;
 	int count_step = 0;
