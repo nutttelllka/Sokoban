@@ -2,6 +2,9 @@
 #include "Structures.h"
 #include "Enums.h"
 #include <vector>
+#include <thread>//для работі с потоками
+#include <chrono>//для потока со временем
+
 using namespace std;
 
 #define SCREEN_WIDTH 800
@@ -367,6 +370,81 @@ void showComic(Surface& game)
 		coord_for_wallp.y += 300;
 	}
 
+}
+void timer(Surface& game) {
+	int size = 20;
+	int count_of_sec = 90;
+	int sec = count_of_sec;
+	int min = 0;
+	while (sec > 60)
+	{
+		min++;
+		sec -= 60;
+
+	}
+
+	SDL_Rect texture_of_number;
+	texture_of_number.y = 35;
+	int x = 0, y = 0, z = 0, w = 0;//изменение определенных цифр во времени
+
+	x = sec % 10;
+	texture_of_number.x = SCREEN_WIDTH - size * 2;
+	showPic(game, texture_of_number, NUMBERS, x);
+
+	y = (sec / 10);
+	texture_of_number.x -= size;
+	showPic(game, texture_of_number, NUMBERS, y);
+
+	texture_of_number.x -= size;
+	showPic(game, texture_of_number, NUMBERS, 10);
+
+	z = min % 10;
+	texture_of_number.x -= size;
+	showPic(game, texture_of_number, NUMBERS, z);
+
+	w = (min / 10);
+	texture_of_number.x -= size;
+	showPic(game, texture_of_number, NUMBERS, w);
+
+
+	while (true)
+	{
+		//showPic(game, texture_of_number, NUMBERS, i);
+		printf("%0d : %0d \n", min, sec);
+		sec--;
+		if (sec == 0) {
+			if (min - 1 >= 0) {
+				min--;
+				sec = 60;
+				z = min % 10;
+				texture_of_number.x = SCREEN_WIDTH - size * 5;
+				showPic(game, texture_of_number, NUMBERS, z);
+				if ((min / 10) - 1 >= 0) {
+					w = (min / 10);
+					texture_of_number.x = SCREEN_WIDTH - size * 6;
+					showPic(game, texture_of_number, NUMBERS, w);
+				}
+			}
+		}
+		if (x == 0) {
+			y = (sec / 10) % 10;
+			texture_of_number.x = SCREEN_WIDTH - size * 3;
+			showPic(game, texture_of_number, NUMBERS, y);
+		}
+
+		//if (x == 0)x = 9;
+		x = sec % 10;
+		texture_of_number.x = SCREEN_WIDTH - size * 2;
+		showPic(game, texture_of_number, NUMBERS, x);
+
+
+		if (min == 0 && sec == 0) {
+			false;
+		}
+
+
+		this_thread::sleep_for(chrono::milliseconds(1000));
+	}
 }
 void playGame(Surface& game, bool& quit, fstream& file, fstream& fileCat)
 {
@@ -815,6 +893,8 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 }
 bool characterMovement(Surface& game, fstream& file, fstream& fileCat, bool& quit, bool new_level)
 {//передвижение персонажей
+	thread th(timer, ref(game));//ref - используется 
+	th.detach();
 	vector<Texture> texture_of_level;
 	for (int i = 0; i < CountOfTexture; i++)
 	{
