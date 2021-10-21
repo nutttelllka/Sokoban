@@ -922,7 +922,7 @@ void countOfStep(Surface& game, bool what, bool zero)
 		int c = 500;
 		for (int i = 0; i < 3; i++) {
 			//int c = last_number;
-			last_number = c % 10;
+			last_number = c % 10;//
 			c /= 10;
 			showPic(game, texture_of_number, NUMBERS, last_number);
 			texture_of_number.x -= size;
