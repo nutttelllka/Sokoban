@@ -46,10 +46,13 @@ enum CountOdArrs
 	CountOfPressedButtons = CountOfButtons,
 	CountOfTexture = 9,
 	CountOfWindows = 5,
-	CountOfNumbers = 12
+	CountOfNumbers = 12,
+	CountOfLeveles = 5,
+	CountOfComic = 5
+	//CountOfWindowsHowToPlay = 5
 
 };
-enum WindowsInHowToPlay
+enum SomeWindows
 {
 	FIRST,
 	SECOND,
@@ -70,5 +73,15 @@ enum Surfaces
 	PRESSED_BUTTONS,
 	TEXTURES,
 	WINDOWS, 
-	NUMBERS
+	NUMBERS,
+	LEVELES,
+	COMIC
+};
+enum Music
+{
+	INTRO,
+	MENU,
+	SOUND_GAME,
+	BOX,
+	BUTTON
 };

@@ -19,10 +19,10 @@ int main(int argc, char* argv[])
 {
 	Surface game;
 	game.CurrentSurface = NULL;
-	game.music = NULL;
+	//game.music = NULL;
 	game.Window = NULL;
 	game.ScreenSurface = NULL;
-	//Stealth();
+	Stealth();
 	intro(game);
 	//if (!init(surf)) 
 	//{

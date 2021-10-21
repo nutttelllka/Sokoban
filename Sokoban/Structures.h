@@ -35,7 +35,8 @@ struct Surface
 	Mix_Chunk* box = NULL;
 	Mix_Chunk* button = NULL;
 	Mix_Chunk* win = NULL;
-
+	Mix_Chunk* intro = NULL;
+	//Mix_Music* AllMusic[2];
 
 	SDL_Surface* CurrentSurface;
 	SDL_Window* Window;
@@ -46,6 +47,8 @@ struct Surface
 	SDL_Surface* Texture[CountOfTexture];
 	SDL_Surface* WindowsHowToPlay[CountOfWindows];
 	SDL_Surface* Numbers[CountOfNumbers];
+	SDL_Surface* WindowLevel[CountOfLeveles];
+	SDL_Surface* Comic[CountOfComic];
 	SDL_Event e;
 	PlayField infOfFild;
 	int count_step = 0;
