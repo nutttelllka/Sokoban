@@ -4,6 +4,7 @@
 #include <vector>
 #include <thread>//для работі с потоками
 #include <chrono>//для потока со временем
+#include <mutex>
 
 using namespace std;
 
@@ -28,10 +29,11 @@ bool isPressed(int keyCode);
 bool isReleased(int keyCode);
 void howToPlay(Surface& game, bool quit, int count = 0);
 bool win(Surface& game, vector<vector<int>> copy_catAndGift);
-int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, bool first = false);
+int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, int &count_of_sec, bool first = false);
 void countOfStep(Surface& game, bool what, bool zero = false);
 bool pressed_keys[7] = {};
 
+bool stop_timer = false;
 
 
 //тут был Степа
@@ -166,6 +168,7 @@ void menu(Surface& game, bool& quit, int i, int& i_for_buttons, int& current_pre
 	{
 		while (SDL_PollEvent(&game.e) != 0)
 		{
+			stop_timer = true;
 			if (game.e.type == SDL_QUIT)
 			{
 				quit = true;
@@ -371,9 +374,10 @@ void showComic(Surface& game)
 	}
 
 }
-void timer(Surface& game) {
+
+void timer(Surface& game, int &count_of_sec) {
 	int size = 20;
-	int count_of_sec = 90;
+	//int count_of_sec = 90;
 	int sec = count_of_sec;
 	int min = 0;
 	while (sec > 60)
@@ -406,12 +410,13 @@ void timer(Surface& game) {
 	texture_of_number.x -= size;
 	showPic(game, texture_of_number, NUMBERS, w);
 
-
-	while (true)
+	
+	while (!stop_timer)
 	{
+		
 		//showPic(game, texture_of_number, NUMBERS, i);
-		printf("%0d : %0d \n", min, sec);
-		sec--;
+		//printf("%0d : %0d \n", min, sec);
+	
 		if (sec == 0) {
 			if (min - 1 >= 0) {
 				min--;
@@ -424,8 +429,11 @@ void timer(Surface& game) {
 					texture_of_number.x = SCREEN_WIDTH - size * 6;
 					showPic(game, texture_of_number, NUMBERS, w);
 				}
+				
 			}
 		}
+		sec--;
+		
 		if (x == 0) {
 			y = (sec / 10) % 10;
 			texture_of_number.x = SCREEN_WIDTH - size * 3;
@@ -437,12 +445,13 @@ void timer(Surface& game) {
 		texture_of_number.x = SCREEN_WIDTH - size * 2;
 		showPic(game, texture_of_number, NUMBERS, x);
 
-
+		count_of_sec--;
 		if (min == 0 && sec == 0) {
 			false;
+			return;
 		}
 
-
+		
 		this_thread::sleep_for(chrono::milliseconds(1000));
 	}
 }
@@ -458,6 +467,7 @@ void playGame(Surface& game, bool& quit, fstream& file, fstream& fileCat)
 
 	while (number_of_level < game.count_levels)
 	{
+		stop_timer = true;
 		if (number_of_level == FIRST)
 		{
 			showComic(game);
@@ -586,7 +596,7 @@ void showMovementOfCat()
 {
 
 }
-int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, bool first)
+int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, int& count_of_sec, bool first)
 {
 	vector<Texture> copy_texture = texture_of_elements;
 	vector<vector<int>> copy_catAndGift = catAndGift;
@@ -620,16 +630,21 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 	{
 		while (SDL_PollEvent(&game.e) != 0)
 		{
+			
 			if (game.e.type == SDL_QUIT || flag)
 			{
+				stop_timer = true;
 				bool quit2 = false;
 				exit(quit2, game);
-				if (quit2)return EXIT_TO_MENU;
+				if (quit2) return EXIT_TO_MENU;
 				flag = false;
+				
+				stop_timer = false;
+				thread th(timer, ref(game), ref(count_of_sec));//ref - используется 
+				th.detach();
 				SDL_Rect coord;
 				inisialitCoordOfWallp(coord);
-				showPic(game, coord, TEXTURES, BACKGROUND);
-				showTexture(BACKGROUND, copy_texture[BACKGROUND].posTexture, game);
+				showPic(game, coord, TEXTURES, BACKGROUND_TIME);
 				field(game, game.infOfFild.level, file, copy_texture[CAT].posTexture);
 				field(game, copy_catAndGift, file, copy_texture[CAT].posTexture);
 				break;
@@ -656,7 +671,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 							//}
 							keydown_for_cat = SDLK_LEFT;
 
-							int result = playingLevel(game, file, copy_catAndGift,/* level, */copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift,/* level, */copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -685,7 +700,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 
 							keydown_for_cat = SDLK_LEFT;
 							keydown_for_box = SDLK_LEFT;
-							int result = playingLevel(game, file, copy_catAndGift,/* level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift,/* level,*/ copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -712,7 +727,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 							//	return RECURSION;
 							//}
 							keydown_for_cat = SDLK_RIGHT;
-							int result = playingLevel(game, file, copy_catAndGift,/* level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift,/* level,*/ copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -741,7 +756,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 
 							keydown_for_cat = SDLK_RIGHT;
 							keydown_for_box = SDLK_RIGHT;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, count_of_sec);
 
 							if (result == WIN)
 								return WIN;
@@ -768,7 +783,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 							//	return RECURSION;
 							//}
 							keydown_for_cat = SDLK_UP;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -797,7 +812,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 
 							keydown_for_cat = SDLK_UP;
 							keydown_for_box = SDLK_UP;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -822,7 +837,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 								return RECURSION;
 							}*/
 							keydown_for_cat = SDLK_DOWN;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -856,7 +871,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 
 							keydown_for_cat = SDLK_DOWN;
 							keydown_for_box = SDLK_DOWN;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit);
+							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -893,7 +908,9 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 }
 bool characterMovement(Surface& game, fstream& file, fstream& fileCat, bool& quit, bool new_level)
 {//передвижение персонажей
-	thread th(timer, ref(game));//ref - используется 
+	stop_timer = false;
+	int count_of_sec = 90;
+	thread th(timer, ref(game), ref(count_of_sec));//ref - используется 
 	th.detach();
 	vector<Texture> texture_of_level;
 	for (int i = 0; i < CountOfTexture; i++)
@@ -933,7 +950,7 @@ bool characterMovement(Surface& game, fstream& file, fstream& fileCat, bool& qui
 	texture_of_level[CAT].posTexture.y = ((SCREEN_HEIGHT / 2) - ((game.infOfFild.height) / 2.0 * texture_of_level[CAT].sizeTexture)) + texture_of_level[CAT].Y * texture_of_level[CAT].sizeTexture;
 	countOfStep(game, true, true);
 
-	if (playingLevel(game, file, game.infOfFild.catAndGift, /* game.infOfFild.level,*/ texture_of_level, quit, true) == EXIT_TO_MENU)
+	if (playingLevel(game, file, game.infOfFild.catAndGift, /* game.infOfFild.level,*/ texture_of_level, quit, count_of_sec, true) == EXIT_TO_MENU)
 	{
 		return EXIT_TO_MENU;
 	}
