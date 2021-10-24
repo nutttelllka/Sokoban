@@ -380,7 +380,6 @@ void timer(Surface& game) {
 	{
 		min++;
 		sec -= 60;
-
 	}
 
 	SDL_Rect texture_of_number;
@@ -497,19 +496,19 @@ void playGame(Surface& game, bool& quit, fstream& file, fstream& fileCat)
 		number_of_level = 0;
 	}
 }
-//void showArrInConsole(vector<vector<int>> arr, int width, int hight)
-//{
-//	for (int i = 0; i < 9; i++)
-//	{
-//		for (int j = 0; j < 9; j++)
-//		{
-//			cout << arr[i][j] << " ";
-//		}
-//		cout << endl;
-//	}
-//	cout << endl;
-//	cout << endl;
-//}
+void showArrInConsole(vector<vector<int>> arr, int width, int hight)
+{
+	for (int i = 0; i < 9; i++)
+	{
+		for (int j = 0; j < 9; j++)
+		{
+			cout << arr[i][j] << " ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+	cout << endl;
+}
 void editCoordsMovementOfCat(vector < Texture>& copy_texture, int keydown_for_cat)
 {
 	switch (keydown_for_cat)
@@ -1218,30 +1217,12 @@ bool loadMedia(Surface& game)
 	{
 		return false;
 	}
-	game.Logos[0] = loadSurface("teamLogo.bmp");
-	if (game.Logos[0] == NULL)
-	{
-		printf("Failed to load default image!\n");
-		success = false;
-	}
-	game.Logos[1] = loadSurface("gameLogo.bmp");
-	if (game.Logos[1] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
-	game.Logos[2] = loadSurface("MainMenu.bmp");
-	if (game.Logos[2] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
-	game.Logos[MENU_EXIT] = loadSurface("MenuExit.bmp");
-	if (game.Logos[MENU_EXIT] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
+	game.Logos[0] = loadSurface("Wallps\\teamLogo.bmp");
+	game.Logos[1] = loadSurface("Wallps\\gameLogo.bmp");
+	game.Logos[2] = loadSurface("Wallps\\MainMenu.bmp");
+	game.Logos[MENU_EXIT] = loadSurface("Wallps\\MenuExit.bmp");
+
+
 	game.Buttons[0] = loadSurface("buttons\\PlayGame1.bmp");
 	game.Buttons[1] = loadSurface("buttons\\HowToPlay1.bmp");
 	game.Buttons[2] = loadSurface("buttons\\Exit1.bmp");
@@ -1264,54 +1245,16 @@ bool loadMedia(Surface& game)
 			success = false;
 		}
 	}
-	game.Texture[EMPTY] = loadSurface("empty.bmp");
-	if (game.Texture[EMPTY] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
-	game.Texture[WALL] = loadSurface("wall.bmp");
-	if (game.Texture[WALL] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
-	game.Texture[FLOOR] = loadSurface("floor.bmp");
-	if (game.Texture[FLOOR] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
-	game.Texture[CAT] = loadSurface("mainCat.bmp");
-	if (game.Texture[CAT] == NULL)
-	{
-		printf("Failed to load up images!\n");
-		success = false;
-	}
-	game.Texture[PRESENT] = loadSurface("PresentBox.bmp");
-	if (game.Texture[PRESENT] == NULL)
-	{
-		printf("Failed to load up images!\n");
-		success = false;
-	}
-	game.Texture[PLACEHERE] = loadSurface("PlaceHere.bmp");
-	if (game.Texture[PLACEHERE] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
-	game.Texture[BACKGROUND] = loadSurface("Background.bmp");
-	if (game.Texture[BACKGROUND] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
-	game.Texture[BOX_IN_PLACEHERE] = loadSurface("BoxInPlaceHere.bmp");
-	if (game.Texture[BOX_IN_PLACEHERE] == NULL)
-	{
-		printf("Failed to load up image!\n");
-		success = false;
-	}
+	game.Texture[EMPTY] = loadSurface("textures\\empty.bmp");
+	game.Texture[WALL] = loadSurface("textures\\wall.bmp");
+	game.Texture[FLOOR] = loadSurface("textures\\floor.bmp");
+	game.Texture[CAT] = loadSurface("textures\\mainCat.bmp");
+	game.Texture[PRESENT] = loadSurface("textures\\PresentBox.bmp");
+	game.Texture[PLACEHERE] = loadSurface("textures\\PlaceHere.bmp");
+	game.Texture[BACKGROUND] = loadSurface("textures\\Background.bmp");
+	game.Texture[BOX_IN_PLACEHERE] = loadSurface("textures\\BoxInPlaceHere.bmp");
+	game.Texture[BACKGROUND_TIME] = loadSurface("textures\\BackgroundTime.bmp");
+
 	game.WindowsHowToPlay[FIRST] = loadSurface("how_to_play\\1.bmp");
 	game.WindowsHowToPlay[SECOND] = loadSurface("how_to_play\\2.bmp");
 	game.WindowsHowToPlay[THIRD] = loadSurface("how_to_play\\3.bmp");
@@ -1366,13 +1309,15 @@ bool loadMedia(Surface& game)
 			success = false;
 		}
 	}
-
-	game.Texture[BACKGROUND_TIME] = loadSurface("BackgroundTime.bmp");
-	if (game.Texture[BACKGROUND_TIME] == NULL)
+	for (int i = 0; i < CountOdArrs::CountOfTexture; i++)
 	{
-		printf("Failed to load up image!\n");
-		success = false;
+		if (game.Texture[i] == NULL)
+		{
+			printf("Failed to load up image!\n");
+			success = false;
+		}
 	}
+
 	return success;
 }
 void close(Surface& game)
