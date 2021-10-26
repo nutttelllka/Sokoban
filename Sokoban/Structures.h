@@ -4,6 +4,7 @@
 #include <SDL_mixer.h>
 #include "enums.h"
 
+
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600
 using namespace std;
@@ -51,6 +52,7 @@ struct Surface
 	SDL_Surface* Comic[CountOfComic];
 	SDL_Event e;
 	PlayField infOfFild;
+
 	int count_step = 0;
 	int count_levels = 5;
 
