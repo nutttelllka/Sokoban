@@ -1351,13 +1351,6 @@ void close(Surface& game)
 	//Уничтожить окно
 	SDL_DestroyWindow(game.Window);
 	game.Window = NULL;
-	for (int i = 0; i < CountOfLogos; ++i)
-	{
-		SDL_FreeSurface(game.Logos[i]);
-		game.Logos[i] = NULL;
-	}
-	SDL_DestroyWindow(game.Window);
-	game.Window = NULL;
 	SDL_Quit();
 	Mix_Quit();
 }
