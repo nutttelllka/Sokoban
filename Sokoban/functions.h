@@ -31,6 +31,7 @@ void howToPlay(Surface& game, bool quit, int count = 0);
 bool win(Surface& game, vector<vector<int>> copy_catAndGift);
 int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, int &count_of_sec, bool first = false);
 void countOfStep(Surface& game, bool what, bool zero = false);
+
 bool pressed_keys[7] = {};
 
 bool stop_timer = false;
@@ -412,10 +413,6 @@ void timer(Surface& game, int &count_of_sec) {
 	
 	while (!stop_timer)
 	{
-		
-		//showPic(game, texture_of_number, NUMBERS, i);
-		//printf("%0d : %0d \n", min, sec);
-	
 		if (sec == 0) {
 			if (min - 1 >= 0) {
 				min--;
@@ -427,19 +424,15 @@ void timer(Surface& game, int &count_of_sec) {
 					w = (min / 10);
 					texture_of_number.x = SCREEN_WIDTH - size * 6;
 					showPic(game, texture_of_number, NUMBERS, w);
-				}
-				
+				}	
 			}
 		}
 		sec--;
-		
 		if (x == 0) {
 			y = (sec / 10) % 10;
 			texture_of_number.x = SCREEN_WIDTH - size * 3;
 			showPic(game, texture_of_number, NUMBERS, y);
 		}
-
-		//if (x == 0)x = 9;
 		x = sec % 10;
 		texture_of_number.x = SCREEN_WIDTH - size * 2;
 		showPic(game, texture_of_number, NUMBERS, x);
@@ -450,7 +443,6 @@ void timer(Surface& game, int &count_of_sec) {
 			return;
 		}
 
-		
 		this_thread::sleep_for(chrono::milliseconds(1000));
 	}
 }
@@ -646,6 +638,8 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 				showPic(game, coord, TEXTURES, BACKGROUND_TIME);
 				field(game, game.infOfFild.level, file, copy_texture[CAT].posTexture);
 				field(game, copy_catAndGift, file, copy_texture[CAT].posTexture);
+				//maxNumberOfCounter(game);
+				countOfStep(game, true, true);
 				break;
 			}
 			else if (game.e.type == SDL_KEYDOWN)
@@ -1054,6 +1048,7 @@ void showTexture(int i, SDL_Rect posTexture, Surface& game)
 	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &posTexture);
 	SDL_UpdateWindowSurface(game.Window);
 }
+
 void countOfStep(Surface& game, bool what, bool zero)
 {
 	int size = 20;
@@ -1070,6 +1065,7 @@ void countOfStep(Surface& game, bool what, bool zero)
 	else if (!what && !zero) game.count_step--;
 	else {
 
+		//maxNumberOfCounter(game, size);
 		texture_of_number.x = size * 7;
 		int c = 500;
 		for (int i = 0; i < 3; i++) {
@@ -1081,20 +1077,37 @@ void countOfStep(Surface& game, bool what, bool zero)
 		}
 		texture_of_number.x = size * 4;
 		showPic(game, texture_of_number, NUMBERS, 11);
+
+		texture_of_number.x = size * 3;
+		c = game.count_step;
+		for (int i = 0; i < 3; i++) {
+			last_number = c % 10;
+			c /= 10;
+			showPic(game, texture_of_number, NUMBERS, last_number);
+			texture_of_number.x -= size;
+		}
+	
 	}
-	//cout << endl << game.count_step << endl;
 
 
-	texture_of_number.x = size * 3;
-	int c = game.count_step;
-	for (int i = 0; i < 3; i++) {
-		last_number = c % 10;
-		c /= 10;
+	if (what && game.count_step % 10 == 0 || !what && game.count_step % 10 == 9) {
+		last_number = game.count_step/10 % 10;
+		texture_of_number.x = size * 2;
 		showPic(game, texture_of_number, NUMBERS, last_number);
-		texture_of_number.x -= size;
+		
 	}
+	if (what && (game.count_step / 10) % 10 == 0 || !what && (game.count_step / 10) % 10 == 9) {
+		last_number = game.count_step / 100;
+		texture_of_number.x = size;
+		showPic(game, texture_of_number, NUMBERS, last_number);
+	}
+	last_number = game.count_step % 10;
+	texture_of_number.x = size * 3;
+	showPic(game, texture_of_number, NUMBERS, last_number);
+
 
 }
+
 void exit(bool& quit, Surface& game)
 {
 	bool quit2 = false;
