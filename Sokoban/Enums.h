@@ -29,7 +29,8 @@ enum Buttons
 	YES,
 	NO,
 	NEXT,
-	BACK
+	BACK,
+	RETRY
 };
 enum Wallps
 {
@@ -37,15 +38,16 @@ enum Wallps
 	LOGO_OF_GAME,
 	MAIN_MENU,
 	MENU_EXIT,
-
+	WIN_WALP,
+	LOSE
 };
 enum CountOdArrs
 {
-	CountOfLogos = 4,
-	CountOfButtons = 7,
+	CountOfWallps = 6,
+	CountOfButtons = 8,
 	CountOfPressedButtons = CountOfButtons,
 	CountOfTexture = 9,
-	CountOfWindows = 5,
+	CountOfWindows = 6,
 	CountOfNumbers = 12,
 	CountOfLeveles = 5,
 	CountOfComic = 5
@@ -58,7 +60,8 @@ enum SomeWindows
 	SECOND,
 	THIRD,
 	FOURTH,
-	FIFTH
+	FIFTH,
+	SIXTH
 };
 enum ReturningValues
 {
@@ -68,7 +71,7 @@ enum ReturningValues
 };
 enum Surfaces
 {
-    LOGOS,
+    WALLPS,
 	BUTTONS,
 	PRESSED_BUTTONS,
 	TEXTURES,

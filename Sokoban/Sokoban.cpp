@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 	//game.music = NULL;
 	game.Window = NULL;
 	game.ScreenSurface = NULL;
-	Stealth();
+	//Stealth();
 	intro(game);
 	//if (!init(surf)) 
 	//{

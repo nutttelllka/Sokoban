@@ -41,19 +41,19 @@ bool stop_timer = false;
 SDL_Surface* loadSurface(string path);
 
 
-void Stealth()
-{
-	HWND Stealth;
-	AllocConsole();
-	Stealth = FindWindowA("ConsoleWindowClass", NULL);
-	ShowWindow(Stealth, 0);
-}
+//void Stealth()
+//{
+//	HWND Stealth;
+//	AllocConsole();
+//	Stealth = FindWindowA("ConsoleWindowClass", NULL);
+//	ShowWindow(Stealth, 0);
+//}
 void showPic(Surface& game, SDL_Rect coord, int what_kind_of_arr, int what_kind_of_pic)
 {
 	switch (what_kind_of_arr)
 	{
-	case LOGOS:
-		game.CurrentSurface = game.Logos[what_kind_of_pic];
+	case WALLPS:
+		game.CurrentSurface = game.Wallps[what_kind_of_pic];
 		break;
 	case BUTTONS:
 		game.CurrentSurface = game.Buttons[what_kind_of_pic];
@@ -118,7 +118,7 @@ void intro(Surface& game)
 					{
 						SDL_Rect coord_for_wallp;
 						inisialitCoordOfWallp(coord_for_wallp);
-						showPic(game, coord_for_wallp, LOGOS, i);
+						showPic(game, coord_for_wallp, WALLPS, i);
 						SDL_Delay(500);
 						if(i == 0)Mix_PlayChannel(-1, game.intro, 0) == -1;
 						SDL_Delay(500);
@@ -137,7 +137,7 @@ void intro(Surface& game)
 }
 void backgroundMenu(Surface& game)
 {
-	game.CurrentSurface = game.Logos[2];
+	game.CurrentSurface = game.Wallps[2];
 	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, NULL);
 	SDL_UpdateWindowSurface(game.Window);
 }
@@ -375,7 +375,6 @@ void showComic(Surface& game)
 	}
 
 }
-
 void timer(Surface& game, int &count_of_sec) {
 	int size = 20;
 	//int count_of_sec = 90;
@@ -458,7 +457,7 @@ void playGame(Surface& game, bool& quit, fstream& file, fstream& fileCat)
 
 	while (number_of_level < game.count_levels)
 	{
-		stop_timer = true;
+		//stop_timer = true;
 		if (number_of_level == FIRST)
 		{
 			showComic(game);
@@ -479,6 +478,7 @@ void playGame(Surface& game, bool& quit, fstream& file, fstream& fileCat)
 		}
 		else
 		{
+			stop_timer = true;
 			//createMap(game, game.infOfFild.level, file);
 			game.infOfFild.level.clear();
 			game.infOfFild.catAndGift.clear();
@@ -488,6 +488,10 @@ void playGame(Surface& game, bool& quit, fstream& file, fstream& fileCat)
 			game.infOfFild.count_place = 0;
 			number_of_level++;
 			new_level = true;
+			SDL_Delay(1000);
+			SDL_Rect coord;
+			inisialitCoordOfWallp(coord);
+			showPic(game, coord, WALLPS, WIN_WALP);
 			SDL_Delay(1000);
 		}
 	}
@@ -582,10 +586,6 @@ void showAfterRecurs(Surface& game, vector < Texture> copy_texture)
 	showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, FLOOR);
 	showTexture(CAT, copy_texture[CAT].posTexture, game);
 	showPresent(game, game.infOfFild.level, copy_texture, PRESENT);
-}
-void showMovementOfCat()
-{
-
 }
 int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, int& count_of_sec, bool first)
 {
@@ -1048,7 +1048,6 @@ void showTexture(int i, SDL_Rect posTexture, Surface& game)
 	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &posTexture);
 	SDL_UpdateWindowSurface(game.Window);
 }
-
 void countOfStep(Surface& game, bool what, bool zero)
 {
 	int size = 20;
@@ -1057,18 +1056,21 @@ void countOfStep(Surface& game, bool what, bool zero)
 	SDL_Rect texture_of_number;
 	texture_of_number.y = 35;
 
-	if (what && !zero) {
+	if (what && !zero) 
+	{
 
 		game.count_step++;
 
 	}
 	else if (!what && !zero) game.count_step--;
-	else {
+	else
+	{
 
 		//maxNumberOfCounter(game, size);
 		texture_of_number.x = size * 7;
 		int c = 500;
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 3; i++) 
+		{
 			//int c = last_number;
 			last_number = c % 10;//
 			c /= 10;
@@ -1090,13 +1092,14 @@ void countOfStep(Surface& game, bool what, bool zero)
 	}
 
 
-	if (what && game.count_step % 10 == 0 || !what && game.count_step % 10 == 9) {
+	if (what && game.count_step % 10 == 0 || !what && game.count_step % 10 == 9) 
+	{
 		last_number = game.count_step/10 % 10;
 		texture_of_number.x = size * 2;
 		showPic(game, texture_of_number, NUMBERS, last_number);
-		
 	}
-	if (what && (game.count_step / 10) % 10 == 0 || !what && (game.count_step / 10) % 10 == 9) {
+	if (what && (game.count_step / 10) % 10 == 0 || !what && (game.count_step / 10) % 10 == 9)
+	{
 		last_number = game.count_step / 100;
 		texture_of_number.x = size;
 		showPic(game, texture_of_number, NUMBERS, last_number);
@@ -1107,14 +1110,13 @@ void countOfStep(Surface& game, bool what, bool zero)
 
 
 }
-
 void exit(bool& quit, Surface& game)
 {
 	bool quit2 = false;
 	SDL_Rect stretchRect;
 	stretchRect.x = 0;
 	stretchRect.y = 0;
-	showPic(game, stretchRect, LOGOS, MENU_EXIT);
+	showPic(game, stretchRect, WALLPS, MENU_EXIT);
 	stretchRect.x = 160;
 	stretchRect.y = 370;
 	int i = 3;
@@ -1247,11 +1249,12 @@ bool loadMedia(Surface& game)
 	{
 		return false;
 	}
-	game.Logos[0] = loadSurface("Wallps\\teamLogo.bmp");
-	game.Logos[1] = loadSurface("Wallps\\gameLogo.bmp");
-	game.Logos[2] = loadSurface("Wallps\\MainMenu.bmp");
-	game.Logos[MENU_EXIT] = loadSurface("Wallps\\MenuExit.bmp");
-
+	game.Wallps[0] = loadSurface("Wallps\\teamLogo.bmp");
+	game.Wallps[1] = loadSurface("Wallps\\gameLogo.bmp");
+	game.Wallps[2] = loadSurface("Wallps\\MainMenu.bmp");
+	game.Wallps[MENU_EXIT] = loadSurface("Wallps\\MenuExit.bmp");
+	game.Wallps[WIN_WALP] = loadSurface("Wallps\\Win.bmp");
+	game.Wallps[LOSE] = loadSurface("Wallps\\Lose.bmp");
 
 	game.Buttons[0] = loadSurface("buttons\\PlayGame1.bmp");
 	game.Buttons[1] = loadSurface("buttons\\HowToPlay1.bmp");
@@ -1260,6 +1263,7 @@ bool loadMedia(Surface& game)
 	game.Buttons[NO] = loadSurface("buttons\\No1.bmp");
 	game.Buttons[NEXT] = loadSurface("buttons\\Next1.bmp");
 	game.Buttons[BACK] = loadSurface("buttons\\Back1.bmp");
+	game.Buttons[RETRY] = loadSurface("buttons\\Retry.bmp");
 	game.PressedButtons[0] = loadSurface("pressed_buttons\\PlayGame2.bmp");
 	game.PressedButtons[1] = loadSurface("pressed_buttons\\HowToPlay2.bmp");
 	game.PressedButtons[2] = loadSurface("pressed_buttons\\Exit2.bmp");
@@ -1267,7 +1271,7 @@ bool loadMedia(Surface& game)
 	game.PressedButtons[NO] = loadSurface("pressed_buttons\\No2.bmp");
 	game.PressedButtons[NEXT] = loadSurface("pressed_buttons\\Next2.bmp");
 	game.PressedButtons[BACK] = loadSurface("pressed_buttons\\Back2.bmp");
-
+	game.PressedButtons[RETRY] = loadSurface("buttons\\Retry.bmp");
 	for (int i = 0; i < CountOfButtons; i++)
 	{
 		if (game.Buttons[i] == NULL || game.PressedButtons[i] == NULL) {
@@ -1290,6 +1294,7 @@ bool loadMedia(Surface& game)
 	game.WindowsHowToPlay[THIRD] = loadSurface("how_to_play\\3.bmp");
 	game.WindowsHowToPlay[FOURTH] = loadSurface("how_to_play\\4.bmp");
 	game.WindowsHowToPlay[FIFTH] = loadSurface("how_to_play\\5.bmp");
+	game.WindowsHowToPlay[SIXTH] = loadSurface("how_to_play\\6.bmp");
 
 	game.Numbers[0] = loadSurface("numbers\\0 number.bmp");
 	game.Numbers[1] = loadSurface("numbers\\1 number.bmp");
@@ -1309,6 +1314,7 @@ bool loadMedia(Surface& game)
 	game.WindowLevel[2] = loadSurface("windowlevel\\3.bmp");
 	game.WindowLevel[3] = loadSurface("windowlevel\\4.bmp");
 	game.WindowLevel[4] = loadSurface("windowlevel\\5.bmp");
+
 	game.Comic[0] = loadSurface("comic\\0.bmp");
 	game.Comic[1] = loadSurface("comic\\1.bmp");
 	game.Comic[2] = loadSurface("comic\\2.bmp");
@@ -1356,10 +1362,10 @@ void close(Surface& game)
 	//Освободить поверхность
 	Mix_FreeMusic(game.music);
 	game.music = NULL;
-	for (int i = 0; i < CountOfLogos; ++i)
+	for (int i = 0; i < CountOfWallps; ++i)
 	{
-		SDL_FreeSurface(game.Logos[i]);
-		game.Logos[i] = NULL;
+		SDL_FreeSurface(game.Wallps[i]);
+		game.Wallps[i] = NULL;
 	}
 	//Уничтожить окно
 	SDL_DestroyWindow(game.Window);

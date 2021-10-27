@@ -42,7 +42,7 @@ struct Surface
 	SDL_Surface* CurrentSurface;
 	SDL_Window* Window;
 	SDL_Surface* ScreenSurface;
-	SDL_Surface* Logos[CountOfLogos];
+	SDL_Surface* Wallps[CountOfWallps];
 	SDL_Surface* Buttons[CountOfButtons];
 	SDL_Surface* PressedButtons[CountOfPressedButtons];
 	SDL_Surface* Texture[CountOfTexture];
