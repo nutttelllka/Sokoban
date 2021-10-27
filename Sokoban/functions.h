@@ -98,7 +98,7 @@ void intro(Surface& game)
 		}
 		else
 		{
-
+			Mix_PlayChannel(4, game.intro, 0);
 			bool quit = false;
 			int i = 0;
 			int i_for_buttons = 0;
@@ -120,7 +120,7 @@ void intro(Surface& game)
 						inisialitCoordOfWallp(coord_for_wallp);
 						showPic(game, coord_for_wallp, WALLPS, i);
 						SDL_Delay(500);
-						if(i == 0)Mix_PlayChannel(-1, game.intro, 0) == -1;
+						//if(i == 0)Mix_PlayChannel(-1, game.intro, 0) == -1;
 						SDL_Delay(500);
 						i++;
 					}
@@ -143,6 +143,11 @@ void backgroundMenu(Surface& game)
 }
 void menu(Surface& game, bool& quit, int i, int& i_for_buttons, int& current_pressed_button)
 {
+	if (Mix_FadeInMusic(game.music2, -1, 3000) == -1) 
+	{
+		printf("Mix_FadeInMusic: %s\n", Mix_GetError());
+
+	}
 	fstream file("fields.TXT");
 	fstream fileCat("position.TXT");
 	SDL_Rect stretchRect;
@@ -242,7 +247,7 @@ void menu(Surface& game, bool& quit, int i, int& i_for_buttons, int& current_pre
 					switch (current_pressed_button)
 					{
 					case GAME:
-						Mix_PlayChannel(-1, game.button, 0) == -1;
+						Mix_PlayChannel(3, game.button, 0) == 3;
 						playGame(game, quit, file, fileCat);
 						backgroundMenu(game);
 						showButton(game, HOW_TO_PLAY, stretchRect);
@@ -250,7 +255,7 @@ void menu(Surface& game, bool& quit, int i, int& i_for_buttons, int& current_pre
 						stretchRect.y = y_of_button1;
 						break;
 					case HOW_TO_PLAY:
-						Mix_PlayChannel(-1, game.button, 0) == -1;
+						Mix_PlayChannel(3, game.button, 0) == 3;
 						howToPlay(game, quit);
 						backgroundMenu(game);
 						showButton(game, GAME, stretchRect);
@@ -258,7 +263,7 @@ void menu(Surface& game, bool& quit, int i, int& i_for_buttons, int& current_pre
 						stretchRect.y = y_of_button2;
 						break;
 					case EXIT:
-						Mix_PlayChannel(-1, game.button, 0) == -1;
+						Mix_PlayChannel(3, game.button, 0) == 3;
 						exit(quit, game);
 						backgroundMenu(game);
 						showButton(game, GAME, stretchRect);
@@ -361,6 +366,18 @@ void showComic(Surface& game)
 	SDL_Delay(1000);
 	coord_for_wallp.x = 100;
 	coord_for_wallp.y = 0;
+	while (!Mix_FadeOutMusic(2000) && Mix_PlayingMusic())
+	{
+		// wait for any fades to complete
+		SDL_Delay(40);
+	}
+
+
+	if (Mix_FadeInMusic(game.music2, -1, 2000) == -1) 
+	{
+		printf("Mix_FadeInMusic: %s\n", Mix_GetError());
+
+	}
 	for (int number_of_comic = SECOND; number_of_comic < CountOdArrs::CountOfComic;)
 	{
 		for (int i = 0; i < 2; i++)
@@ -1230,11 +1247,29 @@ bool loadMedia(Surface& game)
 		printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
 		success = false;
 	}
-	game.music = Mix_LoadMUS("sound\\music.wav");
-	if (game.music == NULL)
+
+	game.music1 = Mix_LoadMUS("sound\\music1.wav");
+	game.music2 = Mix_LoadMUS("sound\\music1.wav");
+	if (game.music1 == NULL)
 	{
 		printf("Failed to load music! SDL_mixer Error: %s\n", Mix_GetError());
 		success = false;
+	}
+	if (game.music2 == NULL)
+	{
+		printf("Failed to load music! SDL_mixer Error: %s\n", Mix_GetError());
+		success = false;
+	}
+
+
+
+	game.button = Mix_LoadWAV("sound\\button.wav");
+	game.box = Mix_LoadWAV("sound\\box.wav");
+	game.intro = Mix_LoadWAV("sound\\intro.wav");
+	//Если что-то пошло не так
+	if ((game.button == NULL) || (game.box == NULL))
+	{
+		return false;
 	}
 	//if (Mix_PlayingMusic() == 0)
 	//{
@@ -1360,8 +1395,8 @@ void close(Surface& game)
 {
 	//После уничтожения окна не забудь указатели указать на NULL
 	//Освободить поверхность
-	Mix_FreeMusic(game.music);
-	game.music = NULL;
+	Mix_FreeMusic(game.music1);
+	game.music1 = NULL;
 	for (int i = 0; i < CountOfWallps; ++i)
 	{
 		SDL_FreeSurface(game.Wallps[i]);

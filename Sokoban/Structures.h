@@ -31,7 +31,7 @@ struct Surface
 	//SDL_Surface* loadSurface(string path);
 
 
-	Mix_Music* music;
+	Mix_Music* music1;
 	Mix_Music* music2;
 	Mix_Chunk* box = NULL;
 	Mix_Chunk* button = NULL;
