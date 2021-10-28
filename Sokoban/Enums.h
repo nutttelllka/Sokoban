@@ -67,7 +67,8 @@ enum ReturningValues
 {
 	EXIT_TO_MENU,
 	WIN,
-	RECURSION
+	RECURSION, 
+	
 };
 enum Surfaces
 {
