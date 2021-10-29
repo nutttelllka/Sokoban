@@ -53,6 +53,7 @@ struct Surface
 	SDL_Event e;
 	PlayField infOfFild;
 
+	int result = 0;
 	int count_step = 0;
 	int count_levels = 5;
 
