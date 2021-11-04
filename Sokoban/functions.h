@@ -636,16 +636,20 @@ void retry(Surface& game, bool& quit) {
 			}
 			else if (game.e.type == SDL_KEYDOWN)
 			{
-				switch (game.e.key.keysym.sym)
-				{
-				case SDLK_RETURN:
-				case SDLK_KP_ENTER:
+				if (game.e.key.keysym.sym == SDLK_RETURN || game.e.key.keysym.sym == SDLK_KP_ENTER) {
+					Mix_PlayChannel(3, game.button, 0) == 3;
 					stretchRect.y++;
 					showPic(game, stretchRect, PRESSED_BUTTONS, RETRY);
-					Sleep(500);
+					SDL_Delay(200);
+
+					showPic(game, stretchRect, BUTTONS, RETRY);
+					SDL_Delay(200);
+
 					quit2 = true;
 					break;
 				}
+				
+				
 			}
 			if (quit2 == true)break;
 		}
