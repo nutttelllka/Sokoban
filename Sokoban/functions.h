@@ -508,13 +508,15 @@ void playGame(Surface& game, bool& quit, fstream& file, fstream& fileCat)
 			SDL_Delay(1000);
 			SDL_Rect coord;
 			inisialitCoordOfWallp(coord);
-			if (game.result == WIN_WALP) {
+			if (game.result == WIN_WALP)
+			{
 				number_of_level++;
 				new_level = true;
 				showPic(game, coord, WALLPS, WIN_WALP);
 				SDL_Delay(1000);
 			}
-			else if (game.result == LOSE) {
+			else if (game.result == LOSE) 
+			{
 				showPic(game, coord, WALLPS, LOSE);
 				retry(game, quit);
 				new_level = false;
@@ -634,11 +636,16 @@ void retry(Surface& game, bool& quit) {
 			}
 			else if (game.e.type == SDL_KEYDOWN)
 			{
-				stretchRect.y ++;
-				showPic(game, stretchRect, PRESSED_BUTTONS, RETRY);
-				Sleep(500);
-				quit2 = true;
-				break;
+				switch (game.e.key.keysym.sym)
+				{
+				case SDLK_RETURN:
+				case SDLK_KP_ENTER:
+					stretchRect.y++;
+					showPic(game, stretchRect, PRESSED_BUTTONS, RETRY);
+					Sleep(500);
+					quit2 = true;
+					break;
+				}
 			}
 			if (quit2 == true)break;
 		}
