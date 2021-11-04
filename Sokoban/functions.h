@@ -976,7 +976,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 bool characterMovement(Surface& game, fstream& file, fstream& fileCat, bool& quit, bool new_level)
 {//передвижение персонажей
 	stop_timer = false;
-	int count_of_sec = 5;
+	int count_of_sec = 90;
 	thread th(timer, ref(game), ref(count_of_sec));//ref - используется 
 	th.detach();
 	vector<Texture> texture_of_level;
