@@ -634,11 +634,20 @@ void retry(Surface& game, bool& quit) {
 			}
 			else if (game.e.type == SDL_KEYDOWN)
 			{
-				stretchRect.y ++;
-				showPic(game, stretchRect, PRESSED_BUTTONS, RETRY);
-				Sleep(500);
-				quit2 = true;
-				break;
+				if (game.e.key.keysym.sym == SDLK_RETURN || game.e.key.keysym.sym == SDLK_KP_ENTER) {
+					Mix_PlayChannel(3, game.button, 0) == 3;
+					stretchRect.y++;
+					showPic(game, stretchRect, PRESSED_BUTTONS, RETRY);
+					SDL_Delay(200);
+
+					showPic(game, stretchRect, BUTTONS, RETRY);
+					SDL_Delay(200);
+
+					quit2 = true;
+					break;
+				}
+				
+				
 			}
 			if (quit2 == true)break;
 		}
@@ -967,7 +976,7 @@ int playingLevel(Surface& game, fstream& file, vector<vector<int>> catAndGift, v
 bool characterMovement(Surface& game, fstream& file, fstream& fileCat, bool& quit, bool new_level)
 {//передвижение персонажей
 	stop_timer = false;
-	int count_of_sec = 90;
+	int count_of_sec = 5;
 	thread th(timer, ref(game), ref(count_of_sec));//ref - используется 
 	th.detach();
 	vector<Texture> texture_of_level;
