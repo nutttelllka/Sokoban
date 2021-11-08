@@ -29,36 +29,36 @@ struct PlayField
 	int count_levels = 5;
 
 };
-struct Surface
-{
-	//SDL_Surface* loadSurface(string path);
-
-
-	Mix_Music* music1;
-	Mix_Music* music2;
-	Mix_Chunk* box = NULL;
-	Mix_Chunk* button = NULL;
-	Mix_Chunk* win = NULL;
-	Mix_Chunk* intro = NULL;
-	//Mix_Music* AllMusic[2];
-
-	SDL_Surface* CurrentSurface;
-	SDL_Window* Window;
-	SDL_Surface* ScreenSurface;
-	SDL_Surface* Wallps[CountOfWallps];
-	SDL_Surface* Buttons[CountOfButtons];
-	SDL_Surface* PressedButtons[CountOfPressedButtons];
-	SDL_Surface* Texture[CountOfTexture];
-	SDL_Surface* WindowsHowToPlay[CountOfWindows];
-	SDL_Surface* Numbers[CountOfNumbers];
-	SDL_Surface* WindowLevel[CountOfLeveles];
-	SDL_Surface* Comic[CountOfComic];
-	SDL_Event e;
-	PlayField infOfFild;
-
-	int result = 0;
-	int count_step = 0;
-	int count_levels = 5;
-
-
-};
+//struct Surface
+//{
+//	//SDL_Surface* loadSurface(string path);
+//
+//
+//	Mix_Music* music1;
+//	Mix_Music* music2;
+//	Mix_Chunk* box = NULL;
+//	Mix_Chunk* button = NULL;
+//	Mix_Chunk* win = NULL;
+//	Mix_Chunk* intro = NULL;
+//	//Mix_Music* AllMusic[2];
+//
+//	SDL_Surface* CurrentSurface;
+//	SDL_Window* Window;
+//	SDL_Surface* ScreenSurface;
+//	SDL_Surface* Wallps[CountOfWallps];
+//	SDL_Surface* Buttons[CountOfButtons];
+//	SDL_Surface* PressedButtons[CountOfPressedButtons];
+//	SDL_Surface* Texture[CountOfTexture];
+//	SDL_Surface* WindowsHowToPlay[CountOfWindows];
+//	SDL_Surface* Numbers[CountOfNumbers];
+//	SDL_Surface* WindowLevel[CountOfLeveles];
+//	SDL_Surface* Comic[CountOfComic];
+//	SDL_Event e;
+//	PlayField infOfFild;
+//
+//	//int result = 0;
+//	//int count_step = 0;
+//	//int count_levels = 5;
+//
+//
+//};

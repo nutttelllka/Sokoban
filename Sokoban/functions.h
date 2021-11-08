@@ -409,27 +409,28 @@ public:
 };
 
 void intro(Surf& game);
-//bool init(Surface& game);
-//bool loadMedia(Surface& game);
-void close(Surface& game);
 void menu(Surf& game, bool& quit, int i, int& i_for_buttons, int& current_pressed_button);
 void howToPlay(Surf& game, bool quit, int count = 0);
 void playGame(Surf& game, bool& quit, fstream& file, fstream& fileCat);
-void showButton(Surface& game, int i, SDL_Rect stretchRectб, int y_of_button1 = 250, int y_of_button2 = 250 + 70, int y_of_button3 = 250 + 140);
-//void backgroundMenu(Surface& game);
 void exit(bool& quit, Surf& game);
 void createMap(Surf& game, vector<vector<int>>& array, fstream& file, bool new_level);
 void field(Surf& game, vector<vector<int>> array, fstream& file, SDL_Rect posTexture);//
-//void characterMovement(Surface& game, fstream& file, fstream& fileCat, bool& quit);
 bool characterMovement(Surf& game, fstream& file, fstream& fileCat, bool& quit, bool new_level);
 //void showTexture(int i, SDL_Rect posTexture, Surface& game);
+//void howToPlay(Surface& game, bool quit, int count = 0);
+//bool win(Surface& game, vector<vector<int>> copy_catAndGift);
+//void characterMovement(Surface& game, fstream& file, fstream& fileCat, bool& quit);
+//void showButton(Surface& game, int i, SDL_Rect stretchRectб, int y_of_button1 = 250, int y_of_button2 = 250 + 70, int y_of_button3 = 250 + 140);
+//void backgroundMenu(Surface& game);
+//bool init(Surface& game);
+//bool loadMedia(Surface& game);
+//void close(Surface& game);
 bool isPressed(int keyCode);
 bool isReleased(int keyCode);
-void howToPlay(Surface& game, bool quit, int count = 0);
-bool win(Surface& game, vector<vector<int>> copy_catAndGift);
+
 int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, int &count_of_sec, bool first = false);
 void countOfStep(Surf& game, bool what, bool zero = false);
-void retry(Surface& game, bool& quit);
+//void retry(Surface& game, bool& quit);
 
 bool pressed_keys[7] = {};
 
@@ -1943,23 +1944,23 @@ void field(Surf& game, vector<vector<int>> array, fstream& file, SDL_Rect posTex
 //
 //	return success;
 //}
-void close(Surface& game)
-{
-	//После уничтожения окна не забудь указатели указать на NULL
-	//Освободить поверхность
-	Mix_FreeMusic(game.music1);
-	game.music1 = NULL;
-	for (int i = 0; i < CountOfWallps; ++i)
-	{
-		SDL_FreeSurface(game.Wallps[i]);
-		game.Wallps[i] = NULL;
-	}
-	//Уничтожить окно
-	SDL_DestroyWindow(game.Window);
-	game.Window = NULL;
-	SDL_Quit();
-	Mix_Quit();
-}
+//void close(Surface& game)
+//{
+//	//После уничтожения окна не забудь указатели указать на NULL
+//	//Освободить поверхность
+//	Mix_FreeMusic(game.music1);
+//	game.music1 = NULL;
+//	for (int i = 0; i < CountOfWallps; ++i)
+//	{
+//		SDL_FreeSurface(game.Wallps[i]);
+//		game.Wallps[i] = NULL;
+//	}
+//	//Уничтожить окно
+//	SDL_DestroyWindow(game.Window);
+//	game.Window = NULL;
+//	SDL_Quit();
+//	Mix_Quit();
+//}
 bool isPressed(int keyCode)
 {
 	return 1;
