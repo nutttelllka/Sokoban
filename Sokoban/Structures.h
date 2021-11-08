@@ -17,16 +17,56 @@ struct Texture
 	int sizeTexture = 50;
 };
 
-struct PlayField
+class PlayField
 {
+	int height;
+	int width;
+	int count_place;
+	int result;
+	
+	int count_levels;
+public:
 	vector<vector<int>> level;
 	vector<vector<int>> catAndGift;
-	int height = 0;
-	int width = 0;
-	int count_place = 0;
-	int result = 0;
-	int count_step = 0;
-	int count_levels = 5;
+	PlayField() {
+		height = 0;
+		width = 0;
+		count_place = 0;
+		result = 0;
+		count_levels = 5;
+	}
+	void SetHeight(int height) {
+		this->height = height;
+	}
+	void SetWidth(int width) {
+		this->width = width;
+	}
+	void SetCountPlace(int count) {
+		count_place = count;
+	}
+	void SetResult(int result) {
+		this->result = result;
+	}
+	void SetCountLevels(int count) {
+		count_levels = count;
+	}
+	int GetHeight() {
+		return height;
+	}
+	int GetWidth() {
+		return width;
+	}
+	int GetCountPlace() {
+		return count_place;
+	}
+	int GetResult() {
+		return result;
+	}
+	int GetCountLevels() {
+		return count_levels;
+	}
+	
+	
 
 };
 //struct Surface
