@@ -19,7 +19,7 @@ enum Object
 	BACKGROUND,
 	PLACEHERE,
 	BOX_IN_PLACEHERE, 
-	BACKGROUND_TIME
+	//BACKGROUND_TIME
 };
 enum Buttons
 {
@@ -39,18 +39,20 @@ enum Wallps
 	MAIN_MENU,
 	MENU_EXIT,
 	WIN_WALP,
-	LOSE
+	LOSE,
+	BLACK,
+	BACKGROUND_TIME
 };
 enum CountOdArrs
 {
-	CountOfWallps = 6,
-	CountOfButtons = 8,
+	CountOfWallps = 8,
+	CountOfButtons = 7,
 	CountOfPressedButtons = CountOfButtons,
-	CountOfTexture = 9,
+	CountOfTexture = 8,
 	CountOfWindows = 6,
 	CountOfNumbers = 12,
 	CountOfLeveles = 5,
-	CountOfComic = 5
+	CountOfComic = 4
 	//CountOfWindowsHowToPlay = 5
 
 };

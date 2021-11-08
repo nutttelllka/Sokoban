@@ -17,12 +17,12 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	Surface game;
-	game.CurrentSurface = NULL;
-	game.music1 = NULL;
-	game.music2 = NULL;
-	game.Window = NULL;
-	game.ScreenSurface = NULL;
+	Surf game;
+	//game.CurrentSurface = NULL;
+	//game.music1 = NULL;
+	//game.music2 = NULL;
+	//game.Window = NULL;
+	//game.ScreenSurface = NULL;
 	//Stealth();
 	intro(game);
 	//if (!init(surf)) 
@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 	//		}
 	//	}
 	//}
-	close(game);
+	//close(game);
 	return 0;
 	//Surface test;
 	//test.ScreenSurface = NULL;

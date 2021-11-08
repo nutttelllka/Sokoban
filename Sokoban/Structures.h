@@ -24,6 +24,9 @@ struct PlayField
 	int height = 0;
 	int width = 0;
 	int count_place = 0;
+	int result = 0;
+	int count_step = 0;
+	int count_levels = 5;
 
 };
 struct Surface
