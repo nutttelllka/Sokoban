@@ -25,9 +25,9 @@ using namespace std;
 class Surf
 {
 private:
-	 SDL_Surface* CurrentSurface ;
-	 SDL_Window* Window;
-	 SDL_Surface* ScreenSurface;
+	 SDL_Surface* CurrentSurface;
+	 SDL_Window* Window ;
+	 SDL_Surface* ScreenSurface ;
 	 SDL_Surface* Wallps[CountOfWallps];
 	 SDL_Surface* Buttons[CountOfButtons];
 	 SDL_Surface* PressedButtons[CountOfPressedButtons];
@@ -37,7 +37,7 @@ private:
 	 SDL_Surface* WindowLevel[CountOfLeveles];
 	 SDL_Surface* Comic[CountOfComic];
 	 Mix_Music* music1;
-	 Mix_Music* music2 ;
+	 Mix_Music* music2;
 	 Mix_Chunk* box ;
 	 Mix_Chunk* button ;
 	 Mix_Chunk* win ;
@@ -46,10 +46,18 @@ public:
 	PlayField infOfFild;
 	SDL_Event e;
 
-	Surf()
-	{
-		//loadMedia();
-	}
+	//Surf()
+	//{
+	//	SDL_Surface* CurrentSurface = NULL;
+	//	SDL_Window* Window = NULL;
+	//	SDL_Surface* ScreenSurface = NULL;
+	//	Mix_Music* music1 = NULL;
+	//	Mix_Music* music2 = NULL;
+	//	Mix_Chunk* box = NULL;
+	//	Mix_Chunk* button = NULL;
+	//	Mix_Chunk* win = NULL;
+	//	Mix_Chunk* intro = NULL;
+	//}
 	SDL_Surface* loadSurface(std::string path)
 	{
 		//Load image at specified path
@@ -88,7 +96,7 @@ public:
 		}
 		return success;
 	}
-	void SetHowToPlay()
+	void loadHowToPlay()
 	{
 		WindowsHowToPlay[FIRST] = loadSurface("how_to_play\\1.bmp");
 		WindowsHowToPlay[SECOND] = loadSurface("how_to_play\\2.bmp");
@@ -833,7 +841,7 @@ void exit(bool& quit, Surf& game)
 }
 void howToPlay(Surf& game, bool quit, int count)
 {
-	game.SetHowToPlay();
+	game.loadHowToPlay();
 	SDL_Rect stretchRect;
 	/*SDL_Rect coord_for_wallp;
 	coord_for_wallp.x = 0;
