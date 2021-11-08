@@ -45,19 +45,16 @@ private:
 public:
 	PlayField infOfFild;
 	SDL_Event e;
+	//Counter counter;
 
 	//Surf()
 	//{
-	//	SDL_Surface* CurrentSurface = NULL;
-	//	SDL_Window* Window = NULL;
-	//	SDL_Surface* ScreenSurface = NULL;
-	//	Mix_Music* music1 = NULL;
-	//	Mix_Music* music2 = NULL;
-	//	Mix_Chunk* box = NULL;
-	//	Mix_Chunk* button = NULL;
-	//	Mix_Chunk* win = NULL;
-	//	Mix_Chunk* intro = NULL;
+	//	//loadMedia();
 	//}
+	void GetHeight() {
+		
+	}
+
 	SDL_Surface* loadSurface(std::string path)
 	{
 		//Load image at specified path
@@ -126,11 +123,32 @@ public:
 	}
 	void loadComics()
 	{
-
 		Comic[0] = loadSurface("comic\\1.bmp");
 		Comic[1] = loadSurface("comic\\2.bmp");
 		Comic[2] = loadSurface("comic\\3.bmp");
 		Comic[3] = loadSurface("comic\\4.bmp");
+	}
+	void loadNumbers() {
+		Numbers[0] = loadSurface("numbers\\0 number.bmp");
+		Numbers[1] = loadSurface("numbers\\1 number.bmp");
+		Numbers[2] = loadSurface("numbers\\2 number.bmp");
+		Numbers[3] = loadSurface("numbers\\3 number.bmp");
+		Numbers[4] = loadSurface("numbers\\4 number.bmp");
+		Numbers[5] = loadSurface("numbers\\5 number.bmp");
+		Numbers[6] = loadSurface("numbers\\6 number.bmp");
+		Numbers[7] = loadSurface("numbers\\7 number.bmp");
+		Numbers[8] = loadSurface("numbers\\8 number.bmp");
+		Numbers[9] = loadSurface("numbers\\9 number.bmp");
+		Numbers[10] = loadSurface("numbers\\colon.bmp");
+		Numbers[11] = loadSurface("numbers\\slash.bmp");
+
+	}
+	void freeAfterNumbers() {
+		for (int i = 0; i < CountOfNumbers; ++i)
+		{
+			SDL_FreeSurface(Numbers[i]);
+			Texture[i] = NULL;
+		}
 	}
 	void freeAfterExit()
 	{
@@ -240,7 +258,7 @@ public:
 		  WindowsHowToPlay[FIFTH] = loadSurface("how_to_play\\5.bmp");
 		  WindowsHowToPlay[SIXTH] = loadSurface("how_to_play\\6.bmp");*/
 
-		Numbers[0] = loadSurface("numbers\\0 number.bmp");
+		/*Numbers[0] = loadSurface("numbers\\0 number.bmp");
 		Numbers[1] = loadSurface("numbers\\1 number.bmp");
 		Numbers[2] = loadSurface("numbers\\2 number.bmp");
 		Numbers[3] = loadSurface("numbers\\3 number.bmp");
@@ -251,7 +269,7 @@ public:
 		Numbers[8] = loadSurface("numbers\\8 number.bmp");
 		Numbers[9] = loadSurface("numbers\\9 number.bmp");
 		Numbers[10] = loadSurface("numbers\\colon.bmp");
-		Numbers[11] = loadSurface("numbers\\slash.bmp");
+		Numbers[11] = loadSurface("numbers\\slash.bmp");*/
 
 		WindowLevel[0] = loadSurface("windowlevel\\1.bmp");
 		WindowLevel[1] = loadSurface("windowlevel\\2.bmp");
@@ -275,20 +293,20 @@ public:
 		}*/
 		for (int i = 0; i < CountOfLeveles; i++)
 		{
-			if (Numbers[i] == NULL)
+			if (WindowLevel[i] == NULL)
 			{
 				printf("Failed to load up image!\n");
 				success = false;
 			}
 		}
-		for (int i = 0; i < 12; i++)
+	/*	for (int i = 0; i < 12; i++)
 		{
 			if (Numbers[i] == NULL)
 			{
 				printf("Failed to load up image!\n");
 				success = false;
 			}
-		}
+		}*/
 		/*for (int i = 0; i < CountOdArrs::CountOfTexture; i++)
 		{
 			if ( Texture[i] == NULL)
@@ -300,6 +318,7 @@ public:
 
 		return success;
 	}
+	
 	void playIntro(int channel, int num)
 	{
 		playChunk(channel, num, intro);
@@ -416,6 +435,88 @@ public:
 	}
 };
 
+class Counter {
+	int size = 20;
+	int count_step = 0;
+	int last_number = 0;
+	SDL_Rect texture_of_number;
+	//Surf* number;
+
+public:
+	void countOfStep(Surf& number, bool what, bool zero = false)
+	{
+		
+		texture_of_number.y = 35;
+
+		if (what && !zero)
+		{
+			count_step++;
+			//number.infOfFild.SetCountStep(count_step+1);
+
+		}
+		else if (!what && !zero) count_step--;
+		else
+		{
+
+			//maxNumberOfCounter(game, size);
+			texture_of_number.x = size * 7;
+			int c = 300;
+			for (int i = 0; i < 3; i++)
+			{
+				//int c = last_number;
+				last_number = c % 10;//
+				c /= 10;
+				//owPic(game, texture_of_number, NUMBERS, last_number);
+				number.showNumbers(last_number, texture_of_number);
+				texture_of_number.x -= size;
+			}
+			texture_of_number.x = size * 4;
+			//showPic(game, texture_of_number, NUMBERS, 11);
+			number.showNumbers(11, texture_of_number);
+
+			texture_of_number.x = size * 3;
+			c = count_step;
+			for (int i = 0; i < 3; i++) {
+				last_number = c % 10;
+				c /= 10;
+				//showPic(game, texture_of_number, NUMBERS, last_number);
+				number.showNumbers(last_number, texture_of_number);
+				texture_of_number.x -= size;
+			}
+
+		}
+
+
+		if (what && count_step % 10 == 0 || !what && count_step % 10 == 9)
+		{
+			last_number = count_step / 10 % 10;
+			texture_of_number.x = size * 2;
+			//showPic(game, texture_of_number, NUMBERS, last_number);
+			number.showNumbers(last_number, texture_of_number);
+		}
+		if (what && (count_step / 10) % 10 == 0 || !what && (count_step / 10) % 10 == 9)
+		{
+			last_number = count_step / 100;
+			texture_of_number.x = size;
+			//showPic(game, texture_of_number, NUMBERS, last_number);
+			number.showNumbers(last_number, texture_of_number);
+		}
+		last_number = count_step % 10;
+		texture_of_number.x = size * 3;
+		//showPic(game, texture_of_number, NUMBERS, last_number);
+		number.showNumbers(last_number, texture_of_number);
+
+
+	}
+
+	void SetCountStep (int count) {
+		count_step = count;
+	}
+	int GetCountStep() {
+		return count_step;
+	}
+};
+
 void intro(Surf& game);
 void menu(Surf& game, bool& quit, int i, int& i_for_buttons, int& current_pressed_button);
 void howToPlay(Surf& game, bool quit, int count = 0);
@@ -423,7 +524,7 @@ void playGame(Surf& game, bool& quit, fstream& file, fstream& fileCat);
 void exit(bool& quit, Surf& game);
 void createMap(Surf& game, vector<vector<int>>& array, fstream& file, bool new_level);
 void field(Surf& game, vector<vector<int>> array, fstream& file, SDL_Rect posTexture);//
-bool characterMovement(Surf& game, fstream& file, fstream& fileCat, bool& quit, bool new_level);
+bool characterMovement(Surf& game, Counter& counter, fstream& file, fstream& fileCat, bool& quit, bool new_level);
 //void showTexture(int i, SDL_Rect posTexture, Surface& game);
 //void howToPlay(Surface& game, bool quit, int count = 0);
 //bool win(Surface& game, vector<vector<int>> copy_catAndGift);
@@ -436,8 +537,8 @@ bool characterMovement(Surf& game, fstream& file, fstream& fileCat, bool& quit, 
 bool isPressed(int keyCode);
 bool isReleased(int keyCode);
 
-int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, int &count_of_sec, bool first = false);
-void countOfStep(Surf& game, bool what, bool zero = false);
+int playingLevel(Surf& game, Counter& counter, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, int& count_of_sec, bool first = false);
+//void countOfStep(Surf& game, bool what, bool zero = false);
 //void retry(Surface& game, bool& quit);
 
 bool pressed_keys[7] = {};
@@ -939,6 +1040,7 @@ void howToPlay(Surf& game, bool quit, int count)
 //	}
 //
 //}
+
 //void timer(Surface& game, int &count_of_sec) {
 //	int size = 20;
 //	//int count_of_sec = 90;
@@ -1012,8 +1114,9 @@ void howToPlay(Surf& game, bool quit, int count)
 void playGame(Surf& game, bool& quit, fstream& file, fstream& fileCat)
 {
 	//int** level;
+	Counter counter;
 	vector<vector<int>> level;
-	game.infOfFild.count_place = 0;
+	counter.SetCountStep(0);
 	int height = 0;
 	int width = 0;
 	static bool new_level = false;
@@ -1024,20 +1127,22 @@ void playGame(Surf& game, bool& quit, fstream& file, fstream& fileCat)
 		game.showComics();
 		//showComic(game);
 	}
-	while (number_of_level < game.infOfFild.count_levels)
+	while (number_of_level < game.infOfFild.GetCountLevels())
 	{
 		//stop_timer = true;
 
 		//showWindowLevel(game, number_of_level);
 		game.loadTextures();
+		game.loadNumbers();
 		game.showWindowLevel(number_of_level);
 		SDL_Delay(1000);
-		game.infOfFild.count_step = 0;
+		counter.SetCountStep(0);
 		createMap(game, game.infOfFild.level, file, new_level);
-		if (characterMovement(game, file, fileCat, quit, new_level) == EXIT_TO_MENU)
+		if (characterMovement(game, counter, file, fileCat, quit, new_level) == EXIT_TO_MENU)
 		{
 			//quit = true;
 			game.freeAfterTextures();
+			game.freeAfterNumbers();
 			new_level = false;
 			game.infOfFild.level.clear();
 			game.infOfFild.catAndGift.clear();
@@ -1050,16 +1155,17 @@ void playGame(Surf& game, bool& quit, fstream& file, fstream& fileCat)
 			stop_timer = true;
 			//createMap(game, game.infOfFild.level, file);
 			game.freeAfterTextures();
+			game.freeAfterNumbers();
 			game.infOfFild.level.clear();
 			game.infOfFild.catAndGift.clear();
 			//game.infOfFild.level.swap(vector<vector<int>>());
 			vector<vector<int>>().swap(game.infOfFild.level);
 			vector<vector<int>>().swap(game.infOfFild.catAndGift);
-			game.infOfFild.count_place = 0;
+			game.infOfFild.SetCountPlace(0);
 			SDL_Delay(1000);
 			//SDL_Rect coord;
 			//inisialitCoordOfWallp(coord);
-			if (game.infOfFild.result == WIN_WALP)
+			if (game.infOfFild.GetResult() == WIN_WALP)
 			{
 				number_of_level++;
 				new_level = true;
@@ -1067,7 +1173,7 @@ void playGame(Surf& game, bool& quit, fstream& file, fstream& fileCat)
 				//showPic(game, coord, WALLPS, WIN_WALP);
 				SDL_Delay(1000);
 			}
-			else if (game.infOfFild.result == LOSE)
+			else if (game.infOfFild.GetResult() == LOSE)
 			{
 
 				//showPic(game, coord, WALLPS, LOSE);
@@ -1078,7 +1184,7 @@ void playGame(Surf& game, bool& quit, fstream& file, fstream& fileCat)
 			
 		}
 	}
-		if (number_of_level == game.infOfFild.count_levels)
+		if (number_of_level == game.infOfFild.GetCountLevels())
 		{
 			file.seekg(0, ios_base::beg);
 			fileCat.seekg(0, ios_base::beg);
@@ -1214,19 +1320,19 @@ void showAfterRecurs(Surf& game, vector < Texture> copy_texture)
 }
 bool win(Surf& game, vector<vector<int>> copy_catAndGift) {
 	int count = 0;
-	for (int i = 0; i < game.infOfFild.height; i++)
+	for (int i = 0; i < game.infOfFild.GetHeight(); i++)
 	{
-		for (int j = 0; j < game.infOfFild.width; j++)
+		for (int j = 0; j < game.infOfFild.GetWidth(); j++)
 		{
 			if (game.infOfFild.level[i][j] == PLACEHERE && copy_catAndGift[i][j] == PRESENT)
 				count++;
 		}
 	}
-	if (count == game.infOfFild.count_place) return 1;
+	if (count == game.infOfFild.GetCountPlace()) return 1;
 	return 0;
 
 }
-int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, int& count_of_sec, bool first)
+int playingLevel(Surf& game, Counter& counter, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, int& count_of_sec, bool first)
 {
 	vector<Texture> copy_texture = texture_of_elements;
 	vector<vector<int>> copy_catAndGift = catAndGift;
@@ -1253,10 +1359,10 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 
 	}
 	
-	if (win(game, copy_catAndGift) || count_of_sec == 0 || game.infOfFild.count_step == 300)
+	if (win(game, copy_catAndGift) || count_of_sec == 0 || counter.GetCountStep() == 300)//getter
 	{
-		if (win(game, copy_catAndGift))game.infOfFild.result = WIN_WALP;
-		else game.infOfFild.result = LOSE;
+		if (win(game, copy_catAndGift)) game.infOfFild.SetResult(WIN_WALP);
+		else game.infOfFild.SetResult(LOSE);
 		return WIN;
 	}
 		
@@ -1266,10 +1372,11 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 	{
 		while (SDL_PollEvent(&game.e) != 0)
 		{
-			if (win(game, copy_catAndGift) || count_of_sec == 0 || game.infOfFild.count_step == 300)
+			
+			if (win(game, copy_catAndGift) || count_of_sec == 0 || counter.GetCountStep() == 300) 
 			{
-				if (win(game, copy_catAndGift))game.infOfFild.result = WIN_WALP;
-				else game.infOfFild.result = LOSE;
+				if (win(game, copy_catAndGift)) game.infOfFild.SetResult(WIN_WALP);
+				else game.infOfFild.SetResult(LOSE);
 				return WIN;
 			}
 			if (game.e.type == SDL_QUIT || flag)
@@ -1292,7 +1399,7 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 				field(game, copy_catAndGift, file, copy_texture[CAT].posTexture);
 				//maxNumberOfCounter(game);
 
-
+				counter.countOfStep(game, true, true);
 				//countOfStep(game, true, true);
 
 
@@ -1312,12 +1419,12 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 
 						if (copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X - 1] != PRESENT)
 						{
-							//countOfStep(game, true);
+							counter.countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 
 							keydown_for_cat = SDLK_LEFT;
 
-							int result = playingLevel(game, file, copy_catAndGift,copy_texture, quit, count_of_sec);
+							int result = playingLevel(game, counter, file, copy_catAndGift,copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -1332,7 +1439,7 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 							&& game.infOfFild.level[copy_texture[CAT].Y][copy_texture[CAT].X - 2] != WALL
 							&& copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X - 2] != PRESENT)
 						{
-							//countOfStep(game, true);
+							counter.countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							copy_texture[PRESENT].posTexture.y = copy_texture[CAT].posTexture.y;
 							copy_texture[PRESENT].posTexture.x = copy_texture[CAT].posTexture.x - copy_texture[CAT].sizeTexture;
@@ -1349,7 +1456,7 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 
 							keydown_for_cat = SDLK_LEFT;
 							keydown_for_box = SDLK_LEFT;
-							int result = playingLevel(game, file, copy_catAndGift,/* level,*/ copy_texture, quit, count_of_sec);
+							int result = playingLevel(game, counter, file, copy_catAndGift,/* level,*/ copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -1368,10 +1475,10 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 
 						if (copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X + 1] != PRESENT)
 						{
-							//countOfStep(game, true);
+							counter.countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							keydown_for_cat = SDLK_RIGHT;
-							int result = playingLevel(game, file, copy_catAndGift,/* level,*/ copy_texture, quit, count_of_sec);
+							int result = playingLevel(game, counter, file, copy_catAndGift,/* level,*/ copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -1386,7 +1493,7 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 							&& game.infOfFild.level[copy_texture[CAT].Y][copy_texture[CAT].X + 2] != WALL
 							&& copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X + 2] != PRESENT)
 						{
-							//countOfStep(game, true);
+							counter.countOfStep(game, true);
 
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							copy_texture[PRESENT].posTexture.y = copy_texture[CAT].posTexture.y;
@@ -1404,7 +1511,7 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 
 							keydown_for_cat = SDLK_RIGHT;
 							keydown_for_box = SDLK_RIGHT;
-							int result = playingLevel(game, file, copy_catAndGift, copy_texture, quit, count_of_sec);
+							int result = playingLevel(game, counter, file, copy_catAndGift, copy_texture, quit, count_of_sec);
 
 							if (result == WIN)
 								return WIN;
@@ -1423,7 +1530,7 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 
 						if (copy_catAndGift[copy_texture[CAT].Y - 1][copy_texture[CAT].X] != PRESENT)
 						{
-							//countOfStep(game, true);
+							counter.countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							//if (pressed_key_cat == SDLK_DOWN && pressed_key_box == KEY_PRESS_DEFAULT)
 							//{
@@ -1431,7 +1538,7 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 							//	return RECURSION;
 							//}
 							keydown_for_cat = SDLK_UP;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, count_of_sec);
+							int result = playingLevel(game, counter, file, copy_catAndGift, /*level,*/ copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -1446,7 +1553,7 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 							&& game.infOfFild.level[copy_texture[CAT].Y - 2][copy_texture[CAT].X] != WALL
 							&& copy_catAndGift[copy_texture[CAT].Y - 2][copy_texture[CAT].X] != PRESENT)
 						{
-							//countOfStep(game, true);
+							counter.countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							copy_texture[PRESENT].posTexture.y = copy_texture[CAT].posTexture.y - copy_texture[CAT].sizeTexture;
 							copy_texture[PRESENT].posTexture.x = copy_texture[CAT].posTexture.x;
@@ -1463,7 +1570,7 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 
 							keydown_for_cat = SDLK_UP;
 							keydown_for_box = SDLK_UP;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, count_of_sec);
+							int result = playingLevel(game, counter, file, copy_catAndGift, /*level,*/ copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -1481,10 +1588,10 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 
 						if (copy_catAndGift[copy_texture[CAT].Y + 1][copy_texture[CAT].X] != PRESENT)
 						{
-							//countOfStep(game, true);
+							counter.countOfStep(game, true);
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							keydown_for_cat = SDLK_DOWN;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, count_of_sec);
+							int result = playingLevel(game, counter, file, copy_catAndGift, /*level,*/ copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -1502,7 +1609,7 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 							&& game.infOfFild.level[copy_texture[CAT].Y + 2][copy_texture[CAT].X] != WALL
 							&& copy_catAndGift[copy_texture[CAT].Y + 2][copy_texture[CAT].X] != PRESENT)
 						{
-							//countOfStep(game, true);
+							counter.countOfStep(game, true);
 
 							showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 							copy_texture[PRESENT].posTexture.y = copy_texture[CAT].posTexture.y + copy_texture[CAT].sizeTexture;
@@ -1520,7 +1627,7 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 
 							keydown_for_cat = SDLK_DOWN;
 							keydown_for_box = SDLK_DOWN;
-							int result = playingLevel(game, file, copy_catAndGift, /*level,*/ copy_texture, quit, count_of_sec);
+							int result = playingLevel(game, counter, file, copy_catAndGift, /*level,*/ copy_texture, quit, count_of_sec);
 							if (result == WIN)
 								return WIN;
 							else if (result == RECURSION)
@@ -1542,7 +1649,7 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 				//showArrInConsole(copy_catAndGift, 9, 9);
 				if (pressed_keys[KEY_PRESS_LEFT_CTRL] && pressed_keys[KEY_PRESS_Z] && !first)
 				{
-					//countOfStep(game, false);
+					counter.countOfStep(game, false);
 
 					showFloorOfPlaceHere(game, game.infOfFild.level, copy_texture, CAT);
 					copy_catAndGift[copy_texture[CAT].Y][copy_texture[CAT].X] = 0;
@@ -1552,16 +1659,18 @@ int playingLevel(Surf& game, fstream& file, vector<vector<int>> catAndGift, vect
 				}
 				if (quit)return EXIT_TO_MENU;
 			}
+
 		}
 
 	}
 }
 
-bool characterMovement(Surf& game, fstream& file, fstream& fileCat, bool& quit, bool new_level)
+bool characterMovement(Surf& game, Counter& counter, fstream& file, fstream& fileCat, bool& quit, bool new_level)
 {//передвижение персонажей
 	
 	stop_timer = false;
 	int count_of_sec = 30;
+	
 	//thread th(timer, ref(game), ref(count_of_sec));//ref - используется 
 	//th.detach();
 	vector<Texture> texture_of_level;
@@ -1583,9 +1692,9 @@ bool characterMovement(Surf& game, fstream& file, fstream& fileCat, bool& quit, 
 	createMap(game, game.infOfFild.catAndGift, fileCat, new_level);
 	field(game, game.infOfFild.catAndGift, fileCat, texture_of_level[CAT].posTexture);
 
-	for (int y = 0; y < (game.infOfFild.height); y++)
+	for (int y = 0; y < (game.infOfFild.GetHeight()); y++)
 	{
-		for (int x = 0; x < (game.infOfFild.width); x++)
+		for (int x = 0; x < (game.infOfFild.GetWidth()); x++)
 		{
 			if (game.infOfFild.catAndGift[y][x] == CAT)
 			{
@@ -1593,16 +1702,19 @@ bool characterMovement(Surf& game, fstream& file, fstream& fileCat, bool& quit, 
 				texture_of_level[CAT].Y = y;
 			}
 			if (game.infOfFild.level[y][x] == PLACEHERE) {
-				game.infOfFild.count_place++;
+				game.infOfFild.SetCountPlace(game.infOfFild.GetCountPlace() + 1);
 			}
 		}
 	}
 
-	texture_of_level[CAT].posTexture.x = ((SCREEN_WIDTH / 2) - ((game.infOfFild.width) / 2.0 * texture_of_level[CAT].sizeTexture)) + texture_of_level[CAT].X * texture_of_level[CAT].sizeTexture;
-	texture_of_level[CAT].posTexture.y = ((SCREEN_HEIGHT / 2) - ((game.infOfFild.height) / 2.0 * texture_of_level[CAT].sizeTexture)) + texture_of_level[CAT].Y * texture_of_level[CAT].sizeTexture;
+	texture_of_level[CAT].posTexture.x = ((SCREEN_WIDTH / 2) - ((game.infOfFild.GetWidth()) / 2.0 * texture_of_level[CAT].sizeTexture)) + texture_of_level[CAT].X * texture_of_level[CAT].sizeTexture;
+	texture_of_level[CAT].posTexture.y = ((SCREEN_HEIGHT / 2) - ((game.infOfFild.GetHeight()) / 2.0 * texture_of_level[CAT].sizeTexture)) + texture_of_level[CAT].Y * texture_of_level[CAT].sizeTexture;
+	
+	
+	counter.countOfStep(game, true, true);
 	//countOfStep(game, true, true);
 
-	if (playingLevel(game, file, game.infOfFild.catAndGift,  texture_of_level, quit, count_of_sec, true) == EXIT_TO_MENU)
+	if (playingLevel(game, counter, file, game.infOfFild.catAndGift,  texture_of_level, quit, count_of_sec, true) == EXIT_TO_MENU)
 	{
 		return EXIT_TO_MENU;
 	}
@@ -1630,13 +1742,13 @@ void createMap(Surf& game, vector<vector<int>>& array, fstream& file, bool new_l
 		i = file.tellg();
 		string str;
 		file >> str;
-		(game.infOfFild.height) = stoi(str);
+		game.infOfFild.SetHeight(stoi(str));
 		file >> str;
-		(game.infOfFild.width) = stoi(str);
-		for (int i = 0; i < (game.infOfFild.height); i++)
+		game.infOfFild.SetWidth(stoi(str)) ;
+		for (int i = 0; i < (game.infOfFild.GetHeight()); i++)
 		{
 			vector<int> arr;
-			for (int j = 0; j < (game.infOfFild.width); j++)
+			for (int j = 0; j < (game.infOfFild.GetWidth()); j++)
 			{
 				file >> str;
 				arr.push_back(stoi(str));
@@ -1651,11 +1763,11 @@ void field(Surf& game, vector<vector<int>> array, fstream& file, SDL_Rect posTex
 	int sizeTexture = 50;
 
 	//SDL_Rect posTexture;
-	double X = (SCREEN_WIDTH / 2) - (game.infOfFild.width / 2.0 * sizeTexture);
+	double X = (SCREEN_WIDTH / 2) - (game.infOfFild.GetWidth() / 2.0 * sizeTexture);
 	posTexture.x = X;
-	posTexture.y = (SCREEN_HEIGHT / 2) - (game.infOfFild.height / 2.0 * sizeTexture);
-	for (int i = 0; i < game.infOfFild.height; i++) {
-		for (int j = 0; j < game.infOfFild.width; j++) {
+	posTexture.y = (SCREEN_HEIGHT / 2) - (game.infOfFild.GetHeight() / 2.0 * sizeTexture);
+	for (int i = 0; i < game.infOfFild.GetHeight(); i++) {
+		for (int j = 0; j < game.infOfFild.GetWidth(); j++) {
 			switch (array[i][j])
 			{
 
@@ -1702,68 +1814,8 @@ void field(Surf& game, vector<vector<int>> array, fstream& file, SDL_Rect posTex
 //	SDL_BlitSurface(game.CurrentSurface, NULL, game.ScreenSurface, &posTexture);
 //	SDL_UpdateWindowSurface(game.Window);
 //}
-//void countOfStep(Surface& game, bool what, bool zero)
-//{
-//	int size = 20;
-//
-//	int last_number = 0;
-//	SDL_Rect texture_of_number;
-//	texture_of_number.y = 35;
-//
-//	if (what && !zero) 
-//	{
-//
-//		game.count_step++;
-//
-//	}
-//	else if (!what && !zero) game.count_step--;
-//	else
-//	{
-//
-//		//maxNumberOfCounter(game, size);
-//		texture_of_number.x = size * 7;
-//		int c = 300;
-//		for (int i = 0; i < 3; i++) 
-//		{
-//			//int c = last_number;
-//			last_number = c % 10;//
-//			c /= 10;
-//			showPic(game, texture_of_number, NUMBERS, last_number);
-//			texture_of_number.x -= size;
-//		}
-//		texture_of_number.x = size * 4;
-//		showPic(game, texture_of_number, NUMBERS, 11);
-//
-//		texture_of_number.x = size * 3;
-//		c = game.count_step;
-//		for (int i = 0; i < 3; i++) {
-//			last_number = c % 10;
-//			c /= 10;
-//			showPic(game, texture_of_number, NUMBERS, last_number);
-//			texture_of_number.x -= size;
-//		}
-//	
-//	}
-//
-//
-//	if (what && game.count_step % 10 == 0 || !what && game.count_step % 10 == 9) 
-//	{
-//		last_number = game.count_step/10 % 10;
-//		texture_of_number.x = size * 2;
-//		showPic(game, texture_of_number, NUMBERS, last_number);
-//	}
-//	if (what && (game.count_step / 10) % 10 == 0 || !what && (game.count_step / 10) % 10 == 9)
-//	{
-//		last_number = game.count_step / 100;
-//		texture_of_number.x = size;
-//		showPic(game, texture_of_number, NUMBERS, last_number);
-//	}
-//	last_number = game.count_step % 10;
-//	texture_of_number.x = size * 3;
-//	showPic(game, texture_of_number, NUMBERS, last_number);
-//
-//
-//}
+
+
 
 //int showButton(int i)
 //{
