@@ -422,116 +422,116 @@ public:
 		return Texture[what];
 	}
 };
-//class TextureNas : public Surf
-//{
-//
-//	SDL_Surface* PicTexture;
-//public:
-//	SDL_Rect posTexture;
-//	int X;
-//	int Y;
-//	int size_texture;
-//	TextureNas() :TextureNas("textures\\empty.bmp")
-//	{
-//
-//	}
-//	TextureNas(string path) :TextureNas(path, 0, 0)
-//	{
-//
-//	}
-//	TextureNas(string path, int X, int Y)
-//	{
-//		this->X = X;
-//		this->Y = Y;
-//		SetPicTexture(path);
-//		size_texture = 50;
-//		posTexture.x = 0;
-//		posTexture.y = 0;
-//	}
-//	void SetPosTextureY(unsigned int y)
-//	{
-//		posTexture.y = y;
-//	}
-//	void SetPosTextureX(unsigned int x)
-//	{
-//		posTexture.x = x;
-//	}
-//	void SetX(unsigned int X)
-//	{
-//		this->X = X;
-//	}
-//	void SetY(unsigned int Y)
-//	{
-//		this->Y = Y;
-//	}
-//	int GetX()
-//	{
-//		return X;
-//	}
-//	int GetY()
-//	{
-//		return Y;
-//	}
-//	SDL_Surface* GetPicTexture()
-//	{
-//		return PicTexture;
-//	}
-//	SDL_Rect GetPosTexture()
-//	{
-//		return posTexture;
-//	}
-//	int GetPosTextureY()
-//	{
-//		return posTexture.y;
-//	}
-//	int GetPosTextureX()
-//	{
-//		return posTexture.x;
-//	}
-//	int Getsize_texture()
-//	{
-//		return size_texture;
-//	}
-//	void SetPicTexture(string path)
-//	{
-//		PicTexture = loadSurface(path);
-//	}
-//	void movementLeftCat()
-//	{
-//		X--;
-//		posTexture.x -= size_texture;
-//	}
-//	void movementRightCat()
-//	{
-//		Y++;
-//		posTexture.y += size_texture;
-//	}
-//	void movementUpCat()
-//	{
-//		Y--;
-//		posTexture.y -= size_texture;
-//	}
-//	void movementDownCat()
-//	{
-//		X++;
-//		posTexture.x += size_texture;
-//	}
-//	void movementLeftBox(TextureNas copy_texture)
-//	{
-//		posTexture.y = copy_texture.posTexture.y;
-//		posTexture.x = copy_texture.posTexture.x - copy_texture.size_texture;
-//		Y = copy_texture.Y;
-//		X = copy_texture.X - 1;
-//	}
-//	void movementRightBox(TextureNas copy_texture)
-//	{
-//		posTexture.y = copy_texture.posTexture.y;
-//		posTexture.x = copy_texture.posTexture.x + copy_texture.size_texture;
-//		Y = copy_texture.Y;
-//		X = copy_texture.X + 1;
-//	}
-//
-//};
+class TextureNas : public Surf
+{
+
+	SDL_Surface* PicTexture;
+public:
+	SDL_Rect posTexture;
+	int X;
+	int Y;
+	int size_texture;
+	TextureNas() :TextureNas("textures\\empty.bmp")
+	{
+
+	}
+	TextureNas(string path) :TextureNas(path, 0, 0)
+	{
+
+	}
+	TextureNas(string path, int X, int Y)
+	{
+		this->X = X;
+		this->Y = Y;
+		SetPicTexture(path);
+		size_texture = 50;
+		posTexture.x = 0;
+		posTexture.y = 0;
+	}
+	void SetPosTextureY(unsigned int y)
+	{
+		posTexture.y = y;
+	}
+	void SetPosTextureX(unsigned int x)
+	{
+		posTexture.x = x;
+	}
+	void SetX(unsigned int X)
+	{
+		this->X = X;
+	}
+	void SetY(unsigned int Y)
+	{
+		this->Y = Y;
+	}
+	int GetX()
+	{
+		return X;
+	}
+	int GetY()
+	{
+		return Y;
+	}
+	SDL_Surface* GetPicTexture()
+	{
+		return PicTexture;
+	}
+	SDL_Rect GetPosTexture()
+	{
+		return posTexture;
+	}
+	int GetPosTextureY()
+	{
+		return posTexture.y;
+	}
+	int GetPosTextureX()
+	{
+		return posTexture.x;
+	}
+	int Getsize_texture()
+	{
+		return size_texture;
+	}
+	void SetPicTexture(string path)
+	{
+		PicTexture = loadSurface(path);
+	}
+	void movementLeftCat()
+	{
+		X--;
+		posTexture.x -= size_texture;
+	}
+	void movementRightCat()
+	{
+		Y++;
+		posTexture.y += size_texture;
+	}
+	void movementUpCat()
+	{
+		Y--;
+		posTexture.y -= size_texture;
+	}
+	void movementDownCat()
+	{
+		X++;
+		posTexture.x += size_texture;
+	}
+	void movementLeftBox(TextureNas copy_texture)
+	{
+		posTexture.y = copy_texture.posTexture.y;
+		posTexture.x = copy_texture.posTexture.x - copy_texture.size_texture;
+		Y = copy_texture.Y;
+		X = copy_texture.X - 1;
+	}
+	void movementRightBox(TextureNas copy_texture)
+	{
+		posTexture.y = copy_texture.posTexture.y;
+		posTexture.x = copy_texture.posTexture.x + copy_texture.size_texture;
+		Y = copy_texture.Y;
+		X = copy_texture.X + 1;
+	}
+
+};
 class Counter {
 	int size;
 	int count_step;
@@ -624,7 +624,7 @@ class Timer {
 	int x = 0, y = 0, z = 0, w = 0; //изменение определенных цифр во времени
 	SDL_Rect texture_of_number;
 public:
-	Timer() : Timer(40) {
+	Timer() : Timer(90) {
 		
 	}
 	Timer(int count_of_sec) {
