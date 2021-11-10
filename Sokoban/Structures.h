@@ -69,6 +69,9 @@ public:
 	
 
 };
+
+
+
 //struct Surface
 //{
 //	//SDL_Surface* loadSurface(string path);
