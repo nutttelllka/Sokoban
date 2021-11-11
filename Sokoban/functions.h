@@ -17,16 +17,13 @@ void field(Surf& game, vector<vector<int>> array, fstream& file, SDL_Rect posTex
 bool characterMovement(Surf& game, Counter& counter, fstream& file, fstream& fileCat, bool& quit, bool new_level);
 bool isPressed(int keyCode);
 bool isReleased(int keyCode);
-
+void retry(Surf& game, bool& quit);
 int playingLevel(Surf& game, Counter& counter, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, Timer& timer, bool first = false);
 
 //void countOfStep(Surf& game, bool what, bool zero = false);
 //void retry(Surface& game, bool& quit);
 
 bool pressed_keys[7] = {};
-
-bool stop_timer = false;
-
 
 //тут был Степа
 SDL_Surface* loadSurface(string path);
