@@ -162,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="Enums.h" />
     <ClInclude Include="functions.h" />
+    <ClInclude Include="Libraries.h" />
     <ClInclude Include="Structures.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

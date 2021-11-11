@@ -46,7 +46,7 @@ enum Wallps
 enum CountOdArrs
 {
 	CountOfWallps = 8,
-	CountOfButtons = 7,
+	CountOfButtons = 8,
 	CountOfPressedButtons = CountOfButtons,
 	CountOfTexture = 8,
 	CountOfWindows = 6,
