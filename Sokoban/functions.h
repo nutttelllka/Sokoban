@@ -18,7 +18,8 @@ bool characterMovement(Surf& game, Counter& counter, fstream& file, fstream& fil
 bool isPressed(int keyCode);
 bool isReleased(int keyCode);
 
-int playingLevel(Surf& game, Counter& counter, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, int& count_of_sec, bool first = false);
+int playingLevel(Surf& game, Counter& counter, fstream& file, vector<vector<int>> catAndGift, vector < Texture> texture_of_elements, bool& quit, Timer& timer, bool first = false);
+
 //void countOfStep(Surf& game, bool what, bool zero = false);
 //void retry(Surface& game, bool& quit);
 
