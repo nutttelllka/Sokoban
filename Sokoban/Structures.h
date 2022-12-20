@@ -80,12 +80,12 @@ private:
 	SDL_Surface* Numbers[CountOfNumbers];
 	SDL_Surface* WindowLevel[CountOfLeveles];
 	SDL_Surface* Comic[CountOfComic];
-	Mix_Music* music1;
-	Mix_Music* music2;
-	Mix_Chunk* box;
-	Mix_Chunk* button;
-	Mix_Chunk* win;
-	Mix_Chunk* intro;
+	//Mix_Music* music1;
+	//Mix_Music* music2;
+	//Mix_Chunk* box;
+	//Mix_Chunk* button;
+	//Mix_Chunk* win;
+	//Mix_Chunk* intro;
 public:
 	PlayField infOfFild;
 	SDL_Event e;
@@ -273,22 +273,22 @@ public:
 	{
 		bool success = true;
 
-		Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-		if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-		{
-			printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
-			success = false;
-		}
+		//Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+		//if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		//{
+		//	printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
+		//	success = false;
+		//}
 
-		music1 = Mix_LoadMUS("sound\\menu.wav");
-		music2 = Mix_LoadMUS("sound\\game.wav");
-		button = Mix_LoadWAV("sound\\button.wav");
-		box = Mix_LoadWAV("sound\\box.wav");
-		intro = Mix_LoadWAV("sound\\intro.wav");
-		//Если что-то пошло не так
-		button = Mix_LoadWAV("sound\\button.wav");
-		box = Mix_LoadWAV("sound\\box.wav");
-		intro = Mix_LoadWAV("sound\\intro.wav");
+		//music1 = Mix_LoadMUS("sound\\menu.wav");
+		//music2 = Mix_LoadMUS("sound\\game.wav");
+		//button = Mix_LoadWAV("sound\\button.wav");
+		//box = Mix_LoadWAV("sound\\box.wav");
+		//intro = Mix_LoadWAV("sound\\intro.wav");
+		////Если что-то пошло не так
+		//button = Mix_LoadWAV("sound\\button.wav");
+		//box = Mix_LoadWAV("sound\\box.wav");
+		//intro = Mix_LoadWAV("sound\\intro.wav");
 		//Если что-то пошло не так
 		
 		Wallps[2] = loadSurface("Wallps\\MainMenu.bmp");
@@ -316,7 +316,7 @@ public:
 		WindowLevel[3] = loadSurface("windowlevel\\4.bmp");
 		WindowLevel[4] = loadSurface("windowlevel\\5.bmp");
 	}
-	void playIntro(int channel, int num)
+	/*void playIntro(int channel, int num)
 	{
 		playChunk(channel, num, intro);
 	}
@@ -335,7 +335,7 @@ public:
 	void playMusic(int channel, unsigned int ms, Mix_Music* mus)
 	{
 		Mix_FadeInMusic(mus, channel, ms);
-	}
+	}*/
 	void showPic(SDL_Surface* CurrentSurface, SDL_Rect coord)
 	{
 		SDL_BlitSurface(CurrentSurface, NULL, ScreenSurface, &coord);
@@ -353,14 +353,14 @@ public:
 		coord_for_wallp.y = 0;
 		showPicWallp(Wallps[BLACK]);
 		SDL_Delay(1000);
-		while (!Mix_FadeOutMusic(2000) && Mix_PlayingMusic()) {
-			// wait for any fades to complete
-			SDL_Delay(40);
-		}
-		if (Mix_FadeInMusic(music2, -1, 2000) == -1) {
-			printf("Mix_FadeInMusic: %s\n", Mix_GetError());
+		//while (!Mix_FadeOutMusic(2000) && Mix_PlayingMusic()) {
+		//	// wait for any fades to complete
+		//	SDL_Delay(40);
+		//}
+		//if (Mix_FadeInMusic(music2, -1, 2000) == -1) {
+		//	printf("Mix_FadeInMusic: %s\n", Mix_GetError());
 
-		}
+		//}
 		for (int number_of_comic = FIRST; number_of_comic < CountOdArrs::CountOfComic;)
 		{
 			for (int i = 0; i < 2; i++)

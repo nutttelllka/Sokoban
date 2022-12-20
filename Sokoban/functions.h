@@ -38,7 +38,7 @@ void Stealth()
 void intro(Surf& game)
 {
 	game.init();
-	game.playIntro(4, 0);
+	//game.playIntro(4, 0);
 	game.loadLogos();
 	bool quit = false;
 	int i = 0;
@@ -72,7 +72,7 @@ void intro(Surf& game)
 }
 void menu(Surf& game, bool& quit)
 {
-	game.playMusicInMenu(-1, 3000);
+	//game.playMusicInMenu(-1, 3000);
 	fstream file("fields.TXT");
 	fstream fileCat("position.TXT");
 	SDL_Rect coords_button;
@@ -214,7 +214,7 @@ void menu(Surf& game, bool& quit)
 					switch (current_pressed_button)
 					{
 					case GAME:
-						game.playButton(3, 0);
+						//game.playButton(3, 0);
 						playGame(game, quit, file, fileCat);
 						game.showPicWallp(game.GetWallp(MAIN_MENU));
 						coords_button.y = y_of_button2;
@@ -224,7 +224,7 @@ void menu(Surf& game, bool& quit)
 						coords_button.y = y_of_button1;
 						break;
 					case HOW_TO_PLAY:
-						game.playButton(3, 0);
+						//game.playButton(3, 0);
 						howToPlay(game, quit);
 						coords_button.y = y_of_button2;
 						game.showPicWallp(game.GetWallp(MAIN_MENU));
@@ -235,7 +235,7 @@ void menu(Surf& game, bool& quit)
 						coords_button.y = y_of_button2;
 						break;
 					case EXIT:
-						game.playButton(3, 0);
+						//game.playButton(3, 0);
 						exit(quit, game);
 						game.showPicWallp(game.GetWallp(MAIN_MENU));
 						coords_button.y = y_of_button1;
@@ -307,7 +307,7 @@ void exit(bool& quit, Surf& game)
 					break;
 				case SDLK_RETURN:
 				case SDLK_KP_ENTER:
-					game.playButton(-1, 0);
+					//game.playButton(-1, 0);
 					game.freeAfterExit();
 					switch (current_pressed_button)
 					{
@@ -353,7 +353,7 @@ void howToPlay(Surf& game, bool quit, int count)
 				case SDLK_RIGHT:
 					count++;
 					game.showPic(game.GetPressedButton(NEXT), stretchRect);
-					game.playButton(3, 0);
+					//game.playButton(3, 0);
 					SDL_Delay(200);
 					if (!(game.showWindowHowToPlay(count)))
 					{
@@ -365,7 +365,7 @@ void howToPlay(Surf& game, bool quit, int count)
 					count--;
 					stretchRect.x = 170;
 					game.showPic(game.GetPressedButton(BACK), stretchRect);
-					game.playButton(3, 0);
+					//game.playButton(3, 0);
 					SDL_Delay(200);
 					if (!(game.showWindowHowToPlay(count)))
 					{
@@ -529,7 +529,7 @@ void retry(Surf& game, bool& quit)
 			else if (game.e.type == SDL_KEYDOWN)
 			{
 				if (game.e.key.keysym.sym == SDLK_RETURN || game.e.key.keysym.sym == SDLK_KP_ENTER) {
-					game.playButton(3, 0);
+					//game.playButton(3, 0);
 					stretchRect.y++;
 					game.showPic(game.GetPressedButton(RETRY), stretchRect);
 					SDL_Delay(200);
